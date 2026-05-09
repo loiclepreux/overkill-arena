@@ -39,15 +39,17 @@ export function HomePage() {
                 </video>
 
                 {/* OVERLAY */}
-                <div
-                    className="
+                {
+                    <div
+                        className="
         absolute inset-0
         bg-gradient-to-br
-        from-black/80
-        via-black/70
-        to-red-950/40
+        from-black/40
+        via-black/20
+        to-red-950/20
     "
-                />
+                    />
+                }
 
                 <div className="relative z-10 max-w-4xl">
                     <Badge variant="danger">Competitive Esports Platform</Badge>
