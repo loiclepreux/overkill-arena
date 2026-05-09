@@ -10,12 +10,12 @@ export function MainLayout() {
         <div className="flex min-h-screen flex-col bg-zinc-950 text-white">
             {/* NAVBAR */}
             <header className="border-b border-zinc-800 bg-black">
-                <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <div className="flex items-center gap-4">
+                <div className="mx-auto flex w-full max-w-[1700px] items-center justify-between px-4 py-5">
+                    <div className="flex items-center">
                         {/* LOGO */}
                         <div
                             className="
-            relative flex h-16 w-16
+            relative -ml-8 flex h-30 w-30
             items-center justify-center
         "
                         >
@@ -44,7 +44,7 @@ export function MainLayout() {
                         <div>
                             <h1
                                 className="
-                text-3xl font-black uppercase
+                text-4xl font-black uppercase
                 tracking-[0.18em]
             "
                             >
@@ -95,7 +95,7 @@ export function MainLayout() {
             </header>
 
             {/* CONTENU */}
-            <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-10">
+            <main className="mx-auto w-full max-w-[1600px] flex-1 px-10 py-12">
                 <Outlet />
             </main>
 

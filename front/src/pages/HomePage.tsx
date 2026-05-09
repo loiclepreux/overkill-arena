@@ -19,7 +19,7 @@ export function HomePage() {
           relative overflow-hidden rounded-3xl
           border border-zinc-800
           bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-          px-8 py-24
+          px-14 py-32
         "
             >
                 {/* VIDEO BACKGROUND */}
@@ -51,14 +51,12 @@ export function HomePage() {
                     />
                 }
 
-                <div className="relative z-10 max-w-4xl">
+                <div className="relative z-10 max-w-6xl">
                     <Badge variant="danger">Competitive Esports Platform</Badge>
 
                     <h1
                         className="
-              mt-8 text-6xl font-extrabold
-              leading-tight text-white
-              lg:text-7xl
+              mt-8 text-7xl font-black leading-tight text-white lg:text-8xl
             "
                     >
                         Overkill Arena
