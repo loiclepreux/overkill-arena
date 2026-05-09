@@ -27,7 +27,7 @@ export function AdminPage() {
                     <Badge variant="danger">ADMIN CONTROL CENTER</Badge>
 
                     <h1 className="mt-6 text-5xl font-extrabold text-white">
-                        Admin Dashboard
+                        Tableau de bord administrateur
                     </h1>
 
                     <p className="mt-6 text-lg leading-relaxed text-zinc-400">

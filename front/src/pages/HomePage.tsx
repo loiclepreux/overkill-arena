@@ -73,7 +73,7 @@ export function HomePage() {
 "
                     >
                         Participez aux plus grands tournois compétitifs, gérez
-                        votre équipe, grimpez dans le leaderboard et dominez
+                        votre équipe, grimpez dans le classement et dominez
                         l’arène.
                     </p>
 
@@ -335,7 +335,7 @@ export function HomePage() {
 
                         <p className="mt-5 leading-relaxed text-zinc-400">
                             Créez et rejoignez des tournois esports avec
-                            brackets, matchmaking et cashprize.
+                            tableaux de compétitions, systéme de matchmaking et prime de récompense.
                         </p>
                     </div>
                 </div>
@@ -388,7 +388,7 @@ export function HomePage() {
                         </h2>
 
                         <p className="mt-5 leading-relaxed text-zinc-400">
-                            Gérez votre roster, recrutez des joueurs et
+                            Gérez votre équipe, recrutez des joueurs et
                             améliorez votre classement compétitif.
                         </p>
                     </div>
@@ -443,7 +443,7 @@ export function HomePage() {
 
                         <p className="mt-5 leading-relaxed text-zinc-400">
                             Suivez les matchs en direct, les résultats et le
-                            leaderboard temps réel.
+                            classement temps réel.
                         </p>
                     </div>
                 </div>
