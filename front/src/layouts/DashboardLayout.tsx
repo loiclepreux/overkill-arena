@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useAuthStore } from "@/store/auth.store";
+import {
+    FiBell,
+    FiGrid,
+    FiShield,
+    FiAward,
+    FiUser,
+    FiSettings,
+} from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 
 export function DashboardLayout() {
     const { user, logout } = useAuthStore();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const navigate = useNavigate();
 
     const closeSidebar = () => {
         setIsSidebarOpen(false);
@@ -88,7 +97,10 @@ export function DashboardLayout() {
                         onClick={closeSidebar}
                         className={navLinkClass}
                     >
-                        Dashboard
+                        <span className="flex items-center gap-3">
+                            <FiGrid className="text-lg" />
+                            Dashboard
+                        </span>
                     </NavLink>
 
                     <NavLink
@@ -96,7 +108,10 @@ export function DashboardLayout() {
                         onClick={closeSidebar}
                         className={navLinkClass}
                     >
-                        Tournois
+                        <span className="flex items-center gap-3">
+                            <FiAward className="text-lg" />
+                            Tournois
+                        </span>
                     </NavLink>
 
                     <NavLink
@@ -104,7 +119,44 @@ export function DashboardLayout() {
                         onClick={closeSidebar}
                         className={navLinkClass}
                     >
-                        Équipes
+                        <span className="flex items-center gap-3">
+                            <FiShield className="text-lg" />
+                            Équipes
+                        </span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/leaderboard"
+                        onClick={closeSidebar}
+                        className={navLinkClass}
+                    >
+                        <span className="flex items-center gap-3">
+                            <FiAward className="text-lg" />
+                            Leaderboard
+                        </span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/notifications"
+                        onClick={closeSidebar}
+                        className={navLinkClass}
+                    >
+                        <span className="flex items-center justify-between w-full">
+                            <span className="flex items-center gap-3">
+                                <FiBell className="text-lg" />
+                                Notifications
+                            </span>
+
+                            <span
+                                className="
+      rounded-full bg-red-600
+      px-2 py-0.5 text-xs
+      font-bold text-white
+    "
+                            >
+                                3
+                            </span>
+                        </span>
                     </NavLink>
 
                     <NavLink
@@ -112,7 +164,10 @@ export function DashboardLayout() {
                         onClick={closeSidebar}
                         className={navLinkClass}
                     >
-                        Profil
+                        <span className="flex items-center gap-3">
+                            <FiUser className="text-lg" />
+                            Profil
+                        </span>
                     </NavLink>
 
                     {user?.role === "ADMIN" && (
@@ -121,7 +176,10 @@ export function DashboardLayout() {
                             onClick={closeSidebar}
                             className={navLinkClass}
                         >
-                            Admin
+                            <span className="flex items-center gap-3">
+                                <FiSettings className="text-lg" />
+                                Admin
+                            </span>
                         </NavLink>
                     )}
                 </nav>
@@ -148,6 +206,7 @@ export function DashboardLayout() {
                         onClick={() => {
                             logout();
                             closeSidebar();
+                            navigate("/");
                         }}
                     >
                         Logout

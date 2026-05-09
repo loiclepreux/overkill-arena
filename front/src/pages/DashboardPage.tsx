@@ -1,37 +1,26 @@
 import { FiUsers, FiShield, FiTarget, FiAward } from "react-icons/fi";
+
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
-import { Leaderboard } from "@/components/dashboard/Leaderboard";
-import { RecentMatches } from "@/components/dashboard/RecentMatches";
-import { NotificationsPanel } from "@/components/dashboard/NotificationsPanel";
 import { MatchActivityChart } from "@/components/dashboard/MatchActivityChart";
-import { TournamentWidget } from "@/components/dashboard/TournamentWidget";
 
 export function DashboardPage() {
     return (
         <section className="space-y-10">
-            {/* HEADER */}
             <div>
                 <h1 className="text-5xl font-bold text-red-500">Dashboard</h1>
 
                 <p className="mt-4 text-zinc-400">
-                    Bienvenue sur ton espace Overkill Arena.
+                    Vue d’ensemble de ton activité Overkill Arena.
                 </p>
             </div>
 
-            {/* GRID STATS */}
-            <div
-                className="
-          grid gap-6
-          sm:grid-cols-2
-          xl:grid-cols-4
-        "
-            >
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardStatCard
-                    title="Tournois"
+                    title="Tournois actifs"
                     value={12}
                     icon={<FiAward />}
-                    description="Tournois actifs"
+                    description="Voir tous les tournois"
                 />
 
                 <DashboardStatCard
@@ -42,10 +31,10 @@ export function DashboardPage() {
                 />
 
                 <DashboardStatCard
-                    title="Matchs"
+                    title="Matchs joués"
                     value={148}
                     icon={<FiTarget />}
-                    description="Matchs joués"
+                    description="Résultats récents"
                 />
 
                 <DashboardStatCard
@@ -55,12 +44,11 @@ export function DashboardPage() {
                     description="Joueurs inscrits"
                 />
             </div>
-            <ActivityFeed />
-            <Leaderboard />
-            <RecentMatches />
-            <NotificationsPanel />
-            <MatchActivityChart />
-            <TournamentWidget />
+
+            <div className="grid gap-8 xl:grid-cols-2">
+                <ActivityFeed />
+                <MatchActivityChart />
+            </div>
         </section>
     );
 }

@@ -16,6 +16,8 @@ import { LoginPage } from "@/pages/LoginPage";
 import { RegisterPage } from "@/pages/RegisterPage";
 import { DashboardPage } from "@/pages/DashboardPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import { NotificationsPage } from "@/pages/NotificationsPage";
+import { LeaderboardPage } from "@/pages/LeaderboardPage";
 
 export const router = createBrowserRouter([
     {
@@ -26,25 +28,7 @@ export const router = createBrowserRouter([
             {
                 index: true,
                 element: (
-                    <ProtectedRoute>
                         <HomePage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "tournaments",
-                element: (
-                    <ProtectedRoute>
-                        <TournamentPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: "teams",
-                element: (
-                    <ProtectedRoute>
-                        <TeamsPage />
-                    </ProtectedRoute>
                 ),
             },
         ],
@@ -81,6 +65,24 @@ export const router = createBrowserRouter([
                 element: <DashboardPage />,
             },
             {
+                path: "tournaments",
+                element: (
+                        <TournamentPage />
+                ),
+            },
+            {
+                path: "teams",
+                element: (
+                        <TeamsPage />
+                ),
+            },
+            {
+                path: "leaderboard",
+                element: (
+                        <LeaderboardPage />
+                ),
+            },
+            {
                 path: "profile",
                 element: <ProfilePage />,
             },
@@ -95,6 +97,10 @@ export const router = createBrowserRouter([
             {
                 path: "*",
                 element: <NotFoundPage />,
+            },
+            {
+                path: "notifications",
+                element: <NotificationsPage />,
             },
         ],
     },

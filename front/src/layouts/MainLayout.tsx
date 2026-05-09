@@ -15,24 +15,6 @@ export function MainLayout() {
                     </Link>
 
                     <nav className="flex items-center gap-4 text-sm font-medium">
-                        <Link to="/" className="transition hover:text-red-500">
-                            Home
-                        </Link>
-
-                        <Link
-                            to="/dashboard/tournaments"
-                            className="transition hover:text-red-500"
-                        >
-                            Tournois
-                        </Link>
-
-                        <Link
-                            to="/dashboard/teams"
-                            className="transition hover:text-red-500"
-                        >
-                            Équipes
-                        </Link>
-
                         {isAuthenticated ? (
                             <>
                                 <Link
