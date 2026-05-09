@@ -22,4 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-front/src/assets/video-callof.mp4
+
+# Large video
+src/assets/video-callof.mp4
