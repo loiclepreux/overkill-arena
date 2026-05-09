@@ -201,10 +201,10 @@ export function HomePage() {
             >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <Badge variant="danger">Top Teams</Badge>
+                        <Badge variant="danger">Meilleurs Equipes</Badge>
 
                         <h2 className="mt-5 text-4xl font-extrabold text-white">
-                            Leaderboard compétitif
+                            Classement compétitif
                         </h2>
 
                         <p className="mt-4 max-w-2xl text-zinc-400">
@@ -281,7 +281,7 @@ export function HomePage() {
           p-10 text-center
         "
             >
-                <Badge variant="danger">Join the competition</Badge>
+                <Badge variant="danger">Participez a la compétition</Badge>
 
                 <h2 className="mt-6 text-5xl font-extrabold text-white">
                     Prêt à entrer dans l’arène ?

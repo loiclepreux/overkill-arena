@@ -10,20 +10,46 @@ export function MainLayout() {
             {/* NAVBAR */}
             <header className="border-b border-zinc-800 bg-black">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <Link to="/" className="text-2xl font-bold text-red-500">
-                        Overkill Arena
+                    <Link to="/">
+                        <div className="group relative">
+                            {/* GLOW */}
+                            <div
+                                className="
+                absolute inset-0
+                bg-red-600/20 blur-2xl
+                transition duration-500
+                group-hover:bg-red-600/30
+            "
+                            />
+
+                            {/* LOGO */}
+                            <h1
+                                className="
+                relative text-3xl font-black
+                uppercase tracking-[0.18em]
+                transition duration-300
+            "
+                            >
+                                <span className="text-red-500">Overkill</span>{" "}
+                                <span className="text-white">Arena</span>
+                            </h1>
+
+                            {/* SUBTITLE */}
+                            <p
+                                className="
+                text-[10px] uppercase
+                tracking-[0.35em]
+                text-zinc-500
+            "
+                            >
+                                ESPORT PLATFORM
+                            </p>
+                        </div>
                     </Link>
 
                     <nav className="flex items-center gap-4 text-sm font-medium">
                         {isAuthenticated ? (
                             <>
-                                <Link
-                                    to="/dashboard/profile"
-                                    className="transition hover:text-red-500"
-                                >
-                                    Profil
-                                </Link>
-
                                 <Badge variant="danger">{user?.role}</Badge>
 
                                 <span className="text-zinc-400">
@@ -31,17 +57,19 @@ export function MainLayout() {
                                 </span>
 
                                 <Button variant="secondary" onClick={logout}>
-                                    Logout
+                                    Déconnexion
                                 </Button>
                             </>
                         ) : (
                             <>
                                 <Link to="/login">
-                                    <Button variant="secondary">Login</Button>
+                                    <Button variant="secondary">
+                                        Connexion
+                                    </Button>
                                 </Link>
 
                                 <Link to="/register">
-                                    <Button>Register</Button>
+                                    <Button>Inscription</Button>
                                 </Link>
                             </>
                         )}

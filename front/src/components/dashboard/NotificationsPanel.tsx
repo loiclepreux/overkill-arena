@@ -11,7 +11,7 @@ type Notification = {
 const notifications: Notification[] = [
     {
         id: 1,
-        title: "Match starts soon",
+        title: "Le match va bientôt commencer",
         description: "Votre match contre Nova Squad démarre dans 10 minutes.",
         type: "LIVE",
         time: "now",
@@ -19,7 +19,7 @@ const notifications: Notification[] = [
 
     {
         id: 2,
-        title: "Tournament registration validated",
+        title: "Inscription au tournoi validée",
         description: "Votre équipe a été validée pour le Winter Cup.",
         type: "SUCCESS",
         time: "12 min ago",
@@ -27,7 +27,7 @@ const notifications: Notification[] = [
 
     {
         id: 3,
-        title: "Pending screenshot review",
+        title: "En attente de vérification",
         description: "Un administrateur doit vérifier une preuve de match.",
         type: "WARNING",
         time: "1 hour ago",

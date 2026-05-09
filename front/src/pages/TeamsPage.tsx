@@ -114,7 +114,7 @@ export function TeamsPage() {
                     title="Joueurs"
                     value={4}
                     icon={<FiUsers />}
-                    description="Roster actif"
+                    description="Effectifs actif"
                 />
 
                 <DashboardStatCard
@@ -150,7 +150,7 @@ export function TeamsPage() {
                         <FiUsers className="text-2xl text-red-500" />
 
                         <h2 className="text-2xl font-bold text-white">
-                            Roster
+                            Effectifs
                         </h2>
                     </div>
 

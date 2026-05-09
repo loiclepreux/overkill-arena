@@ -80,7 +80,7 @@ export function AdminPage() {
                     title="Paiements"
                     value="18.5K€"
                     icon={<FiCreditCard />}
-                    description="Cashprize géré"
+                    description="Prime géré"
                 />
             </div>
 
@@ -238,7 +238,7 @@ export function AdminPage() {
                             </p>
 
                             <Button className="mt-4 w-full">
-                                Voir les logs sécurité
+                                Voir le journal de sécurité
                             </Button>
                         </div>
                     </div>

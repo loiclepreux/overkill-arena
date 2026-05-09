@@ -116,7 +116,7 @@ export function TournamentWidget() {
 
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-zinc-500">
-                                    CashPrize
+                                    Prime
                                 </p>
 
                                 <p className="mt-1 text-lg font-bold text-red-500">

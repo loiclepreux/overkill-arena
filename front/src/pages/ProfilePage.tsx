@@ -217,7 +217,7 @@ export function ProfilePage() {
 
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-zinc-500">
-                                    Wins
+                                    Victoires
                                 </p>
 
                                 <p className="mt-2 text-xl font-bold text-white">
@@ -227,7 +227,7 @@ export function ProfilePage() {
 
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-zinc-500">
-                                    Players
+                                    Joueurs
                                 </p>
 
                                 <p className="mt-2 text-xl font-bold text-white">

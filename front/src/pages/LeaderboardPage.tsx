@@ -135,7 +135,7 @@ export function LeaderboardPage() {
                 />
 
                 <DashboardStatCard
-                    title="Winrate moyen"
+                    title="Moyenne de victoires"
                     value="74%"
                     icon={<FiTrendingUp />}
                     description="Toutes équipes"
@@ -160,7 +160,7 @@ export function LeaderboardPage() {
                         <FiShield className="text-2xl text-red-500" />
 
                         <h2 className="text-2xl font-bold text-white">
-                            Top Teams
+                            Meilleurs Equipes
                         </h2>
                     </div>
 
@@ -221,7 +221,7 @@ export function LeaderboardPage() {
                         <FiTarget className="text-2xl text-red-500" />
 
                         <h2 className="text-2xl font-bold text-white">
-                            Top Players
+                            Meilleurs Joueurs
                         </h2>
                     </div>
 

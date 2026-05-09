@@ -104,7 +104,7 @@ export function DashboardLayout() {
                     >
                         <span className="flex items-center gap-3">
                             <FiGrid className="text-lg" />
-                            Dashboard
+                            Tableau de bord
                         </span>
                     </NavLink>
 
@@ -137,7 +137,7 @@ export function DashboardLayout() {
                     >
                         <span className="flex items-center gap-3">
                             <FiAward className="text-lg" />
-                            Leaderboard
+                            Classement
                         </span>
                     </NavLink>
 
@@ -210,7 +210,7 @@ export function DashboardLayout() {
                         className="w-full"
                         onClick={handleLogout}
                     >
-                        Logout
+                        Déconnexion
                     </Button>
                 </div>
             </aside>

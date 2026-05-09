@@ -93,7 +93,7 @@ export function TournamentPage() {
                 />
 
                 <DashboardStatCard
-                    title="CashPrize total"
+                    title="Prime total"
                     value="50K€"
                     icon={<FiTarget />}
                     description="Récompenses disponibles"

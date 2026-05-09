@@ -8,7 +8,7 @@ type Activity = {
 const activities: Activity[] = [
     {
         id: 1,
-        title: "Team Phoenix joined Winter Cup",
+        title: "Team Phoenix inscrit à la Winter Cup",
         description: "Nouvelle équipe inscrite au tournoi.",
         time: "2 min ago",
     },
@@ -22,14 +22,14 @@ const activities: Activity[] = [
 
     {
         id: 3,
-        title: "New player registered",
+        title: "Nouveau joueur inscrit",
         description: "Un nouveau joueur a créé un compte.",
         time: "1 hour ago",
     },
 
     {
         id: 4,
-        title: "Tournament starts soon",
+        title: "Le tournoi commence bientôt",
         description: "Le tournoi Spring Clash démarre dans 2 heures.",
         time: "2 hours ago",
     },

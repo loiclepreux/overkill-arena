@@ -55,7 +55,7 @@ export function MatchActivityChart() {
         >
             <div className="mb-6">
                 <h2 className="text-2xl font-bold text-white">
-                    Match Activity
+                    Activity Match
                 </h2>
 
                 <p className="mt-2 text-sm text-zinc-500">
