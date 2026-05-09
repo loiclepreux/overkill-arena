@@ -9,23 +9,24 @@ export function ProfilePage() {
             {/* HERO PROFILE */}
             <div
                 className="
-          relative overflow-hidden rounded-3xl
-          border border-zinc-800
-          bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-          p-8
-        "
+        relative overflow-hidden rounded-3xl
+        border border-zinc-800
+        bg-gradient-to-br from-red-950/40 via-black to-zinc-950
+        p-5 sm:p-8
+    "
             >
                 <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                     {/* LEFT */}
-                    <div className="flex items-center gap-6">
+                    <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
                         {/* AVATAR */}
                         <div
                             className="
-                flex h-28 w-28 items-center
-                justify-center rounded-full
-                border-4 border-red-600
-                bg-black text-5xl font-bold text-white
-              "
+        flex h-24 w-24 shrink-0 items-center
+        justify-center rounded-full
+        border-4 border-red-600
+        bg-black text-4xl font-bold text-white
+        sm:h-28 sm:w-28 sm:text-5xl
+    "
                         >
                             O
                         </div>
@@ -36,9 +37,9 @@ export function ProfilePage() {
 
                             <h1
                                 className="
-                  mt-4 text-5xl font-extrabold
-                  text-white
-                "
+        mt-4 break-words text-3xl font-extrabold
+        text-white sm:text-5xl
+    "
                             >
                                 OverkillPlayer
                             </h1>
@@ -56,10 +57,17 @@ export function ProfilePage() {
                     </div>
 
                     {/* ACTIONS */}
-                    <div className="flex flex-wrap gap-4">
-                        <Button>Modifier profil</Button>
+                    <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                        <Button className="w-full sm:w-auto">
+                            Modifier profil
+                        </Button>
 
-                        <Button variant="secondary">Paramètres</Button>
+                        <Button
+                            variant="secondary"
+                            className="w-full sm:w-auto"
+                        >
+                            Paramètres
+                        </Button>
                     </div>
                 </div>
 

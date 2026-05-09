@@ -10,12 +10,12 @@ export function MainLayout() {
         <div className="flex min-h-screen flex-col bg-zinc-950 text-white">
             {/* NAVBAR */}
             <header className="border-b border-zinc-800 bg-black">
-                <div className="mx-auto flex w-full max-w-[1700px] items-center justify-between px-4 py-5">
+                <div className="mx-auto flex w-full max-w-[1700px] flex-col gap-5 px-4 py-5 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center">
                         {/* LOGO */}
                         <div
                             className="
-            relative -ml-8 flex h-30 w-30
+            relative sm:-ml-6 flex h-30 w-30
             items-center justify-center
         "
                         >
@@ -44,7 +44,7 @@ export function MainLayout() {
                         <div>
                             <h1
                                 className="
-                text-4xl font-black uppercase
+                text-2xl sm:text-4xl font-black uppercase
                 tracking-[0.18em]
             "
                             >
@@ -64,7 +64,7 @@ export function MainLayout() {
                         </div>
                     </div>
 
-                    <nav className="flex items-center gap-4 text-sm font-medium">
+                    <nav className="flex w-full justify-center gap-3 text-sm font-medium sm:w-auto sm:justify-end">
                         {isAuthenticated ? (
                             <>
                                 <Badge variant="danger">{user?.role}</Badge>

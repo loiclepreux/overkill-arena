@@ -71,12 +71,12 @@ export function DashboardLayout() {
             {/* SIDEBAR */}
             <aside
                 className={`
-          fixed left-0 top-0 z-50 flex min-h-screen w-72 flex-col
-          border-r border-zinc-800 bg-black
-          transition-transform duration-300
-          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:static lg:translate-x-0
-        `}
+    fixed left-0 top-0 z-50 flex h-screen w-72 flex-col
+    border-r border-zinc-800 bg-black
+    transition-transform duration-300
+    ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    lg:sticky lg:top-0 lg:translate-x-0
+  `}
             >
                 {/* CLOSE MOBILE */}
                 <button
@@ -217,7 +217,7 @@ export function DashboardLayout() {
             </aside>
 
             {/* CONTENT */}
-            <main className="flex-1 p-6 pt-24 lg:p-8">
+            <main className="min-h-screen flex-1 p-6 pt-24 lg:p-8">
                 <Outlet />
             </main>
         </div>

@@ -19,7 +19,7 @@ export function HomePage() {
           relative overflow-hidden rounded-3xl
           border border-zinc-800
           bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-          px-14 py-32
+          px-5 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-32
         "
             >
                 {/* VIDEO BACKGROUND */}
@@ -39,7 +39,6 @@ export function HomePage() {
                 </video>
 
                 {/* OVERLAY */}
-                {
                     <div
                         className="
         absolute inset-0
@@ -49,24 +48,29 @@ export function HomePage() {
         to-red-950/20
     "
                     />
-                }
 
                 <div className="relative z-10 max-w-6xl">
                     <Badge variant="danger">Competitive Esports Platform</Badge>
 
                     <h1
                         className="
-              mt-8 text-7xl font-black leading-tight text-white lg:text-8xl
-            "
+        mt-8 text-4xl font-extrabold
+        leading-tight text-white
+        sm:text-5xl
+        lg:text-7xl
+        xl:text-8xl
+    "
                     >
                         Overkill Arena
                     </h1>
 
                     <p
                         className="
-              mt-8 max-w-2xl text-xl
-              leading-relaxed text-zinc-400
-            "
+    mt-6 max-w-2xl text-base
+    leading-relaxed text-zinc-400
+    sm:text-lg
+    lg:text-xl
+"
                     >
                         Participez aux plus grands tournois compétitifs, gérez
                         votre équipe, grimpez dans le leaderboard et dominez
