@@ -2,6 +2,7 @@ import { Outlet, Link } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import logo from "@/assets/logo-overkill.png";
 
 export function MainLayout() {
     const { isAuthenticated, user, logout } = useAuthStore();
@@ -10,31 +11,47 @@ export function MainLayout() {
             {/* NAVBAR */}
             <header className="border-b border-zinc-800 bg-black">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-                    <Link to="/">
-                        <div className="group relative">
+                    <div className="flex items-center gap-4">
+                        {/* LOGO */}
+                        <div
+                            className="
+            relative flex h-16 w-16
+            items-center justify-center
+        "
+                        >
                             {/* GLOW */}
                             <div
                                 className="
                 absolute inset-0
-                bg-red-600/20 blur-2xl
-                transition duration-500
-                group-hover:bg-red-600/30
+                rounded-full bg-red-600/20
+                blur-2xl
             "
                             />
 
-                            {/* LOGO */}
+                            {/* IMAGE */}
+                            <img
+                                src={logo}
+                                alt="Overkill Arena Logo"
+                                className="
+                relative h-full w-full
+                object-contain
+                drop-shadow-[0_0_15px_rgba(255,0,0,0.45)]
+            "
+                            />
+                        </div>
+
+                        {/* TEXT */}
+                        <div>
                             <h1
                                 className="
-                relative text-3xl font-black
-                uppercase tracking-[0.18em]
-                transition duration-300
+                text-3xl font-black uppercase
+                tracking-[0.18em]
             "
                             >
                                 <span className="text-red-500">Overkill</span>{" "}
                                 <span className="text-white">Arena</span>
                             </h1>
 
-                            {/* SUBTITLE */}
                             <p
                                 className="
                 text-[10px] uppercase
@@ -45,7 +62,7 @@ export function MainLayout() {
                                 ESPORT PLATFORM
                             </p>
                         </div>
-                    </Link>
+                    </div>
 
                     <nav className="flex items-center gap-4 text-sm font-medium">
                         {isAuthenticated ? (
@@ -84,7 +101,7 @@ export function MainLayout() {
 
             {/* FOOTER */}
             <footer className="border-t border-zinc-800 bg-black py-6 text-center text-sm text-zinc-500">
-                Overkill Arena © 2026
+                Overkill Arena © 2026 by Lepreux Loïc
             </footer>
         </div>
     );

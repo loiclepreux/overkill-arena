@@ -76,62 +76,170 @@ export function HomePage() {
             >
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-6
+        transition duration-500
+        hover:border-red-500/40
+    "
                 >
-                    <FiAward className="text-4xl text-red-500" />
+                    <div
+                        className="
+            absolute inset-0
+            bg-gradient-to-br
+            from-red-600/5
+            via-transparent
+            to-red-500/5
+            opacity-0 blur-2xl
+            transition duration-700
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h3 className="mt-6 text-4xl font-extrabold text-white">
-                        12+
-                    </h3>
+                    <div
+                        className="
+            absolute -right-10 -top-10
+            h-32 w-32 rounded-full
+            bg-red-500/10 blur-3xl
+            animate-pulse
+        "
+                    />
 
-                    <p className="mt-3 text-zinc-400">Tournois actifs</p>
+                    <div className="relative z-10">
+                        <FiAward className="text-4xl text-red-500" />
+
+                        <h3 className="mt-6 text-4xl font-extrabold text-white">
+                            12+
+                        </h3>
+
+                        <p className="mt-3 text-zinc-400">Tournois actifs</p>
+                    </div>
                 </div>
 
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-6
+        transition duration-500
+        hover:border-red-500/40
+    "
                 >
-                    <FiShield className="text-4xl text-red-500" />
+                    <div
+                        className="
+            absolute inset-0
+            bg-gradient-to-br
+            from-red-600/5
+            via-transparent
+            to-red-500/5
+            opacity-0 blur-2xl
+            transition duration-700
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h3 className="mt-6 text-4xl font-extrabold text-white">
-                        64
-                    </h3>
+                    <div
+                        className="
+            absolute -right-10 -top-10
+            h-32 w-32 rounded-full
+            bg-red-500/10 blur-3xl
+            animate-pulse
+        "
+                    />
 
-                    <p className="mt-3 text-zinc-400">Teams compétitives</p>
+                    <div className="relative z-10">
+                        <FiShield className="text-4xl text-red-500" />
+
+                        <h3 className="mt-6 text-4xl font-extrabold text-white">
+                            64
+                        </h3>
+
+                        <p className="mt-3 text-zinc-400">Teams compétitives</p>
+                    </div>
                 </div>
 
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-6
+        transition duration-500
+        hover:border-red-500/40
+    "
                 >
-                    <FiUsers className="text-4xl text-red-500" />
+                    <div
+                        className="
+            absolute inset-0
+            bg-gradient-to-br
+            from-red-600/5
+            via-transparent
+            to-red-500/5
+            opacity-0 blur-2xl
+            transition duration-700
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h3 className="mt-6 text-4xl font-extrabold text-white">
-                        500+
-                    </h3>
+                    <div
+                        className="
+            absolute -right-10 -top-10
+            h-32 w-32 rounded-full
+            bg-red-500/10 blur-3xl
+            animate-pulse
+        "
+                    />
 
-                    <p className="mt-3 text-zinc-400">Joueurs inscrits</p>
+                    <div className="relative z-10">
+                        <FiUsers className="text-4xl text-red-500" />
+
+                        <h3 className="mt-6 text-4xl font-extrabold text-white">
+                            500+
+                        </h3>
+
+                        <p className="mt-3 text-zinc-400">Joueurs inscrits</p>
+                    </div>
                 </div>
 
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-6
+        transition duration-500
+        hover:border-red-500/40
+    "
                 >
-                    <FiTarget className="text-4xl text-red-500" />
+                    <div
+                        className="
+            absolute inset-0
+            bg-gradient-to-br
+            from-red-600/5
+            via-transparent
+            to-red-500/5
+            opacity-0 blur-2xl
+            transition duration-700
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h3 className="mt-6 text-4xl font-extrabold text-white">
-                        150+
-                    </h3>
+                    <div
+                        className="
+            absolute -right-10 -top-10
+            h-32 w-32 rounded-full
+            bg-red-500/10 blur-3xl
+            animate-pulse
+        "
+                    />
 
-                    <p className="mt-3 text-zinc-400">Matchs joués</p>
+                    <div className="relative z-10">
+                        <FiTarget className="text-4xl text-red-500" />
+
+                        <h3 className="mt-6 text-4xl font-extrabold text-white">
+                            150+
+                        </h3>
+
+                        <p className="mt-3 text-zinc-400">Matchs joués</p>
+                    </div>
                 </div>
             </div>
 
@@ -139,56 +247,173 @@ export function HomePage() {
             <div className="grid gap-8 xl:grid-cols-3">
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-8
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-8
+        transition-all duration-500
+        hover:-translate-y-2
+        hover:border-red-500/40
+        hover:shadow-2xl hover:shadow-red-500/10
+    "
                 >
-                    <FiAward className="text-5xl text-red-500" />
+                    {/* TOP LIGHT */}
+                    <div
+                        className="
+            absolute left-0 top-0 h-1 w-full
+            bg-gradient-to-r
+            from-transparent
+            via-red-500/70
+            to-transparent
+            opacity-0 transition duration-500
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h2 className="mt-6 text-2xl font-bold text-white">
-                        Tournois compétitifs
-                    </h2>
+                    {/* BACKGROUND GLOW */}
+                    <div
+                        className="
+            absolute -right-20 -top-20
+            h-56 w-56 rounded-full
+            bg-red-500/10 blur-3xl
+            transition duration-700
+            group-hover:scale-125
+        "
+                    />
 
-                    <p className="mt-4 leading-relaxed text-zinc-400">
-                        Créez et rejoignez des tournois esports avec brackets,
-                        matchmaking et cashprize.
-                    </p>
+                    {/* CONTENT */}
+                    <div className="relative z-10">
+                        {/* ICON */}
+                        <div
+                            className="
+                flex h-20 w-20 items-center
+                justify-center rounded-2xl
+                bg-red-500/10
+                text-red-500
+                transition duration-500
+                group-hover:bg-red-500/20
+                group-hover:scale-110
+            "
+                        >
+                            <FiAward className="text-5xl" />
+                        </div>
+
+                        <h2 className="mt-8 text-3xl font-bold text-white">
+                            Tournois compétitifs
+                        </h2>
+
+                        <p className="mt-5 leading-relaxed text-zinc-400">
+                            Créez et rejoignez des tournois esports avec
+                            brackets, matchmaking et cashprize.
+                        </p>
+                    </div>
                 </div>
 
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-8
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-8
+        transition-all duration-500
+        hover:-translate-y-2
+        hover:border-red-500/40
+        hover:shadow-2xl hover:shadow-red-500/10
+    "
                 >
-                    <FiShield className="text-5xl text-red-500" />
+                    <div
+                        className="
+            absolute left-0 top-0 h-1 w-full
+            bg-gradient-to-r from-transparent via-red-500/70 to-transparent
+            opacity-0 transition duration-500
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h2 className="mt-6 text-2xl font-bold text-white">
-                        Gestion d’équipes
-                    </h2>
+                    <div
+                        className="
+            absolute -right-20 -top-20
+            h-56 w-56 rounded-full
+            bg-red-500/10 blur-3xl
+            transition duration-700
+            group-hover:scale-125
+        "
+                    />
 
-                    <p className="mt-4 leading-relaxed text-zinc-400">
-                        Gérez votre roster, recrutez des joueurs et améliorez
-                        votre classement compétitif.
-                    </p>
+                    <div className="relative z-10">
+                        <div
+                            className="
+                flex h-20 w-20 items-center justify-center
+                rounded-2xl bg-red-500/10 text-red-500
+                transition duration-500
+                group-hover:bg-red-500/20
+                group-hover:scale-110
+            "
+                        >
+                            <FiShield className="text-5xl" />
+                        </div>
+
+                        <h2 className="mt-8 text-3xl font-bold text-white">
+                            Gestion d’équipes
+                        </h2>
+
+                        <p className="mt-5 leading-relaxed text-zinc-400">
+                            Gérez votre roster, recrutez des joueurs et
+                            améliorez votre classement compétitif.
+                        </p>
+                    </div>
                 </div>
 
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-8
-          "
+        group relative overflow-hidden
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-8
+        transition-all duration-500
+        hover:-translate-y-2
+        hover:border-red-500/40
+        hover:shadow-2xl hover:shadow-red-500/10
+    "
                 >
-                    <FiTarget className="text-5xl text-red-500" />
+                    <div
+                        className="
+            absolute left-0 top-0 h-1 w-full
+            bg-gradient-to-r from-transparent via-red-500/70 to-transparent
+            opacity-0 transition duration-500
+            group-hover:opacity-100
+        "
+                    />
 
-                    <h2 className="mt-6 text-2xl font-bold text-white">
-                        Matchs live
-                    </h2>
+                    <div
+                        className="
+            absolute -right-20 -top-20
+            h-56 w-56 rounded-full
+            bg-red-500/10 blur-3xl
+            transition duration-700
+            group-hover:scale-125
+        "
+                    />
 
-                    <p className="mt-4 leading-relaxed text-zinc-400">
-                        Suivez les matchs en direct, les résultats et le
-                        leaderboard temps réel.
-                    </p>
+                    <div className="relative z-10">
+                        <div
+                            className="
+                flex h-20 w-20 items-center justify-center
+                rounded-2xl bg-red-500/10 text-red-500
+                transition duration-500
+                group-hover:bg-red-500/20
+                group-hover:scale-110
+            "
+                        >
+                            <FiTarget className="text-5xl" />
+                        </div>
+
+                        <h2 className="mt-8 text-3xl font-bold text-white">
+                            Matchs live
+                        </h2>
+
+                        <p className="mt-5 leading-relaxed text-zinc-400">
+                            Suivez les matchs en direct, les résultats et le
+                            leaderboard temps réel.
+                        </p>
+                    </div>
                 </div>
             </div>
 

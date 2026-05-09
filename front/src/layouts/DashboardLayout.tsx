@@ -90,13 +90,9 @@ export function DashboardLayout() {
 
                 {/* LOGO */}
                 <div className="border-b border-zinc-800 p-6">
-                    <Link
-                        to="/dashboard"
-                        onClick={closeSidebar}
-                        className="text-3xl font-extrabold text-red-500"
-                    >
+                    <h1 className="text-3xl font-extrabold text-red-500">
                         Overkill Arena
-                    </Link>
+                    </h1>
                 </div>
 
                 {/* NAVIGATION */}
