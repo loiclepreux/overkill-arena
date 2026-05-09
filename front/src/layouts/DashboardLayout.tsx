@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useAuthStore } from "@/store/auth.store";
 import {
@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/Badge";
 export function DashboardLayout() {
     const { user, logout } = useAuthStore();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const navigate = useNavigate();
 
     const closeSidebar = () => {
         setIsSidebarOpen(false);
@@ -28,6 +27,12 @@ export function DashboardLayout() {
 
     ${isActive ? "bg-red-600 text-white" : "hover:bg-zinc-900 text-zinc-300"}
   `;
+
+    const handleLogout = () => {
+        logout();
+        closeSidebar();
+        window.location.replace("/");
+    };
 
     return (
         <div className="min-h-screen bg-zinc-950 text-white lg:flex">
@@ -203,11 +208,7 @@ export function DashboardLayout() {
                     <Button
                         variant="secondary"
                         className="w-full"
-                        onClick={() => {
-                            logout();
-                            closeSidebar();
-                            navigate("/");
-                        }}
+                        onClick={handleLogout}
                     >
                         Logout
                     </Button>
