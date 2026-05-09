@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import Video from "@/assets/video-callof.mp4";
 
 export function HomePage() {
     return (
@@ -21,6 +22,33 @@ export function HomePage() {
           px-8 py-24
         "
             >
+                {/* VIDEO BACKGROUND */}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="
+        absolute inset-0
+        h-full w-full
+        object-cover
+        opacity-30
+    "
+                >
+                    <source src={Video} type="video/mp4" />
+                </video>
+
+                {/* OVERLAY */}
+                <div
+                    className="
+        absolute inset-0
+        bg-gradient-to-br
+        from-black/80
+        via-black/70
+        to-red-950/40
+    "
+                />
+
                 <div className="relative z-10 max-w-4xl">
                     <Badge variant="danger">Competitive Esports Platform</Badge>
 
