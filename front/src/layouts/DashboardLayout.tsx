@@ -23,9 +23,13 @@ export function DashboardLayout() {
 
     const navLinkClass = ({ isActive }: { isActive: boolean }) =>
         `
-    rounded-lg px-4 py-3 transition
+    rounded-lg px-4 py-3 transition-all duration-200
 
-    ${isActive ? "bg-red-600 text-white" : "hover:bg-zinc-900 text-zinc-300"}
+    ${
+        isActive
+            ? "bg-red-600 text-white"
+            : "text-zinc-300 hover:bg-zinc-900 hover:text-white"
+    }
   `;
 
     const handleLogout = () => {
@@ -99,6 +103,7 @@ export function DashboardLayout() {
                 <nav className="flex flex-1 flex-col gap-2 p-4">
                     <NavLink
                         to="/dashboard"
+                        end
                         onClick={closeSidebar}
                         className={navLinkClass}
                     >

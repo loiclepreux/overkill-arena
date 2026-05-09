@@ -8,7 +8,7 @@ export function DashboardPage() {
     return (
         <section className="space-y-10">
             <div>
-                <h1 className="text-5xl font-bold text-red-500">Dashboard</h1>
+                <h1 className="text-5xl font-bold text-red-500">Tableau de bord</h1>
 
                 <p className="mt-4 text-zinc-400">
                     Vue d’ensemble de ton activité Overkill Arena.
