@@ -1,6 +1,11 @@
 import { FiUsers, FiShield, FiTarget, FiAward } from "react-icons/fi";
-
+import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
+import { Leaderboard } from "@/components/dashboard/Leaderboard";
+import { RecentMatches } from "@/components/dashboard/RecentMatches";
+import { NotificationsPanel } from "@/components/dashboard/NotificationsPanel";
+import { MatchActivityChart } from "@/components/dashboard/MatchActivityChart";
+import { TournamentWidget } from "@/components/dashboard/TournamentWidget";
 
 export function DashboardPage() {
     return (
@@ -50,6 +55,12 @@ export function DashboardPage() {
                     description="Joueurs inscrits"
                 />
             </div>
+            <ActivityFeed />
+            <Leaderboard />
+            <RecentMatches />
+            <NotificationsPanel />
+            <MatchActivityChart />
+            <TournamentWidget />
         </section>
     );
 }
