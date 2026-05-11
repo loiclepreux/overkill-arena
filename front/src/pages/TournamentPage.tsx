@@ -43,7 +43,7 @@ export function TournamentPage() {
             "
                     >
                         Rejoins des compétitions esports, affronte les
-                        meilleures équipes et grimpe dans le leaderboard.
+                        meilleures équipes et grimpe dans le Classement.
                     </p>
 
                     <div className="mt-8 flex flex-wrap gap-4">
