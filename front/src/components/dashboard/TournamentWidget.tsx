@@ -6,7 +6,7 @@ type Tournament = {
     name: string;
     game: string;
     teams: number;
-    cashPrize: string;
+    recompense: string;
     status: "OPEN" | "LIVE" | "CLOSED";
     startDate: string;
 };
@@ -17,7 +17,7 @@ const tournaments: Tournament[] = [
         name: "Winter Clash",
         game: "Valorant",
         teams: 32,
-        cashPrize: "5 000€",
+        recompense: "15 🥇",
         status: "OPEN",
         startDate: "12 Jan 2026",
     },
@@ -27,7 +27,7 @@ const tournaments: Tournament[] = [
         name: "Arena Masters",
         game: "CS2",
         teams: 16,
-        cashPrize: "10 000€",
+        recompense: "10 🥇",
         status: "LIVE",
         startDate: "Live now",
     },
@@ -37,7 +37,7 @@ const tournaments: Tournament[] = [
         name: "Phoenix Cup",
         game: "League of Legends",
         teams: 64,
-        cashPrize: "25 000€",
+        recompense: "5 🥇",
         status: "CLOSED",
         startDate: "Finished",
     },
@@ -116,11 +116,11 @@ export function TournamentWidget() {
 
                             <div>
                                 <p className="text-xs uppercase tracking-wide text-zinc-500">
-                                    Prime
+                                    recompense
                                 </p>
 
                                 <p className="mt-1 text-lg font-bold text-red-500">
-                                    {tournament.cashPrize}
+                                    {tournament.recompense}
                                 </p>
                             </div>
 

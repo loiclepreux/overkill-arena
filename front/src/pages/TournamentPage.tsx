@@ -93,10 +93,11 @@ export function TournamentPage() {
                 />
 
                 <DashboardStatCard
-                    title="Prime total"
-                    value="50K€"
+                    title="Récompense"
+                    value="12 🥇"
                     icon={<FiTarget />}
-                    description="Récompenses disponibles"
+                    description="4 🏆"
+                    rang = "Diamond"
                 />
             </div>
 

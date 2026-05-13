@@ -1,6 +1,5 @@
 import {
     FiAlertTriangle,
-    FiCreditCard,
     FiShield,
     FiTarget,
     FiUsers,
@@ -77,10 +76,10 @@ export function AdminPage() {
                 />
 
                 <DashboardStatCard
-                    title="Paiements"
-                    value="18.5K€"
-                    icon={<FiCreditCard />}
-                    description="Prime géré"
+                    title="recompense"
+                    value="25 🥇"
+                    icon={<FiTarget />}
+                    description="recompense géré"
                 />
             </div>
 

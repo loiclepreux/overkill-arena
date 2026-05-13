@@ -5,6 +5,7 @@ type DashboardStatCardProps = {
     value: string | number;
     icon?: ReactNode;
     description?: string;
+    rang?: string;
 };
 
 export function DashboardStatCard({
@@ -12,6 +13,7 @@ export function DashboardStatCard({
     value,
     icon,
     description,
+    rang,
 }: DashboardStatCardProps) {
     return (
         <div
@@ -33,6 +35,10 @@ export function DashboardStatCard({
 
             {description && (
                 <p className="mt-3 text-sm text-zinc-500">{description}</p>
+            )}
+
+            {rang && (
+                <p className="mt-3 text-sm text-zinc-500">{rang}</p>
             )}
         </div>
     );
