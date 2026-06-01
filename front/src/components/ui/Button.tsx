@@ -1,11 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from "react";
-
-type ButtonVariant = "primary" | "secondary" | "danger";
-
-type ButtonProps = {
-    children: ReactNode;
-    variant?: ButtonVariant;
-} & ButtonHTMLAttributes<HTMLButtonElement>;
+import type { ButtonProps } from "@/types/ui";
 
 export function Button({
     children,

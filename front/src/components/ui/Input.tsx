@@ -1,9 +1,4 @@
-import type { InputHTMLAttributes } from "react";
-
-type InputProps = {
-    label?: string;
-    error?: string;
-} & InputHTMLAttributes<HTMLInputElement>;
+import type { InputProps } from "@/types/ui";
 
 export function Input({ label, error, className = "", ...props }: InputProps) {
     return (

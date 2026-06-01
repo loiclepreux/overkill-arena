@@ -1,15 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
-
-type Match = {
-    id: number;
-    teamA: string;
-    teamB: string;
-    scoreA: number;
-    scoreB: number;
-    format: string;
-    status: "VALIDÉ" | "LIVE" | "PENDING";
-    time: string;
-};
+import type { Match } from "@/types/dashboard";
 
 const matches: Match[] = [
     {

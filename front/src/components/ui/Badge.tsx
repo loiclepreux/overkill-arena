@@ -1,12 +1,4 @@
-import type { ReactNode } from "react";
-
-type BadgeVariant = "success" | "warning" | "danger" | "neutral";
-
-type BadgeProps = {
-    children: ReactNode;
-    variant?: BadgeVariant;
-    className?: string;
-};
+import type { BadgeProps } from "@/types/ui";
 
 export function Badge({
     children,

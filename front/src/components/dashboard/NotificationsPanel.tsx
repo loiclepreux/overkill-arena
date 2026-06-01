@@ -1,12 +1,5 @@
 import { Badge } from "@/components/ui/Badge";
-
-type Notification = {
-    id: number;
-    title: string;
-    description: string;
-    type: "LIVE" | "SUCCESS" | "WARNING";
-    time: string;
-};
+import type { Notification } from "@/types/dashboard";
 
 const notifications: Notification[] = [
     {

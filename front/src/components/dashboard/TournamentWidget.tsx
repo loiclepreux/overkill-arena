@@ -1,15 +1,6 @@
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-
-type Tournament = {
-    id: number;
-    name: string;
-    game: string;
-    teams: number;
-    recompense: string;
-    status: "OPEN" | "LIVE" | "CLOSED";
-    startDate: string;
-};
+import type { Tournament } from "@/types/dashboard";
 
 const tournaments: Tournament[] = [
     {

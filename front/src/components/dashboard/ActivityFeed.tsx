@@ -1,10 +1,4 @@
-type Activity = {
-    id: number;
-    title: string;
-    description: string;
-    time: string;
-};
-
+import type { Activity } from "../../types/dashboard"
 
 const activities: Activity[] = [
     {

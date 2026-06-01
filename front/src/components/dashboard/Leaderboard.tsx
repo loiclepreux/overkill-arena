@@ -1,9 +1,4 @@
-type Team = {
-    id: number;
-    name: string;
-    elo: number;
-    wins: number;
-};
+import type { Team } from "@/types/dashboard";
 
 const teams: Team[] = [
     {

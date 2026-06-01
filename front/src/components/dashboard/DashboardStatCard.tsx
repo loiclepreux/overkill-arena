@@ -1,12 +1,4 @@
-import type { ReactNode } from "react";
-
-type DashboardStatCardProps = {
-    title: string;
-    value: string | number;
-    icon?: ReactNode;
-    description?: string;
-    rang?: string;
-};
+import type { DashboardStatCardProps } from "@/types/dashboard";
 
 export function DashboardStatCard({
     title,
@@ -37,9 +29,7 @@ export function DashboardStatCard({
                 <p className="mt-3 text-sm text-zinc-500">{description}</p>
             )}
 
-            {rang && (
-                <p className="mt-3 text-sm text-zinc-500">{rang}</p>
-            )}
+            {rang && <p className="mt-3 text-sm text-zinc-500">{rang}</p>}
         </div>
     );
 }
