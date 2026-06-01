@@ -5,6 +5,7 @@ type Activity = {
     time: string;
 };
 
+
 const activities: Activity[] = [
     {
         id: 1,
