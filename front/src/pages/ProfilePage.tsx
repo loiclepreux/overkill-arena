@@ -1,45 +1,49 @@
-import { FiAward, FiClock, FiShield, FiTarget, FiUser } from "react-icons/fi";
+import { FiAward, FiShield, FiTarget, FiUser } from "react-icons/fi";
+
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
 
+import { playerRewards } from "@/data/rewards-mock";
+
 export function ProfilePage() {
+    const totalCups =
+        playerRewards.bronzeCups +
+        playerRewards.silverCups +
+        playerRewards.goldCups;
+
     return (
         <section className="space-y-10">
             {/* HERO PROFILE */}
             <div
                 className="
-        relative overflow-hidden rounded-3xl
-        border border-zinc-800
-        bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-        p-5 sm:p-8
-    "
+                    relative overflow-hidden rounded-3xl
+                    border border-zinc-800
+                    bg-gradient-to-br from-red-950/40 via-black to-zinc-950
+                    p-5 sm:p-8
+                "
             >
                 <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-                    {/* LEFT */}
                     <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-                        {/* AVATAR */}
                         <div
                             className="
-        flex h-24 w-24 shrink-0 items-center
-        justify-center rounded-full
-        border-4 border-red-600
-        bg-black text-4xl font-bold text-white
-        sm:h-28 sm:w-28 sm:text-5xl
-    "
+                                flex h-24 w-24 shrink-0 items-center justify-center
+                                rounded-full border-4 border-red-600
+                                bg-black text-4xl font-bold text-white
+                                sm:h-28 sm:w-28 sm:text-5xl
+                            "
                         >
                             O
                         </div>
 
-                        {/* INFOS */}
                         <div>
                             <Badge variant="danger">PLAYER</Badge>
 
                             <h1
                                 className="
-        mt-4 break-words text-3xl font-extrabold
-        text-white sm:text-5xl
-    "
+                                    mt-4 break-words text-3xl font-extrabold
+                                    text-white sm:text-5xl
+                                "
                             >
                                 OverkillPlayer
                             </h1>
@@ -48,15 +52,42 @@ export function ProfilePage() {
                                 Joueur compétitif Overkill Arena
                             </p>
 
-                            <div className="mt-5 flex flex-wrap gap-3">
+                            <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
                                 <Badge variant="success">ONLINE</Badge>
 
                                 <Badge variant="warning">Team Phoenix</Badge>
+
+                                <Badge variant="danger">
+                                    ◆ {playerRewards.currentTitle} ◆
+                                </Badge>
+                            </div>
+
+                            <div
+                                className="
+        mt-5 flex flex-wrap justify-center gap-3
+        text-sm font-semibold text-zinc-300
+        sm:justify-start
+    "
+                            >
+                                <span className="rounded-full border border-zinc-700 bg-black/40 px-3 py-1">
+                                    🏆 {totalCups} coupes
+                                </span>
+
+                                <span className="rounded-full border border-zinc-700 bg-black/40 px-3 py-1">
+                                    🥇 {playerRewards.goldMedals} or
+                                </span>
+
+                                <span className="rounded-full border border-zinc-700 bg-black/40 px-3 py-1">
+                                    🥈 {playerRewards.silverMedals} argent
+                                </span>
+
+                                <span className="rounded-full border border-zinc-700 bg-black/40 px-3 py-1">
+                                    🥉 {playerRewards.bronzeMedals} bronze
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    {/* ACTIONS */}
                     <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                         <Button className="w-full sm:w-auto">
                             Modifier profil
@@ -71,24 +102,17 @@ export function ProfilePage() {
                     </div>
                 </div>
 
-                {/* GLOW */}
                 <div
                     className="
-            absolute -right-20 -top-20
-            h-72 w-72 rounded-full
-            bg-red-600/20 blur-3xl
-          "
+                        absolute -right-20 -top-20
+                        h-72 w-72 rounded-full
+                        bg-red-600/20 blur-3xl
+                    "
                 />
             </div>
 
             {/* STATS */}
-            <div
-                className="
-          grid gap-6
-          sm:grid-cols-2
-          xl:grid-cols-4
-        "
-            >
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                 <DashboardStatCard
                     title="ELO"
                     value={2450}
@@ -111,26 +135,21 @@ export function ProfilePage() {
                 />
 
                 <DashboardStatCard
-                    title="Heures jouées"
-                    value={920}
-                    icon={<FiClock />}
-                    description="Temps total"
+                    title="Coupes"
+                    value={`🏆 ${totalCups}`}
+                    icon={<FiAward />}
+                    description="Récompenses obtenues"
                 />
             </div>
 
             {/* GRID */}
-            <div
-                className="
-          grid gap-8
-          xl:grid-cols-2
-        "
-            >
+            <div className="grid gap-8 xl:grid-cols-2">
                 {/* ACCOUNT INFO */}
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+                        rounded-2xl border border-zinc-800
+                        bg-zinc-900/80 p-6
+                    "
                 >
                     <div className="mb-6 flex items-center gap-3">
                         <FiUser className="text-2xl text-red-500" />
@@ -180,9 +199,9 @@ export function ProfilePage() {
                 {/* CURRENT TEAM */}
                 <div
                     className="
-            rounded-2xl border border-zinc-800
-            bg-zinc-900/80 p-6
-          "
+                        rounded-2xl border border-zinc-800
+                        bg-zinc-900/80 p-6
+                    "
                 >
                     <div className="mb-6 flex items-center gap-3">
                         <FiShield className="text-2xl text-red-500" />
@@ -194,11 +213,11 @@ export function ProfilePage() {
 
                     <div
                         className="
-              rounded-xl border border-zinc-800
-              bg-black/30 p-5
-            "
+                            rounded-xl border border-zinc-800
+                            bg-black/30 p-5
+                        "
                     >
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h3 className="text-2xl font-bold text-white">
                                     Team Phoenix
@@ -252,9 +271,9 @@ export function ProfilePage() {
             {/* HISTORY */}
             <div
                 className="
-          rounded-2xl border border-zinc-800
-          bg-zinc-900/80 p-6
-        "
+                    rounded-2xl border border-zinc-800
+                    bg-zinc-900/80 p-6
+                "
             >
                 <div className="mb-6">
                     <h2 className="text-2xl font-bold text-white">
@@ -269,11 +288,11 @@ export function ProfilePage() {
                 <div className="space-y-4">
                     <div
                         className="
-              flex flex-col gap-4 rounded-xl
-              border border-zinc-800
-              bg-black/30 p-5
-              lg:flex-row lg:items-center lg:justify-between
-            "
+                            flex flex-col gap-4 rounded-xl
+                            border border-zinc-800
+                            bg-black/30 p-5
+                            lg:flex-row lg:items-center lg:justify-between
+                        "
                     >
                         <div>
                             <h3 className="text-xl font-bold text-white">
@@ -288,11 +307,11 @@ export function ProfilePage() {
 
                     <div
                         className="
-              flex flex-col gap-4 rounded-xl
-              border border-zinc-800
-              bg-black/30 p-5
-              lg:flex-row lg:items-center lg:justify-between
-            "
+                            flex flex-col gap-4 rounded-xl
+                            border border-zinc-800
+                            bg-black/30 p-5
+                            lg:flex-row lg:items-center lg:justify-between
+                        "
                     >
                         <div>
                             <h3 className="text-xl font-bold text-white">

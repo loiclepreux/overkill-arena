@@ -18,6 +18,7 @@ import { DashboardPage } from "@/pages/DashboardPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 import { NotificationsPage } from "@/pages/NotificationsPage";
 import { LeaderboardPage } from "@/pages/LeaderboardPage";
+import { RewardsPage } from "@/pages/RewardsPage";
 
 export const router = createBrowserRouter([
     {
@@ -27,9 +28,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: (
-                        <HomePage />
-                ),
+                element: <HomePage />,
             },
         ],
     },
@@ -66,25 +65,23 @@ export const router = createBrowserRouter([
             },
             {
                 path: "tournaments",
-                element: (
-                        <TournamentPage />
-                ),
+                element: <TournamentPage />,
             },
             {
                 path: "teams",
-                element: (
-                        <TeamsPage />
-                ),
+                element: <TeamsPage />,
             },
             {
                 path: "leaderboard",
-                element: (
-                        <LeaderboardPage />
-                ),
+                element: <LeaderboardPage />,
             },
             {
                 path: "profile",
                 element: <ProfilePage />,
+            },
+            {
+                path: "rewards",
+                element: <RewardsPage />,
             },
             {
                 path: "admin",
@@ -95,13 +92,19 @@ export const router = createBrowserRouter([
                 ),
             },
             {
-                path: "*",
-                element: <NotFoundPage />,
-            },
-            {
                 path: "notifications",
                 element: <NotificationsPage />,
             },
         ],
+    },
+
+    {
+        path: "/404",
+        element: <NotFoundPage />,
+    },
+
+    {
+        path: "*",
+        element: <NotFoundPage />,
     },
 ]);

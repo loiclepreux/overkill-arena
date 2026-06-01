@@ -14,6 +14,7 @@ const players = [
         id: 1,
         pseudo: "OverkillPlayer",
         role: "Captain",
+        title: "Diamond",
         elo: 2450,
         status: "ONLINE",
     },
@@ -22,6 +23,7 @@ const players = [
         id: 2,
         pseudo: "NovaX",
         role: "Sniper",
+        title: "Diamond",
         elo: 2310,
         status: "ONLINE",
     },
@@ -30,6 +32,7 @@ const players = [
         id: 3,
         pseudo: "Shadow",
         role: "Entry",
+        title: "Rubis",
         elo: 2190,
         status: "OFFLINE",
     },
@@ -38,6 +41,7 @@ const players = [
         id: 4,
         pseudo: "Ghost",
         role: "Support",
+        title: "Challenger",
         elo: 2080,
         status: "OFFLINE",
     },
@@ -49,39 +53,67 @@ export function TeamsPage() {
             {/* HERO */}
             <div
                 className="
-          relative overflow-hidden rounded-3xl
-          border border-zinc-800
-          bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-          p-8
-        "
+        relative overflow-hidden rounded-3xl
+        border border-zinc-800
+        bg-gradient-to-br from-red-950/40 via-black to-zinc-950
+        p-5 sm:p-8
+    "
             >
-                <div className="relative z-10 max-w-3xl">
-                    <Badge variant="danger">Team Management</Badge>
+                <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+                    {/* TEAM IDENTITY */}
+                    <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+                        {/* TEAM LOGO TEMPORAIRE */}
+                        <div
+                            className="
+                    flex h-24 w-24 shrink-0 items-center justify-center
+                    rounded-full border-4 border-red-600
+                    bg-black text-4xl font-black text-white
+                    sm:h-28 sm:w-28 sm:text-5xl
+                "
+                        >
+                            P
+                        </div>
 
-                    <h1
-                        className="
-              mt-6 text-5xl font-extrabold
-              leading-tight text-white
-            "
-                    >
-                        Gérez votre équipe compétitive
-                    </h1>
+                        {/* TEAM INFOS */}
+                        <div>
+                            <Badge variant="danger">◆ DIAMOND TEAM ◆</Badge>
 
-                    <p
-                        className="
-              mt-6 text-lg leading-relaxed
-              text-zinc-400
-            "
-                    >
-                        Invitez des joueurs, gérez votre roster, améliorez votre
-                        ELO et participez aux plus grands tournois Overkill
-                        Arena.
-                    </p>
+                            <h1
+                                className="
+                        mt-4 break-words text-4xl font-extrabold
+                        leading-tight text-white sm:text-6xl
+                    "
+                            >
+                                Team Phoenix
+                            </h1>
 
-                    <div className="mt-8 flex flex-wrap gap-4">
-                        <Button>Inviter un joueur</Button>
+                            <p className="mt-3 max-w-2xl text-zinc-400">
+                                Équipe compétitive classée TOP 3 Europe sur
+                                Overkill Arena.
+                            </p>
 
-                        <Button variant="secondary">Créer une équipe</Button>
+                            <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">
+                                <Badge variant="success">ACTIVE</Badge>
+
+                                <Badge variant="warning">TOP 3 EUROPE</Badge>
+
+                                <Badge variant="danger">2340 ELO</Badge>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ACTIONS */}
+                    <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                        <Button className="w-full sm:w-auto">
+                            Inviter un joueur
+                        </Button>
+
+                        <Button
+                            variant="secondary"
+                            className="w-full sm:w-auto"
+                        >
+                            Gérer l’équipe
+                        </Button>
                     </div>
                 </div>
 
@@ -91,7 +123,7 @@ export function TeamsPage() {
             absolute -right-20 -top-20
             h-72 w-72 rounded-full
             bg-red-600/20 blur-3xl
-          "
+        "
                 />
             </div>
 
@@ -125,11 +157,71 @@ export function TeamsPage() {
                 />
 
                 <DashboardStatCard
-                    title="Tournois"
-                    value={12}
+                    title="Titre moyen"
+                    value="Diamond"
                     icon={<FiShield />}
-                    description="Compétitions jouées"
+                    description="Prestige de l'équipe"
                 />
+            </div>
+
+            {/* TEAM REWARDS */}
+            <div
+                className="
+        rounded-2xl border border-zinc-800
+        bg-zinc-900/80 p-6
+    "
+            >
+                <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-white">
+                        Récompenses de l’équipe
+                    </h2>
+
+                    <p className="mt-2 text-sm text-zinc-500">
+                        Résultats cumulés de Team Phoenix.
+                    </p>
+                </div>
+
+                <div className="grid gap-6 sm:grid-cols-4">
+                    <div className="rounded-xl border border-zinc-800 bg-black/30 p-5 text-center">
+                        <p className="text-4xl">🏆</p>
+
+                        <p className="mt-3 text-3xl font-extrabold text-white">
+                            12
+                        </p>
+
+                        <p className="text-zinc-500">Coupes</p>
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-800 bg-black/30 p-5 text-center">
+                        <p className="text-4xl">🥇</p>
+
+                        <p className="mt-3 text-3xl font-extrabold text-white">
+                            34
+                        </p>
+
+                        <p className="text-zinc-500">Or</p>
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-800 bg-black/30 p-5 text-center">
+                        <p className="text-4xl">🥈</p>
+
+                        <p className="mt-3 text-3xl font-extrabold text-white">
+                            21
+                        </p>
+
+                        <p className="text-zinc-500">Argent</p>
+                    </div>
+
+                    <div className="rounded-xl border border-zinc-800 bg-black/30 p-5 text-center">
+                        <p className="text-4xl">🥉</p>
+
+                        <p className="mt-3 text-3xl font-extrabold text-white">
+                            15
+                        </p>
+
+                        <p className="text-zinc-500">Bronze</p>
+                    </div>
+                </div>
             </div>
 
             {/* GRID */}
@@ -185,6 +277,13 @@ export function TeamsPage() {
                                         <p className="text-sm text-zinc-500">
                                             {player.role}
                                         </p>
+
+                                        <Badge
+                                            variant="danger"
+                                            className="mt-2"
+                                        >
+                                            ◆ {player.title} ◆
+                                        </Badge>
                                     </div>
                                 </div>
 

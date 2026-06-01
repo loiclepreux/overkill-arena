@@ -8,6 +8,7 @@ import {
     FiShield,
     FiAward,
     FiUser,
+    FiStar,
     FiSettings,
 } from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
@@ -173,6 +174,17 @@ export function DashboardLayout() {
                         <span className="flex items-center gap-3">
                             <FiUser className="text-lg" />
                             Profil
+                        </span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/dashboard/rewards"
+                        onClick={closeSidebar}
+                        className={navLinkClass}
+                    >
+                        <span className="flex items-center gap-3">
+                            <FiStar className="text-lg" />
+                            Récompenses
                         </span>
                     </NavLink>
 

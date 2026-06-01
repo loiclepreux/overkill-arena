@@ -1,9 +1,10 @@
 import {
     FiAlertTriangle,
+    FiAward,
+    FiCheckCircle,
     FiShield,
     FiTarget,
     FiUsers,
-    FiAward,
 } from "react-icons/fi";
 
 import { Badge } from "@/components/ui/Badge";
@@ -16,28 +17,34 @@ export function AdminPage() {
             {/* HERO */}
             <div
                 className="
-          relative overflow-hidden rounded-3xl
-          border border-red-900/40
-          bg-gradient-to-br from-red-950/50 via-black to-zinc-950
-          p-8
-        "
+                    relative overflow-hidden rounded-3xl
+                    border border-red-900/40
+                    bg-gradient-to-br from-red-950/50 via-black to-zinc-950
+                    p-5 sm:p-8
+                "
             >
-                <div className="relative z-10 max-w-3xl">
+                <div className="relative z-10 max-w-4xl">
                     <Badge variant="danger">ADMIN CONTROL CENTER</Badge>
 
-                    <h1 className="mt-6 text-5xl font-extrabold text-white">
+                    <h1 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">
                         Tableau de bord administrateur
                     </h1>
 
-                    <p className="mt-6 text-lg leading-relaxed text-zinc-400">
-                        Supervision complète de la plateforme : utilisateurs,
-                        tournois, équipes, paiements, contestations et sécurité.
+                    <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+                        Supervision complète de Overkill Arena : utilisateurs,
+                        équipes, tournois, récompenses, contestations et
+                        sécurité.
                     </p>
 
-                    <div className="mt-8 flex flex-wrap gap-4">
-                        <Button>Créer un tournoi</Button>
+                    <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
+                        <Button className="w-full sm:w-auto">
+                            Créer un tournoi
+                        </Button>
 
-                        <Button variant="secondary">
+                        <Button
+                            variant="secondary"
+                            className="w-full sm:w-auto"
+                        >
                             Voir les signalements
                         </Button>
                     </div>
@@ -45,10 +52,10 @@ export function AdminPage() {
 
                 <div
                     className="
-            absolute -right-20 -top-20
-            h-72 w-72 rounded-full
-            bg-red-600/20 blur-3xl
-          "
+                        absolute -right-20 -top-20
+                        h-72 w-72 rounded-full
+                        bg-red-600/20 blur-3xl
+                    "
                 />
             </div>
 
@@ -76,10 +83,10 @@ export function AdminPage() {
                 />
 
                 <DashboardStatCard
-                    title="recompense"
-                    value="25 🥇"
+                    title="Récompenses"
+                    value={125}
                     icon={<FiTarget />}
-                    description="recompense géré"
+                    description="Médailles distribuées"
                 />
             </div>
 
@@ -97,7 +104,7 @@ export function AdminPage() {
 
                     <div className="space-y-4">
                         <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <h3 className="font-semibold text-white">
                                         OverkillPlayer
@@ -111,15 +118,25 @@ export function AdminPage() {
                                 <Badge variant="success">PLAYER</Badge>
                             </div>
 
-                            <div className="mt-4 flex flex-wrap gap-3">
-                                <Button variant="secondary">Voir</Button>
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button
+                                    variant="secondary"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Voir
+                                </Button>
 
-                                <Button variant="danger">Suspendre</Button>
+                                <Button
+                                    variant="danger"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Suspendre
+                                </Button>
                             </div>
                         </div>
 
                         <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <h3 className="font-semibold text-white">
                                         NovaAdmin
@@ -133,10 +150,20 @@ export function AdminPage() {
                                 <Badge variant="danger">ADMIN</Badge>
                             </div>
 
-                            <div className="mt-4 flex flex-wrap gap-3">
-                                <Button variant="secondary">Voir</Button>
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button
+                                    variant="secondary"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Voir
+                                </Button>
 
-                                <Button variant="danger">Révoquer</Button>
+                                <Button
+                                    variant="danger"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Révoquer
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -145,7 +172,7 @@ export function AdminPage() {
                 {/* TOURNAMENT VALIDATION */}
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6">
                     <div className="mb-6 flex items-center gap-3">
-                        <FiTarget className="text-2xl text-red-500" />
+                        <FiAward className="text-2xl text-red-500" />
 
                         <h2 className="text-2xl font-bold text-white">
                             Validation tournois
@@ -154,26 +181,110 @@ export function AdminPage() {
 
                     <div className="space-y-4">
                         <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <h3 className="font-semibold text-white">
                                         Winter Clash
                                     </h3>
 
                                     <p className="mt-1 text-sm text-zinc-500">
-                                        Valorant • 32 équipes • 5 000€
+                                        Valorant • 32 équipes • Récompenses
+                                        Prestige
                                     </p>
                                 </div>
 
                                 <Badge variant="warning">EN ATTENTE</Badge>
                             </div>
 
-                            <div className="mt-4 flex flex-wrap gap-3">
-                                <Button>Valider</Button>
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button className="w-full sm:w-auto">
+                                    Valider
+                                </Button>
 
-                                <Button variant="secondary">Modifier</Button>
+                                <Button
+                                    variant="secondary"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Modifier
+                                </Button>
 
-                                <Button variant="danger">Refuser</Button>
+                                <Button
+                                    variant="danger"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Refuser
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* REWARDS VALIDATION */}
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6">
+                    <div className="mb-6 flex items-center gap-3">
+                        <FiTarget className="text-2xl text-red-500" />
+
+                        <h2 className="text-2xl font-bold text-white">
+                            Récompenses en attente
+                        </h2>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-4">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <h3 className="font-semibold text-white">
+                                        OverkillPlayer
+                                    </h3>
+
+                                    <p className="mt-1 text-sm text-zinc-400">
+                                        Winter Clash • Médaille d’or à attribuer
+                                    </p>
+                                </div>
+
+                                <Badge variant="warning">🥇 OR</Badge>
+                            </div>
+
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button className="w-full sm:w-auto">
+                                    Valider
+                                </Button>
+
+                                <Button
+                                    variant="danger"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Refuser
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                <div>
+                                    <h3 className="font-semibold text-white">
+                                        Team Phoenix
+                                    </h3>
+
+                                    <p className="mt-1 text-sm text-zinc-500">
+                                        Arena Masters • Coupe d’équipe à valider
+                                    </p>
+                                </div>
+
+                                <Badge variant="success">🏆 COUPE</Badge>
+                            </div>
+
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button className="w-full sm:w-auto">
+                                    Valider
+                                </Button>
+
+                                <Button
+                                    variant="secondary"
+                                    className="w-full sm:w-auto"
+                                >
+                                    Détails
+                                </Button>
                             </div>
                         </div>
                     </div>
@@ -200,10 +311,15 @@ export function AdminPage() {
                                 vérification.
                             </p>
 
-                            <div className="mt-4 flex flex-wrap gap-3">
-                                <Button>Vérifier preuve</Button>
+                            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                                <Button className="w-full sm:w-auto">
+                                    Vérifier preuve
+                                </Button>
 
-                                <Button variant="secondary">
+                                <Button
+                                    variant="secondary"
+                                    className="w-full sm:w-auto"
+                                >
                                     Valider score
                                 </Button>
                             </div>
@@ -223,7 +339,7 @@ export function AdminPage() {
 
                     <div className="space-y-4">
                         <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <h3 className="font-semibold text-white">
                                     Tentatives suspectes
                                 </h3>
@@ -233,12 +349,65 @@ export function AdminPage() {
 
                             <p className="mt-2 text-sm text-zinc-400">
                                 Plusieurs connexions échouées détectées sur des
-                                comptes admin.
+                                comptes administrateur.
                             </p>
 
                             <Button className="mt-4 w-full">
                                 Voir le journal de sécurité
                             </Button>
+                        </div>
+                    </div>
+                </div>
+
+                {/* PLATFORM OVERVIEW */}
+                <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6">
+                    <div className="mb-6 flex items-center gap-3">
+                        <FiCheckCircle className="text-2xl text-red-500" />
+
+                        <h2 className="text-2xl font-bold text-white">
+                            État plateforme
+                        </h2>
+                    </div>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <p className="text-sm text-zinc-500">
+                                Matchs joués
+                            </p>
+
+                            <p className="mt-2 text-2xl font-bold text-white">
+                                148
+                            </p>
+                        </div>
+
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <p className="text-sm text-zinc-500">
+                                Équipes actives
+                            </p>
+
+                            <p className="mt-2 text-2xl font-bold text-white">
+                                64
+                            </p>
+                        </div>
+
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <p className="text-sm text-zinc-500">
+                                Coupes débloquées
+                            </p>
+
+                            <p className="mt-2 text-2xl font-bold text-white">
+                                38
+                            </p>
+                        </div>
+
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <p className="text-sm text-zinc-500">
+                                Titres attribués
+                            </p>
+
+                            <p className="mt-2 text-2xl font-bold text-white">
+                                42
+                            </p>
                         </div>
                     </div>
                 </div>

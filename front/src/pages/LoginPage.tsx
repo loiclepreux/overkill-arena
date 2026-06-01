@@ -43,11 +43,30 @@ export function LoginPage() {
                 <FiX className="text-xl" />
             </Link>
 
-            <div className="mb-8 pr-12">
-                <h1 className="text-3xl font-bold">Connexion</h1>
+            <div className="mb-6">
+                <span
+                    className="
+            inline-flex rounded-full
+            border border-red-500/30
+            bg-red-500/10
+            px-3 py-1
+            text-xs font-semibold
+            uppercase tracking-wider
+            text-red-500
+        "
+                >
+                    Retour dans l'arène
+                </span>
+            </div>
 
-                <p className="mt-2 text-zinc-500">
-                    Connecte-toi à ton compte Overkill Arena.
+            <div className="mb-8 pr-12">
+                <h1 className="text-4xl font-extrabold text-white">
+                    Reprendre le combat
+                </h1>
+
+                <p className="mt-3 text-zinc-400">
+                    Accède à tes équipes, tes tournois, tes récompenses et
+                    poursuis ta progression.
                 </p>
             </div>
 
@@ -64,6 +83,25 @@ export function LoginPage() {
                     Se connecter
                 </Button>
             </form>
+
+            <div
+                className="
+        mt-8 rounded-xl
+        border border-zinc-800
+        bg-zinc-900/50
+        p-4
+    "
+            >
+                <p className="text-sm text-zinc-400">🏆 42 titres débloqués</p>
+
+                <p className="mt-2 text-sm text-zinc-400">
+                    🥇 245 médailles attribuées
+                </p>
+
+                <p className="mt-2 text-sm text-zinc-400">
+                    ⚔️ 12 tournois actifs
+                </p>
+            </div>
 
             <p className="mt-6 text-center text-sm text-zinc-500">
                 Pas encore de compte ?{" "}

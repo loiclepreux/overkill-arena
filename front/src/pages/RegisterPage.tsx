@@ -22,11 +22,31 @@ export function RegisterPage() {
             >
                 <FiX className="text-xl" />
             </Link>
-            <div className="mb-8 pr-12">
-                <h1 className="text-3xl font-bold">Inscription</h1>
 
-                <p className="mt-2 text-zinc-500">
-                    Rejoins Overkill Arena dès maintenant.
+            <div className="mb-6">
+                <span
+                    className="
+            inline-flex rounded-full
+            border border-red-500/30
+            bg-red-500/10
+            px-3 py-1
+            text-xs font-semibold
+            uppercase tracking-wider
+            text-red-500
+        "
+                >
+                    Recrutement ouvert
+                </span>
+            </div>
+
+            <div className="mb-8 pr-12">
+                <h1 className="text-4xl font-extrabold text-white">
+                    Rejoindre l’arène
+                </h1>
+
+                <p className="mt-3 text-zinc-400">
+                    Crée ton profil, participe aux tournois, gagne des médailles
+                    et débloque les plus hauts titres.
                 </p>
             </div>
 
@@ -45,6 +65,27 @@ export function RegisterPage() {
                     Créer un compte
                 </Button>
             </form>
+
+            <div
+                className="
+        mt-8 rounded-xl
+        border border-zinc-800
+        bg-zinc-900/50
+        p-4
+    "
+            >
+                <p className="text-sm text-zinc-400">
+                    🏆 245 médailles attribuées
+                </p>
+
+                <p className="mt-2 text-sm text-zinc-400">
+                    👥 64 équipes compétitives
+                </p>
+
+                <p className="mt-2 text-sm text-zinc-400">
+                    ⚔️ 12 tournois actifs
+                </p>
+            </div>
 
             <p className="mt-6 text-center text-sm text-zinc-500">
                 Déjà un compte ?{" "}

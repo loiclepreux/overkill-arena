@@ -1,5 +1,4 @@
-
-type UserRole = "PLAYER" | "SPECTATOR" | "ADMIN";
+import type { UserRole } from "./features";
 
 type AuthUser = {
     id: string;
