@@ -65,13 +65,13 @@ export function TeamsPage() {
                         {/* TEAM LOGO TEMPORAIRE */}
                         <div
                             className="
-                    flex h-24 w-24 shrink-0 items-center justify-center
-                    rounded-full border-4 border-red-600
-                    bg-black text-4xl font-black text-white
-                    sm:h-28 sm:w-28 sm:text-5xl
-                "
+        flex h-24 w-24 shrink-0 items-center justify-center
+        rounded-full border-4 border-red-600
+        bg-black text-5xl
+        sm:h-28 sm:w-28 sm:text-6xl
+    "
                         >
-                            P
+                            🔥
                         </div>
 
                         {/* TEAM INFOS */}
@@ -347,6 +347,62 @@ export function TeamsPage() {
                             </div>
 
                             <Button className="mt-6 w-full">
+                                Voir les candidatures
+                            </Button>
+                        </div>
+
+                        <div
+                            className="
+        rounded-xl border border-zinc-800
+        bg-black/30 p-5
+    "
+                        >
+                            <h3 className="text-xl font-bold text-white">
+                                Recherche Support
+                            </h3>
+
+                            <p className="mt-3 text-zinc-400">
+                                Team Phoenix recherche un joueur support avec
+                                expérience tournoi.
+                            </p>
+
+                            <div className="mt-5 flex flex-wrap gap-3">
+                                <Badge variant="danger">Diamond+</Badge>
+
+                                <Badge variant="warning">
+                                    Tournament Experience
+                                </Badge>
+                            </div>
+
+                            <Button className="mt-6 w-full">
+                                Voir les candidatures
+                            </Button>
+                        </div>
+
+                        <div
+                            className="
+        rounded-xl border border-zinc-800
+        bg-black/30 p-5
+    "
+                        >
+                            <h3 className="text-xl font-bold text-white">
+                                Recherche Entry Fragger
+                            </h3>
+
+                            <p className="mt-3 text-zinc-400">
+                                Joueur agressif recherché pour renforcer les
+                                performances en tournoi compétitif.
+                            </p>
+
+                            <div className="mt-5 flex flex-wrap gap-3">
+                                <Badge variant="danger">Diamond+</Badge>
+
+                                <Badge variant="warning">
+                                    Disponibilité Week-End
+                                </Badge>
+                            </div>
+
+                            <Button variant="secondary" className="mt-6 w-full">
                                 Voir les candidatures
                             </Button>
                         </div>

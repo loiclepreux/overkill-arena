@@ -247,6 +247,12 @@ export function LeaderboardPage() {
                                     ◆ {player.title} ◆
                                 </Badge>
 
+                                {player.place === 1 && (
+                                    <Badge variant="warning" className="mt-3">
+                                        Champion Saison 1
+                                    </Badge>
+                                )}
+
                                 <p className="mt-4 text-3xl font-black text-red-500">
                                     {player.elo}
                                 </p>
@@ -472,7 +478,7 @@ export function LeaderboardPage() {
                     </div>
 
                     <div className="rounded-xl border border-zinc-800 bg-black/30 p-5">
-                        <Badge variant="success">Récompenses</Badge>
+                        <Badge variant="success">Plus forte progression</Badge>
 
                         <h3 className="mt-4 text-xl font-bold text-white">
                             OverkillPlayer

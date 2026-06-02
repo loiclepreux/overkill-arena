@@ -10,6 +10,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
+import type { NotificationItemProps } from "@/types/pages";
 
 export function NotificationsPage() {
     return (
@@ -114,6 +115,14 @@ export function NotificationsPage() {
                             description="NovaX vous a invité dans Team Phoenix."
                             time="Il y a 1h"
                         />
+
+                        <NotificationItem
+                            badge="LIVE"
+                            variant="danger"
+                            title="Match en direct"
+                            description="Team Phoenix affronte Nova Squad actuellement."
+                            time="En cours"
+                        />
                     </div>
                 </div>
 
@@ -174,16 +183,6 @@ export function NotificationsPage() {
         </section>
     );
 }
-
-type NotificationVariant = "success" | "warning" | "danger" | "neutral";
-
-type NotificationItemProps = {
-    badge: string;
-    variant: NotificationVariant;
-    title: string;
-    description: string;
-    time: string;
-};
 
 function NotificationItem({
     badge,

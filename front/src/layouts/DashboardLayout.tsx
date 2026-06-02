@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { FiMenu, FiX } from "react-icons/fi";
 import { useAuthStore } from "@/store/auth.store";
+import logo from "@/assets/logo-overkill.png";
 import {
     FiBell,
     FiGrid,
@@ -91,9 +92,23 @@ export function DashboardLayout() {
 
                 {/* LOGO */}
                 <div className="border-b border-zinc-800 p-6">
-                    <h1 className="text-3xl font-extrabold text-red-500">
-                        Overkill Arena
-                    </h1>
+                    <div className="flex items-center gap-4">
+                        <img
+                            src={logo}
+                            alt="Overkill Arena"
+                            className="
+                h-14 w-14 object-contain
+                drop-shadow-[0_0_18px_rgba(239,68,68,0.45)]
+            "
+                        />
+
+                        <div>
+                            <h1 className="text-xl font-black uppercase tracking-[0.12em]">
+                                <span className="text-red-500">Overkill</span>{" "}
+                                <span className="text-white">Arena</span>
+                            </h1>
+                        </div>
+                    </div>
                 </div>
 
                 {/* NAVIGATION */}
@@ -212,6 +227,10 @@ export function DashboardLayout() {
 
                             <p className="truncate text-sm text-zinc-500">
                                 {user?.email}
+                            </p>
+
+                            <p className="mt-1 text-xs text-green-500">
+                                ● En ligne
                             </p>
                         </div>
 

@@ -17,13 +17,13 @@ export function RewardsPage() {
                     relative overflow-hidden rounded-3xl
                     border border-zinc-800
                     bg-gradient-to-br from-red-950/40 via-black to-zinc-950
-                    p-8
+                    p-5 sm:p-8
                 "
             >
                 <div className="relative z-10">
                     <Badge variant="danger">Progression</Badge>
 
-                    <h1 className="mt-6 text-5xl font-extrabold text-white">
+                    <h1 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">
                         Récompenses
                     </h1>
 

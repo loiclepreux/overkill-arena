@@ -280,6 +280,10 @@ export function TournamentPage() {
                             <p className="mt-2 text-zinc-500">
                                 BO3 • Demi-finale
                             </p>
+
+                            <p className="mt-2 text-sm text-red-500">
+                                Score : 1 - 0 • Carte 2/3
+                            </p>
                         </div>
 
                         <Badge variant="danger">LIVE</Badge>
@@ -314,6 +318,20 @@ export function TournamentPage() {
                             </p>
 
                             <Button className="mt-4 w-full">Rejoindre</Button>
+                        </div>
+
+                        <div className="rounded-xl border border-zinc-800 bg-black/30 p-4">
+                            <h3 className="font-semibold text-white">
+                                Arena Masters
+                            </h3>
+
+                            <p className="mt-2 text-sm text-zinc-500">
+                                12/16 équipes inscrites
+                            </p>
+
+                            <Button variant="secondary" className="mt-4 w-full">
+                                Rejoindre
+                            </Button>
                         </div>
                     </div>
                 </div>
