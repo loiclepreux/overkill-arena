@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: overkill-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: overkill
+      POSTGRES_PASSWORD: overkill_password
+      POSTGRES_DB: overkill_arena
+    ports:
+      - "5432:5432"
+    volumes:
+      - overkill_postgres_data:/var/lib/postgresql/data
+
+  nats:
+    image: nats:latest
+    container_name: overkill-nats
+    restart: always
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: ["-js", "-m", "8222"]
+
+volumes:
+  overkill_postgres_data:
