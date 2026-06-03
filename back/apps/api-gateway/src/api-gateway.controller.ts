@@ -1,5 +1,16 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+
 import { ApiGatewayService } from './api-gateway.service';
+import { JwtGuard } from './auth/jwt.guard';
+import { Roles } from './auth/roles.decorator';
+import { RolesGuard } from './auth/roles.guard';
 
 @Controller('auth')
 export class ApiGatewayController {
@@ -20,5 +31,27 @@ export class ApiGatewayController {
     },
   ) {
     return this.apiGatewayService.register(body);
+  }
+
+  @Get('me')
+  @UseGuards(JwtGuard)
+  me(
+    @Request()
+    req: {
+      user: { id: string; pseudo: string; email: string; role: string };
+    },
+  ) {
+    return {
+      user: req.user,
+    };
+  }
+
+  @Get('admin-test')
+  @Roles('ADMIN')
+  @UseGuards(JwtGuard, RolesGuard)
+  adminTest() {
+    return {
+      message: 'Bienvenue Admin',
+    };
   }
 }

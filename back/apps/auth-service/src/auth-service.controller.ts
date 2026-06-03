@@ -23,4 +23,14 @@ export class AuthServiceController {
   ) {
     return this.authServiceService.register(data);
   }
+
+  @MessagePattern('auth.me')
+  me(
+    @Payload()
+    data: {
+      accessToken: string;
+    },
+  ) {
+    return this.authServiceService.me(data);
+  }
 }

@@ -19,6 +19,10 @@ type LoginPayload = {
   password: string;
 };
 
+type MePayload = {
+  accessToken: string;
+};
+
 @Injectable()
 export class AuthServiceService {
   constructor(
@@ -96,6 +100,40 @@ export class AuthServiceService {
       user: safeUser,
       accessToken,
     };
+  }
+
+  async me(data: MePayload) {
+    try {
+      const payload = await this.jwtService.verifyAsync<{
+        sub: string;
+        pseudo: string;
+        email: string;
+        role: string;
+      }>(data.accessToken);
+
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: payload.sub,
+        },
+        select: {
+          id: true,
+          pseudo: true,
+          email: true,
+          role: true,
+          createdAt: true,
+        },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('Utilisateur introuvable.');
+      }
+
+      return {
+        user,
+      };
+    } catch {
+      throw new UnauthorizedException('Token invalide ou expiré.');
+    }
   }
 
   private async generateToken(user: {

@@ -15,4 +15,10 @@ export class ApiGatewayService {
   register(data: { pseudo: string; email: string; password: string }) {
     return this.authClient.send('auth.register', data);
   }
+
+  me(accessToken: string) {
+    return this.authClient.send('auth.me', {
+      accessToken,
+    });
+  }
 }
