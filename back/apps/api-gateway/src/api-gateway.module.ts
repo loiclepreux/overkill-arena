@@ -7,6 +7,7 @@ import { ApiGatewayService } from './api-gateway.service';
 import { JwtStrategy } from './auth/jwt.strategy';
 import { Reflector } from '@nestjs/core';
 import { RolesGuard } from './auth/roles.guard';
+import { UsersController } from './users.controller';
 
 @Module({
   imports: [
@@ -19,9 +20,16 @@ import { RolesGuard } from './auth/roles.guard';
           servers: ['nats://localhost:4222'],
         },
       },
+      {
+        name: 'USERS_SERVICE',
+        transport: Transport.NATS,
+        options: {
+          servers: ['nats://localhost:4222'],
+        },
+      },
     ]),
   ],
-  controllers: [ApiGatewayController],
+  controllers: [ApiGatewayController, UsersController],
   providers: [ApiGatewayService, JwtStrategy, RolesGuard, Reflector],
 })
 export class ApiGatewayModule {}

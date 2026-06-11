@@ -59,6 +59,19 @@ export class AuthServiceService {
       },
     });
 
+    await this.prisma.profile.create({
+      data: {
+        userId: user.id,
+        pseudo: user.pseudo,
+      },
+    });
+
+    await this.prisma.userStats.create({
+      data: {
+        userId: user.id,
+      },
+    });
+
     const accessToken = await this.generateToken(user);
 
     return {
