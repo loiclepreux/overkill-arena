@@ -1,8 +1,22 @@
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
 import { TeamsServiceModule } from './teams-service.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(TeamsServiceModule);
-  await app.listen(process.env.port ?? 3000);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    TeamsServiceModule,
+    {
+      transport: Transport.NATS,
+      options: {
+        servers: [process.env.NATS_URL || 'nats://localhost:4222'],
+      },
+    },
+  );
+
+  await app.listen();
+
+  console.log('🚀 Teams Service connected to NATS');
 }
+
 bootstrap();

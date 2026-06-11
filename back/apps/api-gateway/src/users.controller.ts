@@ -5,6 +5,7 @@ import {
   UseGuards,
   Body,
   Patch,
+  Param,
 } from '@nestjs/common';
 
 import { JwtGuard } from './auth/jwt.guard';
@@ -24,6 +25,12 @@ export class UsersController {
   @UseGuards(JwtGuard)
   getMe(@Request() req: AuthenticatedRequest) {
     return this.apiGatewayService.getMyProfile(req.user.id);
+  }
+
+  @Get(':id')
+  @UseGuards(JwtGuard)
+  getById(@Param('id') id: string) {
+    return this.apiGatewayService.getUserById(id);
   }
 
   @Patch('profile')

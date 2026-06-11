@@ -49,3 +49,60 @@ model UserStats {
 
   rank String @default("Bronze")
 }
+
+enum TeamRole {
+  CAPTAIN
+  CO_CAPTAIN
+  MEMBER
+}
+
+enum JoinRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model Team {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  tag         String  @unique
+  logo        String?
+  description String?
+
+  captainId String
+
+  createdAt DateTime @default(now())
+
+  members  TeamMember[]
+  requests TeamJoinRequest[]
+}
+
+model TeamMember {
+  id String @id @default(uuid())
+
+  teamId String
+  userId String @unique
+
+  role TeamRole @default(MEMBER)
+
+  joinedAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id])
+
+  @@index([teamId])
+}
+
+model TeamJoinRequest {
+  id String @id @default(uuid())
+
+  teamId String
+  userId String
+
+  status JoinRequestStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id])
+
+  @@unique([teamId, userId])
+}

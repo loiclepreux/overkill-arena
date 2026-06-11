@@ -43,4 +43,8 @@ export class ApiGatewayService {
   }) {
     return this.usersClient.send('users.update-profile', data);
   }
+
+  getUserById(userId: string) {
+    return this.usersClient.send('users.get-by-id', { userId });
+  }
 }
