@@ -36,10 +36,12 @@ export type UpdateProfilePayload = {
 };
 
 export type UserBasic = { id: string; pseudo: string };
+export type UserAdmin = { id: string; pseudo: string; email: string; role: string };
 
 export const usersApi = {
     getMe: () => api.get<UserMe>("/users/me").then((r) => r.data),
     getById: (id: string) => api.get<UserMe>(`/users/${id}`).then((r) => r.data),
+    getAll: () => api.get<UserAdmin[]>("/users").then((r) => r.data),
     updateProfile: (data: UpdateProfilePayload) =>
         api.patch<UserMe>("/users/profile", data).then((r) => r.data),
     getBulk: (ids: string[]) =>

@@ -44,6 +44,13 @@ export class UsersServiceService {
     return users;
   }
 
+  async getAll() {
+    return this.prisma.user.findMany({
+      select: { id: true, pseudo: true, email: true, role: true },
+      orderBy: { pseudo: 'asc' },
+    });
+  }
+
   async updateProfile(data: UpdateProfilePayload) {
     const profile = await this.prisma.profile.update({
       where: { userId: data.userId },

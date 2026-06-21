@@ -6,6 +6,7 @@ import {
     FiShield,
     FiUsers,
     FiPlus,
+    FiSearch,
     FiX,
 } from "react-icons/fi";
 
@@ -18,6 +19,7 @@ import { tournamentsApi } from "@/services/tournaments.api";
 import { matchesApi } from "@/services/matches.api";
 import { rewardsApi } from "@/services/rewards.api";
 import { teamsApi } from "@/services/teams.api";
+import { usersApi } from "@/services/users.api";
 import type { Tournament, TournamentStatus, TournamentFormat } from "@/services/tournaments.api";
 import type { Match, MatchFormat } from "@/services/matches.api";
 import type { RewardType, MedalRank } from "@/services/rewards.api";
@@ -101,7 +103,9 @@ export function AdminPage() {
     const [creatingMatch, setCreatingMatch] = useState(false);
 
     // ─── Rewards ──────────────────────────────────────────────────────────────
+    const { data: allUsers } = useApi(usersApi.getAll);
     const [rewardUserId, setRewardUserId] = useState("");
+    const [rewardUserSearch, setRewardUserSearch] = useState("");
     const [rewardType, setRewardType] = useState<RewardType>("MEDAL");
     const [medalRank, setMedalRank] = useState<MedalRank>("GOLD");
     const [cupName, setCupName] = useState("");
@@ -610,14 +614,56 @@ export function AdminPage() {
                         <div className="grid gap-4 max-w-lg">
                             <div>
                                 <label className="mb-1 block text-sm text-zinc-400">
-                                    ID utilisateur *
+                                    Joueur *
                                 </label>
-                                <input
-                                    className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-red-500 focus:outline-none font-mono text-sm"
-                                    placeholder="UUID de l'utilisateur"
-                                    value={rewardUserId}
-                                    onChange={(e) => setRewardUserId(e.target.value)}
-                                />
+                                {rewardUserId ? (
+                                    <div className="flex items-center gap-3 rounded-lg border border-red-700 bg-red-950/20 px-4 py-2">
+                                        <span className="flex-1 text-white">
+                                            {allUsers?.find((u) => u.id === rewardUserId)?.pseudo ?? rewardUserId}
+                                        </span>
+                                        <button type="button" onClick={() => { setRewardUserId(""); setRewardUserSearch(""); }} className="text-zinc-400 hover:text-red-400">
+                                            <FiX />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="relative">
+                                        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                                        <input
+                                            className="w-full rounded-lg border border-zinc-700 bg-zinc-800 py-2 pl-9 pr-4 text-white placeholder-zinc-500 focus:border-red-500 focus:outline-none"
+                                            placeholder="Rechercher un joueur..."
+                                            value={rewardUserSearch}
+                                            onChange={(e) => setRewardUserSearch(e.target.value)}
+                                        />
+                                        {rewardUserSearch.trim() && (
+                                            <div className="absolute z-10 mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-900 shadow-lg max-h-48 overflow-y-auto">
+                                                {(allUsers ?? [])
+                                                    .filter((u) =>
+                                                        u.pseudo.toLowerCase().includes(rewardUserSearch.toLowerCase()) ||
+                                                        u.email.toLowerCase().includes(rewardUserSearch.toLowerCase())
+                                                    )
+                                                    .slice(0, 8)
+                                                    .map((u) => (
+                                                        <button
+                                                            key={u.id}
+                                                            type="button"
+                                                            onClick={() => { setRewardUserId(u.id); setRewardUserSearch(""); }}
+                                                            className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-zinc-800"
+                                                        >
+                                                            <span className="font-semibold text-white">{u.pseudo}</span>
+                                                            <span className="text-xs text-zinc-500">{u.email}</span>
+                                                        </button>
+                                                    ))
+                                                }
+                                                {(allUsers ?? []).filter((u) =>
+                                                    u.pseudo.toLowerCase().includes(rewardUserSearch.toLowerCase()) ||
+                                                    u.email.toLowerCase().includes(rewardUserSearch.toLowerCase())
+                                                ).length === 0 && (
+                                                    <p className="px-4 py-3 text-sm text-zinc-500">Aucun joueur trouvé.</p>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
 
                             <div>

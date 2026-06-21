@@ -1,11 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaService } from '@app/prisma';
-import { TournamentStatus, TournamentFormat } from '@prisma/client';
+import { TournamentStatus, TournamentFormat, NotificationKind } from '@prisma/client';
 
 @Injectable()
 export class TournamentsServiceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
+  ) {}
+
+  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
+    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  }
+
+  private async notifyParticipants(tournamentId: string, kind: NotificationKind, title: string, message: string) {
+    const participants = await this.prisma.tournamentParticipant.findMany({
+      where: { tournamentId },
+    });
+    if (participants.length === 0) return;
+    const teams = await this.prisma.team.findMany({
+      where: { id: { in: participants.map((p) => p.teamId) } },
+      select: { captainId: true },
+    });
+    teams.forEach((t) => this.notify(t.captainId, kind, title, message));
+  }
 
   async create(data: {
     name: string;
@@ -85,10 +104,27 @@ export class TournamentsServiceService {
     const tournament = await this.prisma.tournament.findUnique({ where: { id: data.id } });
     if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
 
-    return this.prisma.tournament.update({
+    const updated = await this.prisma.tournament.update({
       where: { id: data.id },
       data: { status: data.status },
     });
+
+    const statusMessages: Record<TournamentStatus, string> = {
+      DRAFT: `Le tournoi "${tournament.name}" est repassé en brouillon.`,
+      OPEN: `Les inscriptions pour "${tournament.name}" sont ouvertes !`,
+      IN_PROGRESS: `Le tournoi "${tournament.name}" vient de commencer !`,
+      COMPLETED: `Le tournoi "${tournament.name}" est terminé.`,
+      CANCELLED: `Le tournoi "${tournament.name}" a été annulé.`,
+    };
+
+    await this.notifyParticipants(
+      data.id,
+      'TOURNAMENT_UPDATE',
+      'Mise à jour du tournoi',
+      statusMessages[data.status],
+    );
+
+    return updated;
   }
 
   async registerTeam(data: { tournamentId: string; teamId: string }) {
@@ -108,9 +144,24 @@ export class TournamentsServiceService {
     });
     if (existing) throw new RpcException({ statusCode: 409, message: 'Cette équipe est déjà inscrite' });
 
-    return this.prisma.tournamentParticipant.create({
+    const participant = await this.prisma.tournamentParticipant.create({
       data: { tournamentId: data.tournamentId, teamId: data.teamId },
     });
+
+    const team = await this.prisma.team.findUnique({
+      where: { id: data.teamId },
+      select: { captainId: true },
+    });
+    if (team) {
+      this.notify(
+        team.captainId,
+        'TOURNAMENT_UPDATE',
+        'Inscription confirmée',
+        `Votre équipe est inscrite au tournoi "${tournament.name}" !`,
+      );
+    }
+
+    return participant;
   }
 
   async unregisterTeam(data: { tournamentId: string; teamId: string }) {

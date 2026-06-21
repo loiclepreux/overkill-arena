@@ -21,12 +21,17 @@ import { teamsApi } from "@/services/teams.api";
 import { matchesApi } from "@/services/matches.api";
 import { notificationsApi } from "@/services/notifications.api";
 
+function teamName(allTeams: { id: string; name: string }[] | null | undefined, id: string): string {
+    return allTeams?.find((t) => t.id === id)?.name ?? id.slice(0, 8);
+}
+
 export function DashboardPage() {
     const { user, setUnreadNotificationsCount } = useAuthStore();
 
     const { data: me } = useApi(usersApi.getMe);
     const { data: rewardStats } = useApi(rewardsApi.getMyStats);
     const { data: team } = useApi(() => teamsApi.getMyTeam().catch(() => null));
+    const { data: allTeams } = useApi(teamsApi.getAll);
     const { data: unreadData } = useApi(notificationsApi.getUnreadCount);
     const { data: matches } = useApi(() =>
         team ? matchesApi.getByTeam(team.id) : Promise.resolve([])
@@ -102,7 +107,7 @@ export function DashboardPage() {
                             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                 <div>
                                     <h3 className="text-xl font-bold text-white">
-                                        {upcomingMatch.teamAId} vs {upcomingMatch.teamBId}
+                                        {teamName(allTeams, upcomingMatch.teamAId)} vs {teamName(allTeams, upcomingMatch.teamBId)}
                                     </h3>
                                     <p className="mt-2 text-zinc-500">
                                         {upcomingMatch.format}
@@ -157,8 +162,8 @@ export function DashboardPage() {
             </div>
 
             <div className="grid gap-8 xl:grid-cols-2">
-                <ActivityFeed />
-                <MatchActivityChart />
+                <ActivityFeed matches={matches} allTeams={allTeams} />
+                <MatchActivityChart matches={matches} />
             </div>
         </section>
     );

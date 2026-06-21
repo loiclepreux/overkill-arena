@@ -58,6 +58,7 @@ export function TournamentDetailPage() {
     const { user } = useAuthStore();
     const [registerMsg, setRegisterMsg] = useState<string | null>(null);
     const [registering, setRegistering] = useState(false);
+    const [unregistering, setUnregistering] = useState(false);
 
     const { data: tournament, loading: loadingT, error: errorT } = useApi(() =>
         tournamentsApi.getById(id!)
@@ -74,6 +75,21 @@ export function TournamentDetailPage() {
     const isAlreadyRegistered = participants?.some(
         (p: { teamId: string }) => p.teamId === myTeam?.id
     );
+
+    async function handleUnregister() {
+        if (!myTeam) return;
+        setUnregistering(true);
+        setRegisterMsg(null);
+        try {
+            await tournamentsApi.unregister(id!, myTeam.id);
+            setRegisterMsg("Équipe désinscrite.");
+            refetchParticipants();
+        } catch (err) {
+            setRegisterMsg(getErrorMessage(err));
+        } finally {
+            setUnregistering(false);
+        }
+    }
 
     async function handleRegister() {
         if (!myTeam) {
@@ -144,8 +160,18 @@ export function TournamentDetailPage() {
                         </div>
                     )}
                     {isAlreadyRegistered && (
-                        <div className="mt-6">
+                        <div className="mt-6 flex flex-wrap items-center gap-4">
                             <Badge variant="success">Votre équipe est inscrite</Badge>
+                            {tournament.status === "OPEN" && (
+                                <button
+                                    type="button"
+                                    onClick={handleUnregister}
+                                    disabled={unregistering}
+                                    className="text-sm text-zinc-400 underline hover:text-red-400 disabled:opacity-50"
+                                >
+                                    {unregistering ? "Désinscription..." : "Se désinscrire"}
+                                </button>
+                            )}
                         </div>
                     )}
 

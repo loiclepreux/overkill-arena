@@ -55,6 +55,10 @@ export class ApiGatewayService {
     return this.rpc(this.usersClient.send('users.get-by-ids', { userIds }));
   }
 
+  getAllUsers() {
+    return this.rpc(this.usersClient.send('users.get-all', {}));
+  }
+
   changePassword(userId: string, currentPassword: string, newPassword: string) {
     return this.rpc(this.authClient.send('auth.change-password', { userId, currentPassword, newPassword }));
   }

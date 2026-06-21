@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Query, Request, UseGuards } from '@nestjs/common';
 
 import { JwtGuard } from './auth/jwt.guard';
+import { RolesGuard } from './auth/roles.guard';
+import { Roles } from './auth/roles.decorator';
 import { ApiGatewayService } from './api-gateway.service';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 
@@ -23,6 +25,13 @@ export class UsersController {
   getBulk(@Query('ids') ids: string) {
     const userIds = ids ? ids.split(',').filter(Boolean) : [];
     return this.apiGatewayService.getUsersByIds(userIds);
+  }
+
+  @Get()
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('ADMIN')
+  getAll() {
+    return this.apiGatewayService.getAllUsers();
   }
 
   @Get(':id')

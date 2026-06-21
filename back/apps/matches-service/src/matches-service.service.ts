@@ -1,11 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaService } from '@app/prisma';
-import { MatchFormat, MatchStatus } from '@prisma/client';
+import { MatchFormat, MatchStatus, NotificationKind } from '@prisma/client';
 
 @Injectable()
 export class MatchesServiceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
+  ) {}
+
+  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
+    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  }
+
+  private async notifyBothTeams(
+    teamAId: string,
+    teamBId: string,
+    kind: NotificationKind,
+    title: string,
+    message: string,
+  ) {
+    const [teamA, teamB] = await Promise.all([
+      this.prisma.team.findUnique({ where: { id: teamAId }, select: { captainId: true } }),
+      this.prisma.team.findUnique({ where: { id: teamBId }, select: { captainId: true } }),
+    ]);
+    if (teamA) this.notify(teamA.captainId, kind, title, message);
+    if (teamB) this.notify(teamB.captainId, kind, title, message);
+  }
 
   async create(data: {
     tournamentId?: string;
@@ -17,7 +39,7 @@ export class MatchesServiceService {
     if (data.teamAId === data.teamBId) {
       throw new RpcException({ statusCode: 400, message: 'Les deux équipes doivent être différentes' });
     }
-    return this.prisma.match.create({
+    const match = await this.prisma.match.create({
       data: {
         tournamentId: data.tournamentId,
         teamAId: data.teamAId,
@@ -26,6 +48,16 @@ export class MatchesServiceService {
         scheduledAt: data.scheduledAt ? new Date(data.scheduledAt) : undefined,
       },
     });
+
+    await this.notifyBothTeams(
+      data.teamAId,
+      data.teamBId,
+      'MATCH_START',
+      'Match planifié',
+      'Un nouveau match a été planifié pour votre équipe.',
+    );
+
+    return match;
   }
 
   async getById(id: string) {
@@ -59,7 +91,7 @@ export class MatchesServiceService {
       throw new RpcException({ statusCode: 403, message: 'Votre équipe ne participe pas à ce match' });
     }
     const winnerId = data.scoreA > data.scoreB ? match.teamAId : data.scoreB > data.scoreA ? match.teamBId : null;
-    return this.prisma.match.update({
+    const updated = await this.prisma.match.update({
       where: { id: data.id },
       data: {
         scoreA: data.scoreA,
@@ -69,6 +101,16 @@ export class MatchesServiceService {
         playedAt: new Date(),
       },
     });
+
+    await this.notifyBothTeams(
+      match.teamAId,
+      match.teamBId,
+      'MATCH_RESULT',
+      'Résultat de match enregistré',
+      `Le score ${data.scoreA} - ${data.scoreB} a été soumis.`,
+    );
+
+    return updated;
   }
 
   async validate(data: { id: string }) {
@@ -77,10 +119,20 @@ export class MatchesServiceService {
     if (match.status !== 'CONTESTED') {
       throw new RpcException({ statusCode: 400, message: 'Seuls les matchs contestés peuvent être validés' });
     }
-    return this.prisma.match.update({
+    const updated = await this.prisma.match.update({
       where: { id: data.id },
       data: { status: 'COMPLETED' },
     });
+
+    await this.notifyBothTeams(
+      match.teamAId,
+      match.teamBId,
+      'MATCH_RESULT',
+      'Résultat validé',
+      'Le résultat du match contesté a été validé par un administrateur.',
+    );
+
+    return updated;
   }
 
   async contest(data: { id: string; teamId: string }) {

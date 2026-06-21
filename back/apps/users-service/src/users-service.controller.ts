@@ -22,6 +22,11 @@ export class UsersServiceController {
     return this.usersServiceService.getByIds(data.userIds);
   }
 
+  @MessagePattern('users.get-all')
+  getAll() {
+    return this.usersServiceService.getAll();
+  }
+
   @MessagePattern('users.update-profile')
   updateProfile(
     @Payload()

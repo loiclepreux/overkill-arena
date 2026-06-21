@@ -1,10 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaService } from '@app/prisma';
+import { NotificationKind } from '@prisma/client';
 
 @Injectable()
 export class TeamsServiceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
+  ) {}
+
+  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
+    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  }
 
   async create(data: {
     name: string;
@@ -115,11 +123,20 @@ export class TeamsServiceService {
     if (existing && existing.status === 'PENDING') {
       throw new RpcException({ statusCode: 409, message: 'Demande déjà envoyée' });
     }
-    return this.prisma.teamJoinRequest.upsert({
+    const request = await this.prisma.teamJoinRequest.upsert({
       where: { teamId_userId: { teamId: data.teamId, userId: data.userId } },
       update: { status: 'PENDING' },
       create: { teamId: data.teamId, userId: data.userId },
     });
+
+    this.notify(
+      team.captainId,
+      'TEAM_INVITATION',
+      'Nouvelle demande d\'adhésion',
+      `Un joueur souhaite rejoindre l'équipe ${team.name}.`,
+    );
+
+    return request;
   }
 
   async getJoinRequests(data: { teamId: string; requesterId: string }) {
@@ -155,6 +172,16 @@ export class TeamsServiceService {
     } else {
       await this.prisma.teamJoinRequest.update({ where: { id: data.requestId }, data: { status: 'REJECTED' } });
     }
+
+    this.notify(
+      request.userId,
+      'TEAM_INVITATION',
+      data.accepted ? 'Demande acceptée !' : 'Demande refusée',
+      data.accepted
+        ? `Bienvenue dans l'équipe ${team.name} !`
+        : `Votre demande pour rejoindre ${team.name} a été refusée.`,
+    );
+
     return { message: data.accepted ? 'Demande acceptée' : 'Demande refusée' };
   }
 
@@ -186,6 +213,14 @@ export class TeamsServiceService {
     });
     if (!membership) throw new RpcException({ statusCode: 404, message: 'Membre introuvable dans cette équipe' });
     await this.prisma.teamMember.delete({ where: { id: membership.id } });
+
+    this.notify(
+      data.targetUserId,
+      'TEAM_INVITATION',
+      'Exclu de l\'équipe',
+      `Vous avez été exclu de l'équipe ${team.name}.`,
+    );
+
     return { message: 'Membre exclu de l\'équipe' };
   }
 }
