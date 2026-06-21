@@ -1,27 +1,34 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiX } from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/store/auth.store";
+import { login as loginApi, getApiErrorMessage } from "@/services/auth/auth.api";
 
 export function LoginPage() {
     const navigate = useNavigate();
     const { login } = useAuthStore();
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setError(null);
+        setLoading(true);
 
-        login(
-            {
-                id: "1",
-                pseudo: "OverkillPlayer",
-                email: "player@test.com",
-                role: "ADMIN",
-            },
-            "fake-token",
-        );
-
-        navigate("/dashboard");
+        try {
+            const data = await loginApi({ email, password });
+            login(data.user, data.accessToken);
+            navigate("/dashboard");
+        } catch (err: unknown) {
+            setError(getApiErrorMessage(err, "Erreur de connexion."));
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -71,16 +78,32 @@ export function LoginPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
-                <Input label="Email" type="email" placeholder="ton@email.com" />
+                <Input
+                    label="Email"
+                    type="email"
+                    placeholder="ton@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
                 <Input
                     label="Mot de passe"
                     type="password"
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
 
-                <Button type="submit" className="w-full">
-                    Se connecter
+                {error && (
+                    <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Connexion..." : "Se connecter"}
                 </Button>
             </form>
 

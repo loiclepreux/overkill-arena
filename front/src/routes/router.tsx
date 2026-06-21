@@ -24,7 +24,6 @@ export const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
-
         children: [
             {
                 index: true,
@@ -34,55 +33,27 @@ export const router = createBrowserRouter([
     },
 
     {
-        path: "/",
         element: <AuthLayout />,
-
         children: [
-            {
-                path: "login",
-                element: <LoginPage />,
-            },
-            {
-                path: "register",
-                element: <RegisterPage />,
-            },
+            { path: "login", element: <LoginPage /> },
+            { path: "register", element: <RegisterPage /> },
         ],
     },
 
     {
         path: "/dashboard",
-
         element: (
             <ProtectedRoute>
                 <DashboardLayout />
             </ProtectedRoute>
         ),
-
         children: [
-            {
-                index: true,
-                element: <DashboardPage />,
-            },
-            {
-                path: "tournaments",
-                element: <TournamentPage />,
-            },
-            {
-                path: "teams",
-                element: <TeamsPage />,
-            },
-            {
-                path: "leaderboard",
-                element: <LeaderboardPage />,
-            },
-            {
-                path: "profile",
-                element: <ProfilePage />,
-            },
-            {
-                path: "rewards",
-                element: <RewardsPage />,
-            },
+            { index: true, element: <DashboardPage /> },
+            { path: "tournaments", element: <TournamentPage /> },
+            { path: "teams", element: <TeamsPage /> },
+            { path: "leaderboard", element: <LeaderboardPage /> },
+            { path: "profile", element: <ProfilePage /> },
+            { path: "rewards", element: <RewardsPage /> },
             {
                 path: "admin",
                 element: (
@@ -91,20 +62,10 @@ export const router = createBrowserRouter([
                     </RoleGuard>
                 ),
             },
-            {
-                path: "notifications",
-                element: <NotificationsPage />,
-            },
+            { path: "notifications", element: <NotificationsPage /> },
         ],
     },
 
-    {
-        path: "/404",
-        element: <NotFoundPage />,
-    },
-
-    {
-        path: "*",
-        element: <NotFoundPage />,
-    },
+    { path: "/404", element: <NotFoundPage /> },
+    { path: "*", element: <NotFoundPage /> },
 ]);

@@ -6,60 +6,29 @@ import {
     YAxis,
     Tooltip,
 } from "recharts";
+import type { ChartDataPoint } from "@/types/dashboard";
 
-const data = [
-    {
-        day: "Mon",
-        matches: 12,
-    },
-
-    {
-        day: "Tue",
-        matches: 18,
-    },
-
-    {
-        day: "Wed",
-        matches: 10,
-    },
-
-    {
-        day: "Thu",
-        matches: 25,
-    },
-
-    {
-        day: "Fri",
-        matches: 32,
-    },
-
-    {
-        day: "Sat",
-        matches: 41,
-    },
-
-    {
-        day: "Sun",
-        matches: 29,
-    },
+const defaultData: ChartDataPoint[] = [
+    { day: "Lun", matches: 12 },
+    { day: "Mar", matches: 18 },
+    { day: "Mer", matches: 10 },
+    { day: "Jeu", matches: 25 },
+    { day: "Ven", matches: 32 },
+    { day: "Sam", matches: 41 },
+    { day: "Dim", matches: 29 },
 ];
 
-export function MatchActivityChart() {
-    return (
-        <div
-            className="
-        rounded-2xl border border-zinc-800
-        bg-zinc-900/80 p-6
-        shadow-lg shadow-black/30
-      "
-        >
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold text-white">
-                    Activity Match
-                </h2>
+type MatchActivityChartProps = {
+    data?: ChartDataPoint[];
+};
 
+export function MatchActivityChart({ data = defaultData }: MatchActivityChartProps) {
+    return (
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 shadow-lg shadow-black/30">
+            <div className="mb-6">
+                <h2 className="text-2xl font-bold text-white">Activité des matchs</h2>
                 <p className="mt-2 text-sm text-zinc-500">
-                    Activité des matchs cette semaine.
+                    Nombre de matchs joués cette semaine.
                 </p>
             </div>
 
@@ -67,11 +36,15 @@ export function MatchActivityChart() {
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={data}>
                         <XAxis dataKey="day" stroke="#71717a" />
-
                         <YAxis stroke="#71717a" />
-
-                        <Tooltip />
-
+                        <Tooltip
+                            contentStyle={{
+                                backgroundColor: "#18181b",
+                                border: "1px solid #3f3f46",
+                                borderRadius: "8px",
+                                color: "#fff",
+                            }}
+                        />
                         <Area
                             type="monotone"
                             dataKey="matches"

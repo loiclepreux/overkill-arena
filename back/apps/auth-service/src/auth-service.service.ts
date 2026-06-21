@@ -6,7 +6,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
-import { PrismaService } from './prisma-service';
+import { PrismaService } from '@app/prisma';
 
 type RegisterPayload = {
   pseudo: string;

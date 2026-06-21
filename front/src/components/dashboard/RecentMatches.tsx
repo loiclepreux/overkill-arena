@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/Badge";
-import type { Match } from "@/types/dashboard";
+import type { Match, MatchStatus } from "@/types/dashboard";
 
-const matches: Match[] = [
+const defaultMatches: Match[] = [
     {
         id: 1,
         teamA: "Team Phoenix",
@@ -10,9 +10,8 @@ const matches: Match[] = [
         scoreB: 1,
         format: "BO3",
         status: "VALIDÉ",
-        time: "15 min ago",
+        time: "15 min",
     },
-
     {
         id: 2,
         teamA: "Red Wolves",
@@ -20,10 +19,9 @@ const matches: Match[] = [
         scoreA: 1,
         scoreB: 1,
         format: "BO3",
-        status: "LIVE",
-        time: "Live now",
+        status: "EN DIRECT",
+        time: "En cours",
     },
-
     {
         id: 3,
         teamA: "Shadow Reapers",
@@ -31,94 +29,60 @@ const matches: Match[] = [
         scoreA: 0,
         scoreB: 0,
         format: "BO5",
-        status: "PENDING",
-        time: "Starts in 30 min",
+        status: "EN ATTENTE",
+        time: "Dans 30 min",
     },
 ];
 
 function getBadgeVariant(
-    status: Match["status"],
+    status: MatchStatus,
 ): "success" | "warning" | "danger" | "neutral" {
     switch (status) {
         case "VALIDÉ":
             return "success";
-
-        case "LIVE":
+        case "EN DIRECT":
             return "danger";
-
-        case "PENDING":
+        case "EN ATTENTE":
             return "warning";
-
         default:
             return "neutral";
     }
 }
 
-export function RecentMatches() {
-    return (
-        <div
-            className="
-        rounded-2xl border border-zinc-800
-        bg-zinc-900/80 p-6
-        shadow-lg shadow-black/30
-      "
-        >
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold text-white">
-                    Matchs récents
-                </h2>
+type RecentMatchesProps = {
+    matches?: Match[];
+};
 
-                <p className="mt-2 text-sm text-zinc-500">
-                    Derniers matchs et résultats.
-                </p>
+export function RecentMatches({ matches = defaultMatches }: RecentMatchesProps) {
+    return (
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 shadow-lg shadow-black/30">
+            <div className="mb-6">
+                <h2 className="text-2xl font-bold text-white">Matchs récents</h2>
+                <p className="mt-2 text-sm text-zinc-500">Derniers matchs et résultats.</p>
             </div>
 
             <div className="space-y-4">
                 {matches.map((match) => (
                     <div
                         key={match.id}
-                        className="
-              rounded-xl border border-zinc-800
-              bg-black/30 p-5
-            "
+                        className="rounded-xl border border-zinc-800 bg-black/30 p-5"
                     >
                         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                            {/* TEAMS */}
                             <div>
                                 <div className="flex items-center gap-3 text-lg font-bold">
-                                    <span className="text-white">
-                                        {match.teamA}
-                                    </span>
-
-                                    <span className="text-red-500">
-                                        {match.scoreA}
-                                    </span>
-
-                                    <span className="text-zinc-500">-</span>
-
-                                    <span className="text-red-500">
-                                        {match.scoreB}
-                                    </span>
-
-                                    <span className="text-white">
-                                        {match.teamB}
-                                    </span>
+                                    <span className="text-white">{match.teamA}</span>
+                                    <span className="text-red-500">{match.scoreA}</span>
+                                    <span className="text-zinc-500">–</span>
+                                    <span className="text-red-500">{match.scoreB}</span>
+                                    <span className="text-white">{match.teamB}</span>
                                 </div>
-
-                                <p className="mt-2 text-sm text-zinc-500">
-                                    {match.format}
-                                </p>
+                                <p className="mt-2 text-sm text-zinc-500">{match.format}</p>
                             </div>
-
-                            {/* STATUS */}
                             <div className="flex items-center gap-4">
                                 <Badge variant={getBadgeVariant(match.status)}>
                                     {match.status}
                                 </Badge>
-
-                                <span className="text-sm text-zinc-500">
-                                    {match.time}
-                                </span>
+                                <span className="text-sm text-zinc-500">{match.time}</span>
                             </div>
                         </div>
                     </div>

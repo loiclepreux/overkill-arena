@@ -15,5 +15,5 @@ export function RoleGuard({ children, allowedRoles }: RoleGuardProps) {
         return <Navigate to="/" replace />;
     }
 
-    return children;
+    return <>{children}</>;
 }

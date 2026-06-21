@@ -1,20 +1,11 @@
-import {
-  Controller,
-  Get,
-  Request,
-  UseGuards,
-  Body,
-  Patch,
-  Param,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Request, UseGuards } from '@nestjs/common';
 
 import { JwtGuard } from './auth/jwt.guard';
 import { ApiGatewayService } from './api-gateway.service';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 
 type AuthenticatedRequest = {
-  user: {
-    id: string;
-  };
+  user: { id: string };
 };
 
 @Controller('users')
@@ -36,23 +27,9 @@ export class UsersController {
   @Patch('profile')
   @UseGuards(JwtGuard)
   updateProfile(
-    @Request()
-    req: {
-      user: {
-        id: string;
-      };
-    },
-    @Body()
-    body: {
-      bio?: string;
-      country?: string;
-      favoriteGame?: string;
-      avatar?: string;
-    },
+    @Request() req: AuthenticatedRequest,
+    @Body() body: UpdateProfileDto,
   ) {
-    return this.apiGatewayService.updateProfile({
-      userId: req.user.id,
-      ...body,
-    });
+    return this.apiGatewayService.updateProfile({ userId: req.user.id, ...body });
   }
 }

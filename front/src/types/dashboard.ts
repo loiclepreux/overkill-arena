@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-
 export type Activity = {
     id: number;
     title: string;
@@ -23,13 +22,17 @@ export type Team = {
     wins: number;
 };
 
+export type NotificationType = "EN DIRECT" | "SUCCÈS" | "AVERTISSEMENT";
+
 export type Notification = {
     id: number;
     title: string;
     description: string;
-    type: "LIVE" | "SUCCESS" | "WARNING";
+    type: NotificationType;
     time: string;
 };
+
+export type MatchStatus = "VALIDÉ" | "EN DIRECT" | "EN ATTENTE";
 
 export type Match = {
     id: number;
@@ -38,9 +41,11 @@ export type Match = {
     scoreA: number;
     scoreB: number;
     format: string;
-    status: "VALIDÉ" | "LIVE" | "PENDING";
+    status: MatchStatus;
     time: string;
 };
+
+export type TournamentStatus = "OUVERT" | "EN DIRECT" | "TERMINÉ";
 
 export type Tournament = {
     id: number;
@@ -48,6 +53,11 @@ export type Tournament = {
     game: string;
     teams: number;
     recompense: string;
-    status: "OPEN" | "LIVE" | "CLOSED";
+    status: TournamentStatus;
     startDate: string;
+};
+
+export type ChartDataPoint = {
+    day: string;
+    matches: number;
 };

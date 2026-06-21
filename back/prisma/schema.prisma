@@ -6,6 +6,8 @@ datasource db {
   provider = "postgresql"
 }
 
+// ─── Users ──────────────────────────────────────────────────────────────────
+
 enum Role {
   PLAYER
   ADMIN
@@ -28,9 +30,8 @@ model Profile {
   bio          String?
   country      String?
   favoriteGame String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model UserStats {
@@ -50,6 +51,8 @@ model UserStats {
   rank String @default("Bronze")
 }
 
+// ─── Teams ───────────────────────────────────────────────────────────────────
+
 enum TeamRole {
   CAPTAIN
   CO_CAPTAIN
@@ -68,41 +71,168 @@ model Team {
   tag         String  @unique
   logo        String?
   description String?
-
-  captainId String
-
-  createdAt DateTime @default(now())
+  captainId   String
+  createdAt   DateTime @default(now())
 
   members  TeamMember[]
   requests TeamJoinRequest[]
 }
 
 model TeamMember {
-  id String @id @default(uuid())
-
+  id     String @id @default(uuid())
   teamId String
   userId String @unique
-
-  role TeamRole @default(MEMBER)
-
+  role   TeamRole @default(MEMBER)
   joinedAt DateTime @default(now())
 
-  team Team @relation(fields: [teamId], references: [id])
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@index([teamId])
 }
 
 model TeamJoinRequest {
-  id String @id @default(uuid())
-
+  id     String @id @default(uuid())
   teamId String
   userId String
-
   status JoinRequestStatus @default(PENDING)
-
   createdAt DateTime @default(now())
 
-  team Team @relation(fields: [teamId], references: [id])
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@unique([teamId, userId])
+}
+
+// ─── Tournaments ─────────────────────────────────────────────────────────────
+
+enum TournamentStatus {
+  DRAFT
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TournamentFormat {
+  SINGLE_ELIMINATION
+  DOUBLE_ELIMINATION
+  ROUND_ROBIN
+}
+
+model Tournament {
+  id          String           @id @default(uuid())
+  name        String           @unique
+  game        String
+  format      TournamentFormat @default(SINGLE_ELIMINATION)
+  status      TournamentStatus @default(DRAFT)
+  maxTeams    Int
+  description String?
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  participants TournamentParticipant[]
+  matches      Match[]
+}
+
+model TournamentParticipant {
+  id           String   @id @default(uuid())
+  tournamentId String
+  teamId       String
+  registeredAt DateTime @default(now())
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  @@unique([tournamentId, teamId])
+  @@index([tournamentId])
+}
+
+// ─── Matches ─────────────────────────────────────────────────────────────────
+
+enum MatchStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  CONTESTED
+}
+
+enum MatchFormat {
+  BO1
+  BO3
+  BO5
+}
+
+model Match {
+  id           String      @id @default(uuid())
+  tournamentId String?
+  teamAId      String
+  teamBId      String
+  format       MatchFormat @default(BO3)
+  status       MatchStatus @default(PENDING)
+  scoreA       Int         @default(0)
+  scoreB       Int         @default(0)
+  winnerId     String?
+  scheduledAt  DateTime?
+  playedAt     DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  tournament Tournament? @relation(fields: [tournamentId], references: [id])
+
+  @@index([tournamentId])
+  @@index([teamAId])
+  @@index([teamBId])
+}
+
+// ─── Rewards ─────────────────────────────────────────────────────────────────
+
+enum RewardType {
+  MEDAL
+  CUP
+  TITLE
+}
+
+enum MedalRank {
+  BRONZE
+  SILVER
+  GOLD
+}
+
+model Reward {
+  id           String     @id @default(uuid())
+  userId       String
+  type         RewardType
+  medalRank    MedalRank?
+  cupName      String?
+  titleName    String?
+  description  String?
+  tournamentId String?
+  matchId      String?
+  awardedAt    DateTime   @default(now())
+
+  @@index([userId])
+}
+
+// ─── Notifications ───────────────────────────────────────────────────────────
+
+enum NotificationKind {
+  MATCH_START
+  MATCH_RESULT
+  TEAM_INVITATION
+  TOURNAMENT_UPDATE
+  REWARD_EARNED
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  userId    String
+  kind      NotificationKind
+  title     String
+  message   String
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
 }

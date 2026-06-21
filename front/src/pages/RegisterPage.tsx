@@ -1,9 +1,37 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FiX } from "react-icons/fi";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useAuthStore } from "@/store/auth.store";
+import { register as registerApi, getApiErrorMessage } from "@/services/auth/auth.api";
 
 export function RegisterPage() {
+    const navigate = useNavigate();
+    const { login } = useAuthStore();
+
+    const [pseudo, setPseudo] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setError(null);
+        setLoading(true);
+
+        try {
+            const data = await registerApi({ pseudo, email, password });
+            login(data.user, data.accessToken);
+            navigate("/dashboard");
+        } catch (err: unknown) {
+            setError(getApiErrorMessage(err, "Erreur lors de l'inscription."));
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <section className="relative">
             <Link
@@ -41,7 +69,7 @@ export function RegisterPage() {
 
             <div className="mb-8 pr-12">
                 <h1 className="text-4xl font-extrabold text-white">
-                    Rejoindre l’arène
+                    Rejoindre l'arène
                 </h1>
 
                 <p className="mt-3 text-zinc-400">
@@ -50,19 +78,41 @@ export function RegisterPage() {
                 </p>
             </div>
 
-            <form className="space-y-5">
-                <Input label="Pseudo" placeholder="OverkillPlayer" />
+            <form onSubmit={handleSubmit} className="space-y-5">
+                <Input
+                    label="Pseudo"
+                    placeholder="OverkillPlayer"
+                    value={pseudo}
+                    onChange={(e) => setPseudo(e.target.value)}
+                    required
+                />
 
-                <Input label="Email" type="email" placeholder="ton@email.com" />
+                <Input
+                    label="Email"
+                    type="email"
+                    placeholder="ton@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
                 <Input
                     label="Mot de passe"
                     type="password"
                     placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
 
-                <Button type="submit" className="w-full">
-                    Créer un compte
+                {error && (
+                    <p className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Création..." : "Créer un compte"}
                 </Button>
             </form>
 

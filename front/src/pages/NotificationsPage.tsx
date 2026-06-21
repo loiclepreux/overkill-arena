@@ -117,7 +117,7 @@ export function NotificationsPage() {
                         />
 
                         <NotificationItem
-                            badge="LIVE"
+                            badge="EN DIRECT"
                             variant="danger"
                             title="Match en direct"
                             description="Team Phoenix affronte Nova Squad actuellement."
