@@ -41,4 +41,6 @@ export const matchesApi = {
         api.patch<Match>(`/matches/${id}/validate`, {}).then((r) => r.data),
     contest: (id: string, teamId: string) =>
         api.post<Match>(`/matches/${id}/contest`, { teamId }).then((r) => r.data),
+    updateStatus: (id: string, status: MatchStatus) =>
+        api.patch<Match>(`/matches/${id}/status`, { status }).then((r) => r.data),
 };

@@ -3,6 +3,7 @@ import {
     FiAlertTriangle,
     FiAward,
     FiCheckCircle,
+    FiRadio,
     FiShield,
     FiUsers,
     FiPlus,
@@ -93,6 +94,7 @@ export function AdminPage() {
     );
 
     const [validating, setValidating] = useState<string | null>(null);
+    const [launching, setLaunching] = useState<string | null>(null);
     const [matchMsg, setMatchMsg] = useState<string | null>(null);
 
     const [showMatchForm, setShowMatchForm] = useState(false);
@@ -202,6 +204,20 @@ export function AdminPage() {
             setMatchMsg(getErrorMessage(err));
         } finally {
             setValidating(null);
+        }
+    }
+
+    async function handleLaunchMatch(id: string) {
+        setLaunching(id);
+        setMatchMsg(null);
+        try {
+            await matchesApi.updateStatus(id, "IN_PROGRESS");
+            setMatchMsg("Match lancé !");
+            refetchM();
+        } catch (err) {
+            setMatchMsg(getErrorMessage(err));
+        } finally {
+            setLaunching(null);
         }
     }
 
@@ -535,54 +551,79 @@ export function AdminPage() {
                             )}
 
                             <div className="space-y-4">
-                                {tournamentMatches?.map((match: Match) => (
-                                    <div
-                                        key={match.id}
-                                        className={`rounded-2xl border p-5 ${
-                                            match.status === "CONTESTED"
-                                                ? "border-yellow-500/30 bg-yellow-500/5"
-                                                : "border-zinc-800 bg-zinc-900/80"
-                                        }`}
-                                    >
-                                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                                            <div>
-                                                <div className="flex items-center gap-3">
-                                                    <h3 className="font-bold text-white">
-                                                        Match {match.format}
-                                                    </h3>
-                                                    <Badge
-                                                        variant={
-                                                            match.status === "CONTESTED"
-                                                                ? "warning"
-                                                                : match.status === "COMPLETED"
-                                                                ? "success"
-                                                                : "neutral"
-                                                        }
-                                                    >
-                                                        {match.status}
-                                                    </Badge>
+                                {tournamentMatches?.map((match: Match) => {
+                                    const statusLabel: Record<string, string> = {
+                                        PENDING: "À venir",
+                                        IN_PROGRESS: "En cours",
+                                        COMPLETED: "Terminé",
+                                        CONTESTED: "Contesté",
+                                        CANCELLED: "Annulé",
+                                    };
+                                    const teamA = allTeams?.find((t) => t.id === match.teamAId)?.name ?? match.teamAId.slice(0, 8);
+                                    const teamB = allTeams?.find((t) => t.id === match.teamBId)?.name ?? match.teamBId.slice(0, 8);
+                                    return (
+                                        <div
+                                            key={match.id}
+                                            className={`rounded-2xl border p-5 ${
+                                                match.status === "CONTESTED"
+                                                    ? "border-yellow-500/30 bg-yellow-500/5"
+                                                    : match.status === "IN_PROGRESS"
+                                                    ? "border-red-500/30 bg-red-950/10"
+                                                    : "border-zinc-800 bg-zinc-900/80"
+                                            }`}
+                                        >
+                                            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                                <div>
+                                                    <div className="flex items-center gap-3">
+                                                        <h3 className="font-bold text-white">
+                                                            {teamA} vs {teamB}
+                                                        </h3>
+                                                        <Badge
+                                                            variant={
+                                                                match.status === "CONTESTED" ? "warning"
+                                                                    : match.status === "COMPLETED" ? "success"
+                                                                    : match.status === "IN_PROGRESS" ? "danger"
+                                                                    : "neutral"
+                                                            }
+                                                        >
+                                                            {statusLabel[match.status] ?? match.status}
+                                                        </Badge>
+                                                    </div>
+                                                    <p className="mt-1 text-sm text-zinc-500">
+                                                        {match.format}
+                                                        {match.status === "COMPLETED" || match.status === "CONTESTED"
+                                                            ? ` • Score : ${match.scoreA} – ${match.scoreB}`
+                                                            : match.scheduledAt
+                                                            ? ` • ${new Date(match.scheduledAt).toLocaleString("fr-FR")}`
+                                                            : ""}
+                                                    </p>
                                                 </div>
-                                                <p className="mt-1 text-sm text-zinc-500">
-                                                    Score : {match.scoreA} – {match.scoreB}
-                                                </p>
-                                                <p className="mt-1 text-xs text-zinc-600 font-mono">
-                                                    {match.id.slice(0, 18)}…
-                                                </p>
+                                                <div className="flex gap-2">
+                                                    {match.status === "PENDING" && (
+                                                        <Button
+                                                            onClick={() => handleLaunchMatch(match.id)}
+                                                            disabled={launching === match.id}
+                                                            className="flex items-center gap-2"
+                                                        >
+                                                            <FiRadio />
+                                                            {launching === match.id ? "Lancement..." : "Lancer"}
+                                                        </Button>
+                                                    )}
+                                                    {(match.status === "CONTESTED" || match.status === "IN_PROGRESS") && (
+                                                        <Button
+                                                            onClick={() => handleValidateMatch(match.id)}
+                                                            disabled={validating === match.id}
+                                                            className="flex items-center gap-2"
+                                                        >
+                                                            <FiCheckCircle />
+                                                            {validating === match.id ? "Validation..." : "Valider le score"}
+                                                        </Button>
+                                                    )}
+                                                </div>
                                             </div>
-                                            {(match.status === "CONTESTED" ||
-                                                match.status === "IN_PROGRESS") && (
-                                                <Button
-                                                    onClick={() => handleValidateMatch(match.id)}
-                                                    disabled={validating === match.id}
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    <FiCheckCircle />
-                                                    {validating === match.id ? "Validation..." : "Valider le score"}
-                                                </Button>
-                                            )}
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </>
                     )}

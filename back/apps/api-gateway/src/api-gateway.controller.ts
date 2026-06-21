@@ -38,10 +38,4 @@ export class ApiGatewayController {
     return this.apiGatewayService.changePassword(req.user.id, body.currentPassword, body.newPassword);
   }
 
-  @Get('admin-test')
-  @UseGuards(JwtGuard, RolesGuard)
-  @Roles('ADMIN')
-  adminTest() {
-    return { message: 'Bienvenue Admin' };
-  }
 }

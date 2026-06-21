@@ -80,6 +80,23 @@ export class MatchesServiceService {
     });
   }
 
+  private async updateTeamStats(teamId: string, isWinner: boolean, isDraw: boolean) {
+    const members = await this.prisma.teamMember.findMany({ where: { teamId } });
+    await Promise.all(
+      members.map((m) =>
+        this.prisma.userStats.update({
+          where: { userId: m.userId },
+          data: {
+            wins: isWinner ? { increment: 1 } : undefined,
+            losses: !isWinner && !isDraw ? { increment: 1 } : undefined,
+            elo: { increment: isWinner ? 25 : isDraw ? 0 : -15 },
+            xp: { increment: isWinner ? 100 : isDraw ? 30 : 15 },
+          },
+        }),
+      ),
+    );
+  }
+
   async submitScore(data: { id: string; teamId: string; scoreA: number; scoreB: number }) {
     const match = await this.prisma.match.findUnique({ where: { id: data.id } });
     if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
@@ -91,6 +108,8 @@ export class MatchesServiceService {
       throw new RpcException({ statusCode: 403, message: 'Votre équipe ne participe pas à ce match' });
     }
     const winnerId = data.scoreA > data.scoreB ? match.teamAId : data.scoreB > data.scoreA ? match.teamBId : null;
+    const isDraw = winnerId === null;
+
     const updated = await this.prisma.match.update({
       where: { id: data.id },
       data: {
@@ -101,6 +120,11 @@ export class MatchesServiceService {
         playedAt: new Date(),
       },
     });
+
+    await Promise.all([
+      this.updateTeamStats(match.teamAId, winnerId === match.teamAId, isDraw),
+      this.updateTeamStats(match.teamBId, winnerId === match.teamBId, isDraw),
+    ]);
 
     await this.notifyBothTeams(
       match.teamAId,

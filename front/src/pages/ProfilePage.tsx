@@ -19,6 +19,7 @@ export function ProfilePage() {
     const [bio, setBio] = useState("");
     const [country, setCountry] = useState("");
     const [favoriteGame, setFavoriteGame] = useState("");
+    const [avatar, setAvatar] = useState("");
     const [saving, setSaving] = useState(false);
     const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -42,6 +43,7 @@ export function ProfilePage() {
         setBio(me?.profile.bio ?? "");
         setCountry(me?.profile.country ?? "");
         setFavoriteGame(me?.profile.favoriteGame ?? "");
+        setAvatar(me?.profile.avatar ?? "");
         setEditing(true);
     }
 
@@ -49,7 +51,7 @@ export function ProfilePage() {
         setSaving(true);
         setSaveError(null);
         try {
-            await usersApi.updateProfile({ bio, country, favoriteGame });
+            await usersApi.updateProfile({ bio, country, favoriteGame, avatar: avatar || undefined });
             refetchMe();
             setEditing(false);
         } catch (err) {
@@ -177,6 +179,23 @@ export function ProfilePage() {
                                 value={favoriteGame}
                                 onChange={(e) => setFavoriteGame(e.target.value)}
                             />
+                        </div>
+                        <div>
+                            <label className="block text-sm text-zinc-400 mb-1">Avatar (URL)</label>
+                            <input
+                                className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-red-500 focus:outline-none"
+                                placeholder="https://..."
+                                value={avatar}
+                                onChange={(e) => setAvatar(e.target.value)}
+                            />
+                            {avatar && (
+                                <img
+                                    src={avatar}
+                                    alt="Aperçu avatar"
+                                    className="mt-2 h-16 w-16 rounded-full object-cover border border-zinc-700"
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                />
+                            )}
                         </div>
                         <div className="flex gap-3 pt-2">
                             <Button onClick={saveProfile} disabled={saving}>

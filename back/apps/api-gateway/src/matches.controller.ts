@@ -5,6 +5,7 @@ import { Roles } from './auth/roles.decorator';
 import { RolesGuard } from './auth/roles.guard';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { SubmitScoreDto } from './dto/submit-score.dto';
+import { UpdateMatchStatusDto } from './dto/update-match-status.dto';
 
 type Req = { user: { id: string } };
 
@@ -46,6 +47,13 @@ export class MatchesController {
   @Roles('ADMIN')
   validate(@Param('id') id: string) {
     return this.gateway.validateMatch(id);
+  }
+
+  @Patch(':id/status')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles('ADMIN')
+  updateStatus(@Param('id') id: string, @Body() body: UpdateMatchStatusDto) {
+    return this.gateway.updateMatchStatus(id, body.status);
   }
 
   @Post(':id/contest')

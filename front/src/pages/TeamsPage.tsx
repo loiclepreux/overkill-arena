@@ -168,6 +168,18 @@ export function TeamsPage() {
         setScoreModal({ matchId: match.id, teamId: myTeam.id });
     }
 
+    async function handleContest(matchId: string) {
+        if (!myTeam) return;
+        if (!confirm("Contester ce résultat ? Un admin devra valider manuellement.")) return;
+        try {
+            await matchesApi.contest(matchId, myTeam.id);
+            setActionMsg("Résultat contesté. Un administrateur va examiner le match.");
+            refetchMatches();
+        } catch (err) {
+            setActionMsg(getErrorMessage(err));
+        }
+    }
+
     async function handleSubmitScore() {
         if (!scoreModal) return;
         setSubmittingScore(true);
@@ -360,6 +372,8 @@ export function TeamsPage() {
                                     const nameA = teamName(allTeams, match.teamAId);
                                     const nameB = teamName(allTeams, match.teamBId);
                                     const isInProgress = match.status === "IN_PROGRESS";
+                                    const isCompleted = match.status === "COMPLETED";
+                                    const isMyMatch = match.teamAId === myTeam.id || match.teamBId === myTeam.id;
                                     return (
                                         <div key={match.id} className="rounded-xl border border-zinc-800 bg-black/30 p-4">
                                             <div className="flex items-center justify-between">
@@ -369,7 +383,7 @@ export function TeamsPage() {
                                                     </p>
                                                     <p className="mt-1 text-xs text-zinc-500">
                                                         {match.format}
-                                                        {match.status === "COMPLETED" && ` • Score : ${match.scoreA} – ${match.scoreB}`}
+                                                        {(isCompleted || match.status === "CONTESTED") && ` • Score : ${match.scoreA} – ${match.scoreB}`}
                                                     </p>
                                                 </div>
                                                 <div className="flex items-center gap-2">
@@ -380,6 +394,15 @@ export function TeamsPage() {
                                                             className="rounded-lg border border-zinc-600 px-3 py-1 text-xs text-zinc-300 hover:border-red-500 hover:text-red-400"
                                                         >
                                                             Soumettre score
+                                                        </button>
+                                                    )}
+                                                    {isCompleted && isMyMatch && label === "DÉFAITE" && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleContest(match.id)}
+                                                            className="rounded-lg border border-yellow-700 px-3 py-1 text-xs text-yellow-400 hover:border-yellow-500"
+                                                        >
+                                                            Contester
                                                         </button>
                                                     )}
                                                     <Badge
