@@ -21,6 +21,8 @@ export const useAuthStore = create<AuthState>()(
                     unreadNotificationsCount: 0,
                 }),
 
+            updateUser: (user) => set({ user }),
+
             setUnreadNotificationsCount: (count) =>
                 set({ unreadNotificationsCount: count }),
         }),

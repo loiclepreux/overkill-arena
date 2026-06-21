@@ -17,6 +17,11 @@ export class UsersServiceController {
     return this.usersServiceService.getById(data.userId);
   }
 
+  @MessagePattern('users.get-by-ids')
+  getByIds(@Payload() data: { userIds: string[] }) {
+    return this.usersServiceService.getByIds(data.userIds);
+  }
+
   @MessagePattern('users.update-profile')
   updateProfile(
     @Payload()

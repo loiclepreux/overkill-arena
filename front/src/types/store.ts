@@ -15,5 +15,6 @@ export type AuthState = {
 
     login: (user: AuthUser, accessToken: string) => void;
     logout: () => void;
+    updateUser: (user: AuthUser) => void;
     setUnreadNotificationsCount: (count: number) => void;
 };

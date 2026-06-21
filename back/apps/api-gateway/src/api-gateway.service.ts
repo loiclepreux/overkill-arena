@@ -51,6 +51,14 @@ export class ApiGatewayService {
     return this.rpc(this.usersClient.send('users.get-by-id', { userId }));
   }
 
+  getUsersByIds(userIds: string[]) {
+    return this.rpc(this.usersClient.send('users.get-by-ids', { userIds }));
+  }
+
+  changePassword(userId: string, currentPassword: string, newPassword: string) {
+    return this.rpc(this.authClient.send('auth.change-password', { userId, currentPassword, newPassword }));
+  }
+
   // ─── Teams ────────────────────────────────────────────────────────────────
 
   createTeam(data: { name: string; tag: string; logo?: string; description?: string; captainId: string }) {

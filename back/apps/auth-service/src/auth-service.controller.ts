@@ -33,4 +33,16 @@ export class AuthServiceController {
   ) {
     return this.authServiceService.me(data);
   }
+
+  @MessagePattern('auth.change-password')
+  changePassword(
+    @Payload()
+    data: {
+      userId: string;
+      currentPassword: string;
+      newPassword: string;
+    },
+  ) {
+    return this.authServiceService.changePassword(data);
+  }
 }

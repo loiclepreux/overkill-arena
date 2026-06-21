@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
 import {
     FiMenu,
@@ -12,13 +12,27 @@ import {
     FiSettings,
 } from "react-icons/fi";
 import { useAuthStore } from "@/store/auth.store";
+import { notificationsApi } from "@/services/notifications.api";
 import logo from "@/assets/logo-overkill.png";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 
 export function DashboardLayout() {
-    const { user, logout, unreadNotificationsCount } = useAuthStore();
+    const { user, logout, isAuthenticated, setUnreadNotificationsCount, unreadNotificationsCount } = useAuthStore();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    useEffect(() => {
+        if (!isAuthenticated) return;
+        notificationsApi.getUnreadCount()
+            .then(({ count }) => setUnreadNotificationsCount(count))
+            .catch(() => {});
+        const interval = setInterval(() => {
+            notificationsApi.getUnreadCount()
+                .then(({ count }) => setUnreadNotificationsCount(count))
+                .catch(() => {});
+        }, 60_000);
+        return () => clearInterval(interval);
+    }, [isAuthenticated]);
 
     const closeSidebar = () => setIsSidebarOpen(false);
 

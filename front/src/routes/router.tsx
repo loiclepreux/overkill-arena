@@ -10,6 +10,8 @@ import { DashboardLayout } from "@/layouts/DashboardLayout";
 import { AdminPage } from "@/pages/AdminPage";
 import { HomePage } from "@/pages/HomePage";
 import { TournamentPage } from "@/pages/TournamentPage";
+import { TournamentDetailPage } from "@/pages/TournamentDetailPage";
+import { PlayerPage } from "@/pages/PlayerPage";
 import { TeamsPage } from "@/pages/TeamsPage";
 import { ProfilePage } from "@/pages/ProfilePage";
 import { LoginPage } from "@/pages/LoginPage";
@@ -50,6 +52,7 @@ export const router = createBrowserRouter([
         children: [
             { index: true, element: <DashboardPage /> },
             { path: "tournaments", element: <TournamentPage /> },
+            { path: "tournaments/:id", element: <TournamentDetailPage /> },
             { path: "teams", element: <TeamsPage /> },
             { path: "leaderboard", element: <LeaderboardPage /> },
             { path: "profile", element: <ProfilePage /> },
@@ -63,6 +66,7 @@ export const router = createBrowserRouter([
                 ),
             },
             { path: "notifications", element: <NotificationsPage /> },
+            { path: "players/:id", element: <PlayerPage /> },
         ],
     },
 

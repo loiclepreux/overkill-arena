@@ -2,21 +2,42 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ApiGatewayController } from './api-gateway.controller';
 import { ApiGatewayService } from './api-gateway.service';
 
+const mockService = {
+  login: jest.fn(),
+  register: jest.fn(),
+  changePassword: jest.fn(),
+};
+
 describe('ApiGatewayController', () => {
-  let apiGatewayController: ApiGatewayController;
+  let controller: ApiGatewayController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [ApiGatewayController],
-      providers: [ApiGatewayService],
+      providers: [{ provide: ApiGatewayService, useValue: mockService }],
     }).compile();
 
-    apiGatewayController = app.get<ApiGatewayController>(ApiGatewayController);
+    controller = module.get<ApiGatewayController>(ApiGatewayController);
+    jest.clearAllMocks();
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(apiGatewayController.getHello()).toBe('Hello World!');
-    });
+  it('forwards login to service', () => {
+    const body = { email: 'a@b.com', password: 'pass' };
+    mockService.login.mockReturnValue({ subscribe: jest.fn() });
+    controller.login(body as any);
+    expect(mockService.login).toHaveBeenCalledWith(body);
+  });
+
+  it('forwards register to service', () => {
+    const body = { pseudo: 'bob', email: 'b@b.com', password: 'pass' };
+    mockService.register.mockReturnValue({ subscribe: jest.fn() });
+    controller.register(body as any);
+    expect(mockService.register).toHaveBeenCalledWith(body);
+  });
+
+  it('me returns user from request', () => {
+    const req = { user: { id: 'uid', pseudo: 'bob', email: 'b@b.com', role: 'PLAYER' } };
+    const result = controller.me(req as any);
+    expect(result).toEqual({ user: req.user });
   });
 });

@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: overkill-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: overkill
+      POSTGRES_PASSWORD: overkill_password
+      POSTGRES_DB: overkill_arena
+    ports:
+      - "5432:5432"
+    volumes:
+      - overkill_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U overkill -d overkill_arena"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nats:
+    image: nats:latest
+    container_name: overkill-nats
+    restart: always
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: ["-js", "-m", "8222"]
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+      args:
+        VITE_AUTH_API_URL: http://localhost:3000
+    container_name: overkill-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+      - nats
+
+volumes:
+  overkill_postgres_data:
+
+# NOTE: Les microservices NestJS (api-gateway, auth, users, teams, etc.)
+# se lancent via : cd back && npm run dev:start
+# Ils nécessitent que postgres et nats soient déjà en cours d'exécution.

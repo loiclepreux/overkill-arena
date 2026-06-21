@@ -115,6 +115,19 @@ export class AuthServiceService {
     };
   }
 
+  async changePassword(data: { userId: string; currentPassword: string; newPassword: string }) {
+    const user = await this.prisma.user.findUnique({ where: { id: data.userId } });
+    if (!user) throw new UnauthorizedException('Utilisateur introuvable.');
+
+    const valid = await bcrypt.compare(data.currentPassword, user.password);
+    if (!valid) throw new UnauthorizedException('Mot de passe actuel incorrect.');
+
+    const hash = await bcrypt.hash(data.newPassword, 10);
+    await this.prisma.user.update({ where: { id: user.id }, data: { password: hash } });
+
+    return { message: 'Mot de passe modifié avec succès.' };
+  }
+
   async me(data: MePayload) {
     try {
       const payload = await this.jwtService.verifyAsync<{

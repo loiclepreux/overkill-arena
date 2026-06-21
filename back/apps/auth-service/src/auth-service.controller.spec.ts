@@ -2,21 +2,44 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthServiceController } from './auth-service.controller';
 import { AuthServiceService } from './auth-service.service';
 
+const mockService = {
+  login: jest.fn(),
+  register: jest.fn(),
+  me: jest.fn(),
+  changePassword: jest.fn(),
+};
+
 describe('AuthServiceController', () => {
-  let authServiceController: AuthServiceController;
+  let controller: AuthServiceController;
 
   beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthServiceController],
-      providers: [AuthServiceService],
+      providers: [{ provide: AuthServiceService, useValue: mockService }],
     }).compile();
 
-    authServiceController = app.get<AuthServiceController>(AuthServiceController);
+    controller = module.get<AuthServiceController>(AuthServiceController);
+    jest.clearAllMocks();
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(authServiceController.getHello()).toBe('Hello World!');
-    });
+  it('forwards login to service', () => {
+    const payload = { email: 'a@b.com', password: 'pass' };
+    mockService.login.mockResolvedValue({ accessToken: 'tok' });
+    controller.login(payload);
+    expect(mockService.login).toHaveBeenCalledWith(payload);
+  });
+
+  it('forwards register to service', () => {
+    const payload = { pseudo: 'bob', email: 'b@b.com', password: 'pass' };
+    mockService.register.mockResolvedValue({ accessToken: 'tok' });
+    controller.register(payload);
+    expect(mockService.register).toHaveBeenCalledWith(payload);
+  });
+
+  it('forwards changePassword to service', () => {
+    const payload = { userId: 'uid', currentPassword: 'old', newPassword: 'new' };
+    mockService.changePassword.mockResolvedValue({ message: 'ok' });
+    controller.changePassword(payload);
+    expect(mockService.changePassword).toHaveBeenCalledWith(payload);
   });
 });

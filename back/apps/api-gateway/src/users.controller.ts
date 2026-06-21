@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Query, Request, UseGuards } from '@nestjs/common';
 
 import { JwtGuard } from './auth/jwt.guard';
 import { ApiGatewayService } from './api-gateway.service';
@@ -16,6 +16,13 @@ export class UsersController {
   @UseGuards(JwtGuard)
   getMe(@Request() req: AuthenticatedRequest) {
     return this.apiGatewayService.getMyProfile(req.user.id);
+  }
+
+  @Get('bulk')
+  @UseGuards(JwtGuard)
+  getBulk(@Query('ids') ids: string) {
+    const userIds = ids ? ids.split(',').filter(Boolean) : [];
+    return this.apiGatewayService.getUsersByIds(userIds);
   }
 
   @Get(':id')

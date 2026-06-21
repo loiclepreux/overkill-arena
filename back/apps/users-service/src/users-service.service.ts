@@ -36,6 +36,14 @@ export class UsersServiceService {
     };
   }
 
+  async getByIds(userIds: string[]) {
+    const users = await this.prisma.user.findMany({
+      where: { id: { in: userIds } },
+      select: { id: true, pseudo: true },
+    });
+    return users;
+  }
+
   async updateProfile(data: UpdateProfilePayload) {
     const profile = await this.prisma.profile.update({
       where: { userId: data.userId },
