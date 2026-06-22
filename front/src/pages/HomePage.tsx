@@ -163,7 +163,7 @@ export function HomePage() {
                         <div className="grid gap-4 sm:grid-cols-3">
                             <MiniStat title="Rang" value={topPlayer.rank} red />
                             <MiniStat title="Victoires" value={`${topPlayer.wins} ⚔️`} />
-                            <MiniStat title="ELO" value={String(topPlayer.elo)} />
+                            <MiniStat title="Score" value={String(topPlayer.elo)} />
                         </div>
                     </div>
                 </div>

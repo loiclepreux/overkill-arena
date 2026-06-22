@@ -79,7 +79,7 @@ export function DashboardPage() {
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                <DashboardStatCard title="ELO" value={me?.stats.elo ?? "—"} icon={<FiAward />} description="Classement joueur" />
+                <DashboardStatCard title="Score de classement" value={me?.stats.elo ?? "—"} icon={<FiAward />} description="Classement joueur" />
                 <DashboardStatCard title="Victoires" value={me?.stats.wins ?? "—"} icon={<FiTarget />} description="Toutes saisons" />
                 <DashboardStatCard
                     title="Équipe"

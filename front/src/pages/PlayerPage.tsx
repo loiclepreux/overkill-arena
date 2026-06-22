@@ -87,7 +87,7 @@ export function PlayerPage() {
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                <DashboardStatCard title="ELO" value={stats.elo} icon={<FiAward />} description="Classement actuel" />
+                <DashboardStatCard title="Score de classement" value={stats.elo} icon={<FiAward />} description="Classement actuel" />
                 <DashboardStatCard title="Victoires" value={stats.wins} icon={<FiTarget />} description="Toutes saisons" />
                 <DashboardStatCard title="Défaites" value={stats.losses} icon={<FiShield />} description="Matchs perdus" />
                 <DashboardStatCard title="Tournois" value={stats.tournamentsPlayed} icon={<FiAward />} description="Participations" />

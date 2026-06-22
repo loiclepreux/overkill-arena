@@ -234,7 +234,7 @@ export function ProfilePage() {
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-                <DashboardStatCard title="ELO" value={me?.stats.elo ?? 0} icon={<FiAward />} description="Classement actuel" />
+                <DashboardStatCard title="Score de classement" value={me?.stats.elo ?? 0} icon={<FiAward />} description="Classement actuel" />
                 <DashboardStatCard title="Victoires" value={me?.stats.wins ?? 0} icon={<FiTarget />} description="Toutes saisons" />
                 <DashboardStatCard title="Tournois" value={me?.stats.tournamentsPlayed ?? 0} icon={<FiShield />} description="Participations" />
                 <DashboardStatCard title="Coupes" value={`🏆 ${totalCups}`} icon={<FiAward />} description="Récompenses obtenues" />

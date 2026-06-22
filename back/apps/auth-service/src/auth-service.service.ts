@@ -3,6 +3,7 @@ import {
   ConflictException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -118,7 +119,7 @@ export class AuthServiceService {
   async promoteToAdmin(data: { userId: string }) {
     const existingAdmin = await this.prisma.user.findFirst({ where: { role: 'ADMIN' } });
     if (existingAdmin) {
-      throw new ConflictException('Un administrateur existe déjà. Contactez-le pour obtenir les droits.');
+      throw new RpcException({ statusCode: 409, message: 'Un administrateur existe déjà. Contactez-le pour obtenir les droits.' });
     }
     const user = await this.prisma.user.update({
       where: { id: data.userId },
