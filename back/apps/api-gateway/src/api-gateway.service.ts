@@ -59,6 +59,14 @@ export class ApiGatewayService {
     return this.rpc(this.usersClient.send('users.get-all', {}));
   }
 
+  getPublicStats() {
+    return this.rpc(this.usersClient.send('users.public-stats', {}));
+  }
+
+  getTopPlayer() {
+    return this.rpc(this.usersClient.send('users.top-player', {}));
+  }
+
   changePassword(userId: string, currentPassword: string, newPassword: string) {
     return this.rpc(this.authClient.send('auth.change-password', { userId, currentPassword, newPassword }));
   }

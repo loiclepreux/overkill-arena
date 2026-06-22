@@ -9,10 +9,15 @@ import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { useApi } from "@/hooks/useApi";
+import { publicApi } from "@/services/public.api";
 
 import Video from "@/assets/video-callof.mp4";
 
 export function HomePage() {
+    const { data: stats } = useApi(publicApi.getStats);
+    const { data: topPlayer } = useApi(publicApi.getTopPlayer);
+
     return (
         <section className="space-y-28">
             {/* HERO */}
@@ -68,7 +73,7 @@ export function HomePage() {
                     >
                         Participez aux tournois compétitifs, gérez votre équipe,
                         gagnez des médailles, débloquez des titres et dominez
-                        l’arène.
+                        l'arène.
                     </p>
 
                     <div className="mt-10 flex flex-wrap gap-4">
@@ -91,30 +96,30 @@ export function HomePage() {
                 />
             </div>
 
-            {/* STATS */}
+            {/* STATS RÉELLES */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
                 <HomeStatCard
                     icon={<FiAward className="text-4xl text-red-500" />}
-                    value="12+"
-                    label="Tournois actifs"
+                    value={stats ? String(stats.tournaments) : "…"}
+                    label="Tournois créés"
                 />
 
                 <HomeStatCard
                     icon={<FiShield className="text-4xl text-red-500" />}
-                    value="64"
-                    label="Teams compétitives"
+                    value={stats ? String(stats.teams) : "…"}
+                    label="Équipes compétitives"
                 />
 
                 <HomeStatCard
                     icon={<FiTarget className="text-4xl text-red-500" />}
-                    value="245"
-                    label="Médailles attribuées"
+                    value={stats ? String(stats.rewards) : "…"}
+                    label="Récompenses attribuées"
                 />
 
                 <HomeStatCard
                     icon={<FiUsers className="text-4xl text-red-500" />}
-                    value="42"
-                    label="Titres débloqués"
+                    value={stats ? String(stats.users) : "…"}
+                    label="Joueurs inscrits"
                 />
             </div>
 
@@ -128,7 +133,7 @@ export function HomePage() {
 
                 <FeatureCard
                     icon={<FiShield className="text-5xl" />}
-                    title="Gestion d’équipes"
+                    title="Gestion d'équipes"
                     description="Gérez votre équipe, recrutez des joueurs, suivez les performances et construisez une vraie identité compétitive."
                 />
 
@@ -139,64 +144,30 @@ export function HomePage() {
                 />
             </div>
 
-            {/* SEASON CHAMPION */}
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8">
-                <Badge variant="warning">Champion de la saison</Badge>
+            {/* CHAMPION EN TITRE */}
+            {topPlayer && (
+                <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8">
+                    <Badge variant="warning">Champion en titre</Badge>
 
-                <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div>
-                        <h2 className="text-4xl font-extrabold text-white">
-                            🥇 OverkillPlayer
-                        </h2>
+                    <div className="mt-6 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                        <div>
+                            <h2 className="text-4xl font-extrabold text-white">
+                                🥇 {topPlayer.pseudo}
+                            </h2>
 
-                        <p className="mt-4 text-zinc-400">
-                            Leader actuel du classement compétitif.
-                        </p>
-                    </div>
+                            <p className="mt-4 text-zinc-400">
+                                Leader actuel du classement compétitif.
+                            </p>
+                        </div>
 
-                    <div className="grid gap-4 sm:grid-cols-3">
-                        <MiniStat title="Titre" value="Diamond" red />
-                        <MiniStat title="Coupes" value="3 🏆" />
-                        <MiniStat title="ELO" value="2450" />
-                    </div>
-                </div>
-            </div>
-
-            {/* FEATURED TOURNAMENT */}
-            <div
-                className="
-                    rounded-3xl border border-zinc-800
-                    bg-zinc-900/80 p-8
-                "
-            >
-                <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-                    <div>
-                        <Badge variant="danger">Tournoi vedette</Badge>
-
-                        <h2 className="mt-5 text-4xl font-extrabold text-white">
-                            Winter Clash
-                        </h2>
-
-                        <p className="mt-4 max-w-2xl text-zinc-400">
-                            32 équipes, bracket compétitif, récompenses Prestige
-                            et médailles pour les meilleurs joueurs.
-                        </p>
-
-                        <div className="mt-6 flex flex-wrap gap-3">
-                            <Badge variant="warning">Diamond League</Badge>
-                            <Badge variant="success">28/32 équipes</Badge>
-                            <Badge variant="danger">Début dans 3 jours</Badge>
+                        <div className="grid gap-4 sm:grid-cols-3">
+                            <MiniStat title="Rang" value={topPlayer.rank} red />
+                            <MiniStat title="Victoires" value={`${topPlayer.wins} ⚔️`} />
+                            <MiniStat title="ELO" value={String(topPlayer.elo)} />
                         </div>
                     </div>
-
-                    <Link to="/register">
-                        <Button>
-                            Rejoindre le tournoi
-                            <FiArrowRight className="ml-2" />
-                        </Button>
-                    </Link>
                 </div>
-            </div>
+            )}
 
             {/* PROGRESSION SYSTEM */}
             <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8">
@@ -246,7 +217,7 @@ export function HomePage() {
                 <Badge variant="danger">Participez à la compétition</Badge>
 
                 <h2 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">
-                    Prêt à entrer dans l’arène ?
+                    Prêt à entrer dans l'arène ?
                 </h2>
 
                 <p className="mx-auto mt-6 max-w-2xl text-lg text-zinc-400">
@@ -259,8 +230,11 @@ export function HomePage() {
                         <Button>Créer un compte</Button>
                     </Link>
 
-                    <Link to="/login">
-                        <Button variant="secondary">Se connecter</Button>
+                    <Link to="/dashboard/leaderboard">
+                        <Button variant="secondary">
+                            Voir le classement
+                            <FiArrowRight className="ml-2" />
+                        </Button>
                     </Link>
                 </div>
             </div>

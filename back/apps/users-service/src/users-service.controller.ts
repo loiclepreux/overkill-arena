@@ -27,6 +27,16 @@ export class UsersServiceController {
     return this.usersServiceService.getAll();
   }
 
+  @MessagePattern('users.public-stats')
+  getPublicStats() {
+    return this.usersServiceService.getPublicStats();
+  }
+
+  @MessagePattern('users.top-player')
+  getTopPlayer() {
+    return this.usersServiceService.getTopPlayer();
+  }
+
   @MessagePattern('users.update-profile')
   updateProfile(
     @Payload()

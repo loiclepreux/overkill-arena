@@ -51,6 +51,26 @@ export class UsersServiceService {
     });
   }
 
+  async getPublicStats() {
+    const [teams, tournaments, rewards, users] = await Promise.all([
+      this.prisma.team.count(),
+      this.prisma.tournament.count(),
+      this.prisma.reward.count(),
+      this.prisma.user.count(),
+    ]);
+    return { teams, tournaments, rewards, users };
+  }
+
+  async getTopPlayer() {
+    const topStats = await this.prisma.userStats.findFirst({ orderBy: { elo: 'desc' } });
+    if (!topStats) return null;
+    const user = await this.prisma.user.findUnique({
+      where: { id: topStats.userId },
+      select: { pseudo: true },
+    });
+    return { pseudo: user?.pseudo ?? 'Inconnu', elo: topStats.elo, rank: topStats.rank, wins: topStats.wins };
+  }
+
   async updateProfile(data: UpdateProfilePayload) {
     const profile = await this.prisma.profile.update({
       where: { userId: data.userId },
