@@ -59,6 +59,10 @@ export class ApiGatewayService {
     return this.rpc(this.usersClient.send('users.get-all', {}));
   }
 
+  promoteToAdmin(userId: string) {
+    return this.rpc(this.authClient.send('auth.promote-admin', { userId }));
+  }
+
   getPublicStats() {
     return this.rpc(this.usersClient.send('users.public-stats', {}));
   }

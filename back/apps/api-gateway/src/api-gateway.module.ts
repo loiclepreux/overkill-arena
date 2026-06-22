@@ -13,6 +13,7 @@ import { MatchesController } from './matches.controller';
 import { RewardsController } from './rewards.controller';
 import { NotificationsController } from './notifications.controller';
 import { PublicController } from './public.controller';
+import { SetupController } from './setup.controller';
 
 const natsUrl = process.env.NATS_URL || 'nats://localhost:4222';
 
@@ -44,6 +45,7 @@ const natsClient = (name: string) => ({
     RewardsController,
     NotificationsController,
     PublicController,
+    SetupController,
   ],
   providers: [ApiGatewayService, JwtStrategy, RolesGuard],
 })

@@ -34,6 +34,11 @@ export class AuthServiceController {
     return this.authServiceService.me(data);
   }
 
+  @MessagePattern('auth.promote-admin')
+  promoteToAdmin(@Payload() data: { userId: string }) {
+    return this.authServiceService.promoteToAdmin(data);
+  }
+
   @MessagePattern('auth.change-password')
   changePassword(
     @Payload()

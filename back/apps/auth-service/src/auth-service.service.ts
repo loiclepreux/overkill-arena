@@ -115,6 +115,20 @@ export class AuthServiceService {
     };
   }
 
+  async promoteToAdmin(data: { userId: string }) {
+    const existingAdmin = await this.prisma.user.findFirst({ where: { role: 'ADMIN' } });
+    if (existingAdmin) {
+      throw new ConflictException('Un administrateur existe déjà. Contactez-le pour obtenir les droits.');
+    }
+    const user = await this.prisma.user.update({
+      where: { id: data.userId },
+      data: { role: 'ADMIN' },
+      select: { id: true, pseudo: true, email: true, role: true, createdAt: true },
+    });
+    const accessToken = await this.generateToken(user);
+    return { message: 'Vous êtes maintenant administrateur.', user, accessToken };
+  }
+
   async changePassword(data: { userId: string; currentPassword: string; newPassword: string }) {
     const user = await this.prisma.user.findUnique({ where: { id: data.userId } });
     if (!user) throw new UnauthorizedException('Utilisateur introuvable.');

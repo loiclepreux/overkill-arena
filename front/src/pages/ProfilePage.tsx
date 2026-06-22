@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiAward, FiShield, FiTarget, FiUser, FiLock } from "react-icons/fi";
+import { FiAward, FiShield, FiTarget, FiUser, FiLock, FiSettings } from "react-icons/fi";
 
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -30,6 +30,13 @@ export function ProfilePage() {
     const [changingPw, setChangingPw] = useState(false);
     const [pwMsg, setPwMsg] = useState<string | null>(null);
     const [pwError, setPwError] = useState<string | null>(null);
+
+    const [promotingAdmin, setPromotingAdmin] = useState(false);
+    const [adminMsg, setAdminMsg] = useState<string | null>(null);
+    const [adminError, setAdminError] = useState<string | null>(null);
+    const [showAdminConfirm, setShowAdminConfirm] = useState(false);
+
+    const { login } = useAuthStore();
 
     const { data: me, loading: loadingMe, error: errorMe, refetch: refetchMe } = useApi(usersApi.getMe);
     const { data: rewardStats } = useApi(rewardsApi.getMyStats);
@@ -84,6 +91,22 @@ export function ProfilePage() {
             setPwError(getErrorMessage(err));
         } finally {
             setChangingPw(false);
+        }
+    }
+
+    async function handlePromoteAdmin() {
+        setPromotingAdmin(true);
+        setAdminError(null);
+        setAdminMsg(null);
+        try {
+            const res = await authApi.promoteToAdmin();
+            login({ id: res.user.id, pseudo: res.user.pseudo, email: res.user.email, role: res.user.role as "PLAYER" | "ADMIN" }, res.accessToken);
+            setAdminMsg(res.message);
+            setShowAdminConfirm(false);
+        } catch (err) {
+            setAdminError(getErrorMessage(err));
+        } finally {
+            setPromotingAdmin(false);
         }
     }
 
@@ -302,6 +325,44 @@ export function ProfilePage() {
                             </div>
                         )}
                     </div>
+
+                    {user?.role !== "ADMIN" && (
+                        <div className="mt-6 border-t border-zinc-800 pt-6">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    <FiSettings className="text-zinc-500" />
+                                    <span className="text-sm font-semibold text-zinc-300">Accès administrateur</span>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => { setShowAdminConfirm(!showAdminConfirm); setAdminError(null); }}
+                                    className="text-sm text-red-400 hover:text-red-300"
+                                >
+                                    {showAdminConfirm ? "Annuler" : "Devenir admin"}
+                                </button>
+                            </div>
+                            {adminMsg && (
+                                <div className="mt-3 rounded-xl border border-green-800 bg-green-950/20 px-4 py-3 text-sm text-green-300">
+                                    {adminMsg}
+                                </div>
+                            )}
+                            {showAdminConfirm && (
+                                <div className="mt-4 rounded-xl border border-red-900/40 bg-red-950/10 p-4 space-y-3">
+                                    {adminError && <ErrorMessage message={adminError} />}
+                                    <p className="text-sm text-zinc-400">
+                                        Action <strong className="text-white">irréversible</strong> et unique sur toute la plateforme. Une fois un administrateur désigné, ce bouton disparaît pour tous.
+                                    </p>
+                                    <Button
+                                        className="w-full"
+                                        onClick={handlePromoteAdmin}
+                                        disabled={promotingAdmin}
+                                    >
+                                        {promotingAdmin ? "Promotion en cours..." : "Confirmer — Devenir administrateur"}
+                                    </Button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
 
                 <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6">
