@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/store/auth.store";
 import { login as loginApi, getApiErrorMessage } from "@/services/auth/auth.api";
+import { useApi } from "@/hooks/useApi";
+import { publicApi } from "@/services/public.api";
 
 export function LoginPage() {
     const navigate = useNavigate();
     const { login } = useAuthStore();
+    const { data: stats } = useApi(publicApi.getStats);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -107,22 +110,15 @@ export function LoginPage() {
                 </Button>
             </form>
 
-            <div
-                className="
-        mt-8 rounded-xl
-        border border-zinc-800
-        bg-zinc-900/50
-        p-4
-    "
-            >
-                <p className="text-sm text-zinc-400">🏆 42 titres débloqués</p>
-
-                <p className="mt-2 text-sm text-zinc-400">
-                    🥇 245 médailles attribuées
+            <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
+                <p className="text-sm text-zinc-400">
+                    🥇 {stats ? stats.rewards : "…"} récompenses attribuées
                 </p>
-
                 <p className="mt-2 text-sm text-zinc-400">
-                    ⚔️ 12 tournois actifs
+                    👥 {stats ? stats.users : "…"} joueurs inscrits
+                </p>
+                <p className="mt-2 text-sm text-zinc-400">
+                    ⚔️ {stats ? stats.tournaments : "…"} tournois créés
                 </p>
             </div>
 

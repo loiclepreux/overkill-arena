@@ -14,7 +14,7 @@ import { authApi } from "@/services/auth.api";
 import { getErrorMessage } from "@/hooks/useApi";
 
 export function ProfilePage() {
-    const { user } = useAuthStore();
+    const { user, login } = useAuthStore();
     const [editing, setEditing] = useState(false);
     const [bio, setBio] = useState("");
     const [country, setCountry] = useState("");
@@ -35,8 +35,6 @@ export function ProfilePage() {
     const [adminMsg, setAdminMsg] = useState<string | null>(null);
     const [adminError, setAdminError] = useState<string | null>(null);
     const [showAdminConfirm, setShowAdminConfirm] = useState(false);
-
-    const { login } = useAuthStore();
 
     const { data: me, loading: loadingMe, error: errorMe, refetch: refetchMe } = useApi(usersApi.getMe);
     const { data: rewardStats } = useApi(rewardsApi.getMyStats);

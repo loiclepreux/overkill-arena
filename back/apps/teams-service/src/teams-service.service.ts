@@ -79,7 +79,7 @@ export class TeamsServiceService {
       where: { userId },
       include: { team: { include: { members: true } } },
     });
-    if (!membership) throw new RpcException({ statusCode: 404, message: 'Vous n\'êtes dans aucune équipe' });
+    if (!membership) return null;
     return membership.team;
   }
 

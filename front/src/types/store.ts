@@ -17,4 +17,5 @@ export type AuthState = {
     logout: () => void;
     updateUser: (user: AuthUser) => void;
     setUnreadNotificationsCount: (count: number) => void;
+    incrementUnreadNotificationsCount: () => void;
 };

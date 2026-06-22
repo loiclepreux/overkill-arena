@@ -25,6 +25,11 @@ export const useAuthStore = create<AuthState>()(
 
             setUnreadNotificationsCount: (count) =>
                 set({ unreadNotificationsCount: count }),
+
+            incrementUnreadNotificationsCount: () =>
+                set((state) => ({
+                    unreadNotificationsCount: state.unreadNotificationsCount + 1,
+                })),
         }),
         { name: "auth-storage" },
     ),

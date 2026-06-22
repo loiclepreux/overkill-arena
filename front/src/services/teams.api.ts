@@ -40,7 +40,7 @@ export type CreateTeamPayload = {
 export const teamsApi = {
     getAll: () => api.get<Team[]>("/teams").then((r) => r.data),
     getById: (id: string) => api.get<Team>(`/teams/${id}`).then((r) => r.data),
-    getMyTeam: () => api.get<Team>("/teams/my").then((r) => r.data),
+    getMyTeam: () => api.get<Team | null>("/teams/my").then((r) => r.data || null),
     create: (data: CreateTeamPayload) =>
         api.post<Team>("/teams", data).then((r) => r.data),
     update: (id: string, data: Partial<CreateTeamPayload>) =>

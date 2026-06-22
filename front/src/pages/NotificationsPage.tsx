@@ -41,7 +41,7 @@ function timeAgo(date: string): string {
 }
 
 export function NotificationsPage() {
-    const { setUnreadNotificationsCount } = useAuthStore();
+    const { setUnreadNotificationsCount, unreadNotificationsCount } = useAuthStore();
     const [markingAll, setMarkingAll] = useState(false);
     const [actionMsg, setActionMsg] = useState<string | null>(null);
     const [page, setPage] = useState(1);
@@ -87,6 +87,7 @@ export function NotificationsPage() {
                 prev.map((n) => (n.id === id ? { ...n, read: true } : n))
             );
             refetchCount();
+            setUnreadNotificationsCount(Math.max(0, unreadNotificationsCount - 1));
         } catch (err) {
             setActionMsg(getErrorMessage(err));
         }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import { useNotificationSocket } from "@/hooks/useNotificationSocket";
 import {
     FiMenu,
     FiX,
@@ -26,13 +27,9 @@ export function DashboardLayout() {
         notificationsApi.getUnreadCount()
             .then(({ count }) => setUnreadNotificationsCount(count))
             .catch(() => {});
-        const interval = setInterval(() => {
-            notificationsApi.getUnreadCount()
-                .then(({ count }) => setUnreadNotificationsCount(count))
-                .catch(() => {});
-        }, 60_000);
-        return () => clearInterval(interval);
     }, [isAuthenticated]);
+
+    useNotificationSocket();
 
     const closeSidebar = () => setIsSidebarOpen(false);
 

@@ -18,22 +18,23 @@ export class UsersServiceService {
   }
 
   async getById(userId: string) {
-    const profile = await this.prisma.profile.findUnique({
-      where: { userId },
-    });
+    const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { pseudo: true } });
+    if (!user) throw new NotFoundException('Utilisateur introuvable.');
 
-    const stats = await this.prisma.userStats.findUnique({
-      where: { userId },
-    });
+    const [profile, stats] = await Promise.all([
+      this.prisma.profile.upsert({
+        where: { userId },
+        update: {},
+        create: { userId, pseudo: user.pseudo },
+      }),
+      this.prisma.userStats.upsert({
+        where: { userId },
+        update: {},
+        create: { userId },
+      }),
+    ]);
 
-    if (!profile || !stats) {
-      throw new NotFoundException('Profil utilisateur introuvable.');
-    }
-
-    return {
-      profile,
-      stats,
-    };
+    return { profile, stats };
   }
 
   async getByIds(userIds: string[]) {

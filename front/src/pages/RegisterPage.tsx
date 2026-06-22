@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/store/auth.store";
 import { register as registerApi, getApiErrorMessage } from "@/services/auth/auth.api";
+import { useApi } from "@/hooks/useApi";
+import { publicApi } from "@/services/public.api";
 
 export function RegisterPage() {
     const navigate = useNavigate();
     const { login } = useAuthStore();
+    const { data: stats } = useApi(publicApi.getStats);
 
     const [pseudo, setPseudo] = useState("");
     const [email, setEmail] = useState("");
@@ -116,24 +119,15 @@ export function RegisterPage() {
                 </Button>
             </form>
 
-            <div
-                className="
-        mt-8 rounded-xl
-        border border-zinc-800
-        bg-zinc-900/50
-        p-4
-    "
-            >
+            <div className="mt-8 rounded-xl border border-zinc-800 bg-zinc-900/50 p-4">
                 <p className="text-sm text-zinc-400">
-                    🏆 245 médailles attribuées
+                    🏆 {stats ? stats.rewards : "…"} récompenses attribuées
                 </p>
-
                 <p className="mt-2 text-sm text-zinc-400">
-                    👥 64 équipes compétitives
+                    👥 {stats ? stats.teams : "…"} équipes compétitives
                 </p>
-
                 <p className="mt-2 text-sm text-zinc-400">
-                    ⚔️ 12 tournois actifs
+                    ⚔️ {stats ? stats.tournaments : "…"} tournois créés
                 </p>
             </div>
 

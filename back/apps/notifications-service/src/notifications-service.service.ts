@@ -1,11 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import { Inject, Injectable } from '@nestjs/common';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaService } from '@app/prisma';
 import { NotificationKind } from '@prisma/client';
 
 @Injectable()
 export class NotificationsServiceService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject('NATS_CLIENT') private readonly natsClient: ClientProxy,
+  ) {}
 
   async getByUser(data: { userId: string; page?: number; limit?: number }) {
     const page = data.page ?? 1;
@@ -38,7 +41,9 @@ export class NotificationsServiceService {
     title: string;
     message: string;
   }) {
-    return this.prisma.notification.create({ data });
+    const notification = await this.prisma.notification.create({ data });
+    this.natsClient.emit('notification.pushed', { userId: data.userId, notification });
+    return notification;
   }
 
   async markRead(data: { id: string; userId: string }) {

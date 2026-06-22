@@ -81,7 +81,7 @@ export function TeamsPage() {
             : Promise.resolve([] as JoinRequest[])
     );
 
-    const memberIds = myTeam?.members.map((m) => m.userId) ?? [];
+    const memberIds = myTeam?.members?.map((m) => m.userId) ?? [];
     const requestIds = joinRequests?.map((r) => r.userId) ?? [];
     const usernameMap = useUsernames([...memberIds, ...requestIds]);
 
