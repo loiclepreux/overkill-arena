@@ -11,7 +11,10 @@ export function LeaderboardPage() {
     const { data: teams, loading, error } = useApi(teamsApi.getAll);
     const [search, setSearch] = useState("");
 
-    const sorted = [...(teams ?? [])].sort((a, b) => b.members.length - a.members.length);
+    const sorted = [...(teams ?? [])].sort((a, b) => {
+        const winDiff = (b.wins ?? 0) - (a.wins ?? 0);
+        return winDiff !== 0 ? winDiff : b.members.length - a.members.length;
+    });
     const filtered = search.trim()
         ? sorted.filter((t) =>
               t.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -36,8 +39,7 @@ export function LeaderboardPage() {
                         Suivez les meilleures équipes et les performances dominantes de la plateforme.
                     </p>
                     <div className="mt-6 flex flex-wrap gap-3">
-                        <Badge variant="warning">Saison 1</Badge>
-                        <Badge variant="danger">Classement ELO</Badge>
+                        <Badge variant="danger">Classement victoires</Badge>
                         <Badge variant="success">Récompenses actives</Badge>
                     </div>
                 </div>
@@ -49,7 +51,7 @@ export function LeaderboardPage() {
                 <DashboardStatCard title="Équipes" value={teams?.length ?? 0} icon={<FiShield />} description="Classées" />
                 <DashboardStatCard title="Top équipe" value={sorted[0]?.name ?? "—"} icon={<FiAward />} description="1ère place" />
                 <DashboardStatCard title="Total membres" value={teams?.reduce((acc, t) => acc + t.members.length, 0) ?? 0} icon={<FiUsers />} description="Joueurs inscrits" />
-                <DashboardStatCard title="Actives" value={teams?.length ?? 0} icon={<FiTrendingUp />} description="Cette saison" />
+                <DashboardStatCard title="Victoires totales" value={teams?.reduce((acc, t) => acc + (t.wins ?? 0), 0) ?? 0} icon={<FiTrendingUp />} description="Matchs remportés" />
             </div>
 
             {loading && <LoadingSpinner />}
@@ -73,7 +75,10 @@ export function LeaderboardPage() {
                                     </div>
                                     <h3 className="mt-5 text-2xl font-extrabold text-white">{team.name}</h3>
                                     <Badge variant="danger" className="mt-3">[{team.tag}]</Badge>
-                                    <p className="mt-4 text-xl font-bold text-red-500">{team.members.length} membres</p>
+                                    <p className="mt-4 text-xl font-bold text-red-500">
+                                        {team.wins ?? 0} victoire{(team.wins ?? 0) !== 1 ? "s" : ""}
+                                    </p>
+                                    <p className="mt-1 text-sm text-zinc-500">{team.members.length} membre{team.members.length > 1 ? "s" : ""}</p>
                                 </div>
                             );
                         })}
@@ -121,7 +126,10 @@ export function LeaderboardPage() {
                                     </div>
                                 </div>
                                 <div className="text-left sm:text-right">
-                                    <p className="text-sm text-zinc-500">
+                                    <p className="text-2xl font-bold text-red-500">
+                                        {team.wins ?? 0} <span className="text-base font-normal text-zinc-400">victoire{(team.wins ?? 0) !== 1 ? "s" : ""}</span>
+                                    </p>
+                                    <p className="mt-1 text-sm text-zinc-500">
                                         Créée le {new Date(team.createdAt).toLocaleDateString("fr-FR")}
                                     </p>
                                 </div>

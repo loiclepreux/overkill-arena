@@ -33,8 +33,8 @@ describe('TournamentsServiceController', () => {
   });
 
   it('forwards updateStatus to service', () => {
-    const data = { id: 'tid', status: 'OPEN' };
-    mockService.updateStatus.mockResolvedValue({ id: 'tid', status: 'OPEN' });
+    const data = { id: 'tid', status: 'OPEN' as const };
+    mockService.updateStatus.mockResolvedValue({ id: 'tid', status: 'OPEN' as const });
     controller.updateStatus(data);
     expect(mockService.updateStatus).toHaveBeenCalledWith(data);
   });

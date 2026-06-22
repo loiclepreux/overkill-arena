@@ -34,7 +34,7 @@ describe('RewardsServiceController', () => {
   });
 
   it('forwards award to service', () => {
-    const data = { userId: 'uid', type: 'MEDAL', medalRank: 'GOLD' };
+    const data = { userId: 'uid', type: 'MEDAL' as const, medalRank: 'GOLD' as const };
     mockService.award.mockResolvedValue({ id: 'rid' });
     controller.award(data);
     expect(mockService.award).toHaveBeenCalledWith(data);

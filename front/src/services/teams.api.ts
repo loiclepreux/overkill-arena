@@ -19,6 +19,7 @@ export type Team = {
     captainId: string;
     createdAt: string;
     members: TeamMember[];
+    wins: number;
 };
 
 export type JoinRequest = {

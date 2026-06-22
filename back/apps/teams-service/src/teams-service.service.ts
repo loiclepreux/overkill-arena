@@ -50,10 +50,19 @@ export class TeamsServiceService {
   }
 
   async getAll() {
-    return this.prisma.team.findMany({
-      include: { members: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    const [teams, matchWins] = await Promise.all([
+      this.prisma.team.findMany({
+        include: { members: true },
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.match.groupBy({
+        by: ['winnerId'],
+        where: { winnerId: { not: null }, status: 'COMPLETED' },
+        _count: { id: true },
+      }),
+    ]);
+    const winMap = new Map(matchWins.map((w) => [w.winnerId as string, w._count.id]));
+    return teams.map((t) => ({ ...t, wins: winMap.get(t.id) ?? 0 }));
   }
 
   async getById(id: string) {

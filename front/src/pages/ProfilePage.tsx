@@ -108,7 +108,7 @@ export function ProfilePage() {
                             </h1>
 
                             <p className="mt-3 text-zinc-400">
-                                {me?.profile.bio ?? "Joueur compétitif Overkill Arena"}
+                                {me?.profile.bio || "—"}
                             </p>
 
                             <div className="mt-5 flex flex-wrap justify-center gap-3 sm:justify-start">

@@ -80,20 +80,37 @@ export class MatchesServiceService {
     });
   }
 
+  private eloToRank(elo: number): string {
+    if (elo >= 2000) return 'Master';
+    if (elo >= 1750) return 'Diamant';
+    if (elo >= 1500) return 'Platine';
+    if (elo >= 1300) return 'Or';
+    if (elo >= 1100) return 'Argent';
+    return 'Bronze';
+  }
+
   private async updateTeamStats(teamId: string, isWinner: boolean, isDraw: boolean) {
     const members = await this.prisma.teamMember.findMany({ where: { teamId } });
     await Promise.all(
-      members.map((m) =>
-        this.prisma.userStats.update({
+      members.map(async (m) => {
+        const stats = await this.prisma.userStats.findUnique({ where: { userId: m.userId } });
+        const currentElo = stats?.elo ?? 1000;
+        const currentXp = stats?.xp ?? 0;
+        const newElo = Math.max(0, currentElo + (isWinner ? 25 : isDraw ? 0 : -15));
+        const newXp = currentXp + (isWinner ? 100 : isDraw ? 30 : 15);
+        const newLevel = Math.floor(newXp / 1000) + 1;
+        return this.prisma.userStats.update({
           where: { userId: m.userId },
           data: {
-            wins: isWinner ? { increment: 1 } : undefined,
-            losses: !isWinner && !isDraw ? { increment: 1 } : undefined,
-            elo: { increment: isWinner ? 25 : isDraw ? 0 : -15 },
-            xp: { increment: isWinner ? 100 : isDraw ? 30 : 15 },
+            ...(isWinner && { wins: { increment: 1 } }),
+            ...(!isWinner && !isDraw && { losses: { increment: 1 } }),
+            elo: newElo,
+            xp: newXp,
+            level: newLevel,
+            rank: this.eloToRank(newElo),
           },
-        }),
-      ),
+        });
+      }),
     );
   }
 
