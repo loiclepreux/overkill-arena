@@ -1,6 +1,6 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, firstValueFrom } from 'rxjs';
 import {
   RewardType,
   MedalRank,
@@ -25,20 +25,20 @@ export class ApiGatewayService {
     private readonly notificationsClient: ClientProxy,
   ) {}
 
-  private rpc<T>(obs: Observable<T>): Observable<T> {
-    return obs.pipe(
-      catchError((err: unknown) => {
-        const e = err as {
-          statusCode?: number;
-          message?: string;
-          error?: { statusCode?: number; message?: string };
-        };
-        const statusCode = e?.statusCode ?? e?.error?.statusCode ?? 500;
-        const message =
-          e?.message ?? e?.error?.message ?? 'Internal server error';
-        return throwError(() => new HttpException(message, statusCode));
-      }),
-    );
+  private async rpc<T>(obs: Observable<T>): Promise<T> {
+    try {
+      return await firstValueFrom(obs);
+    } catch (err: unknown) {
+      const e = err as {
+        statusCode?: number;
+        message?: string;
+        error?: { statusCode?: number; message?: string };
+      };
+      const statusCode = e?.statusCode ?? e?.error?.statusCode ?? 500;
+      const message =
+        e?.message ?? e?.error?.message ?? 'Internal server error';
+      throw new HttpException(message, statusCode);
+    }
   }
 
   // ─── Auth ─────────────────────────────────────────────────────────────────

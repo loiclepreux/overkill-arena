@@ -24,14 +24,14 @@ describe('ApiGatewayController', () => {
   it('forwards login to service', () => {
     const body = { email: 'a@b.com', password: 'pass' };
     mockService.login.mockReturnValue({ subscribe: jest.fn() });
-    controller.login(body);
+    void controller.login(body);
     expect(mockService.login).toHaveBeenCalledWith(body);
   });
 
   it('forwards register to service', () => {
     const body = { pseudo: 'bob', email: 'b@b.com', password: 'pass' };
     mockService.register.mockReturnValue({ subscribe: jest.fn() });
-    controller.register(body);
+    void controller.register(body);
     expect(mockService.register).toHaveBeenCalledWith(body);
   });
 

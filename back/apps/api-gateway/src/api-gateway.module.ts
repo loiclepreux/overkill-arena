@@ -29,8 +29,10 @@ const natsClient = (name: string) => ({
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || 'overkill_super_secret_dev',
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET || 'overkill_super_secret_dev',
+      }),
     }),
     ClientsModule.register([
       natsClient('AUTH_SERVICE'),

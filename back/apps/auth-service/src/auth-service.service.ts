@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ConflictException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -39,7 +35,10 @@ export class AuthServiceService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email ou pseudo déjà utilisé.');
+      throw new RpcException({
+        statusCode: 409,
+        message: 'Email ou pseudo déjà utilisé.',
+      });
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -90,13 +89,19 @@ export class AuthServiceService {
     });
 
     if (!user) {
-      throw new UnauthorizedException('Identifiants invalides.');
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Identifiants invalides.',
+      });
     }
 
     const isPasswordValid = await bcrypt.compare(data.password, user.password);
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Identifiants invalides.');
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Identifiants invalides.',
+      });
     }
 
     const safeUser = {
@@ -154,11 +159,18 @@ export class AuthServiceService {
     const user = await this.prisma.user.findUnique({
       where: { id: data.userId },
     });
-    if (!user) throw new UnauthorizedException('Utilisateur introuvable.');
+    if (!user)
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Utilisateur introuvable.',
+      });
 
     const valid = await bcrypt.compare(data.currentPassword, user.password);
     if (!valid)
-      throw new UnauthorizedException('Mot de passe actuel incorrect.');
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Mot de passe actuel incorrect.',
+      });
 
     const hash = await bcrypt.hash(data.newPassword, 10);
     await this.prisma.user.update({
@@ -192,14 +204,20 @@ export class AuthServiceService {
       });
 
       if (!user) {
-        throw new UnauthorizedException('Utilisateur introuvable.');
+        throw new RpcException({
+          statusCode: 401,
+          message: 'Utilisateur introuvable.',
+        });
       }
 
       return {
         user,
       };
     } catch {
-      throw new UnauthorizedException('Token invalide ou expiré.');
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Token invalide ou expiré.',
+      });
     }
   }
 
