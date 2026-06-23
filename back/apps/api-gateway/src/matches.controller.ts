@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiGatewayService } from './api-gateway.service';
 import { JwtGuard } from './auth/jwt.guard';
 import { Roles } from './auth/roles.decorator';
@@ -6,8 +14,6 @@ import { RolesGuard } from './auth/roles.guard';
 import { CreateMatchDto } from './dto/create-match.dto';
 import { SubmitScoreDto } from './dto/submit-score.dto';
 import { UpdateMatchStatusDto } from './dto/update-match-status.dto';
-
-type Req = { user: { id: string } };
 
 @Controller('matches')
 export class MatchesController {
@@ -38,7 +44,10 @@ export class MatchesController {
 
   @Patch(':id/score')
   @UseGuards(JwtGuard)
-  submitScore(@Param('id') id: string, @Body() body: SubmitScoreDto & { teamId: string }, @Request() req: Req) {
+  submitScore(
+    @Param('id') id: string,
+    @Body() body: SubmitScoreDto & { teamId: string },
+  ) {
     return this.gateway.submitScore(id, body.teamId, body.scoreA, body.scoreB);
   }
 

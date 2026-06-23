@@ -18,7 +18,10 @@ export class UsersServiceService {
   }
 
   async getById(userId: string) {
-    const user = await this.prisma.user.findUnique({ where: { id: userId }, select: { pseudo: true } });
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { pseudo: true },
+    });
     if (!user) throw new NotFoundException('Utilisateur introuvable.');
 
     const [profile, stats] = await Promise.all([
@@ -63,13 +66,20 @@ export class UsersServiceService {
   }
 
   async getTopPlayer() {
-    const topStats = await this.prisma.userStats.findFirst({ orderBy: { elo: 'desc' } });
+    const topStats = await this.prisma.userStats.findFirst({
+      orderBy: { elo: 'desc' },
+    });
     if (!topStats) return null;
     const user = await this.prisma.user.findUnique({
       where: { id: topStats.userId },
       select: { pseudo: true },
     });
-    return { pseudo: user?.pseudo ?? 'Inconnu', elo: topStats.elo, rank: topStats.rank, wins: topStats.wins };
+    return {
+      pseudo: user?.pseudo ?? 'Inconnu',
+      elo: topStats.elo,
+      rank: topStats.rank,
+      wins: topStats.wins,
+    };
   }
 
   async updateProfile(data: UpdateProfilePayload) {

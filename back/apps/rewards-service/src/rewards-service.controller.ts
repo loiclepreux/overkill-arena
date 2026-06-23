@@ -13,16 +13,19 @@ export class RewardsServiceController {
   }
 
   @MessagePattern('rewards.award')
-  award(@Payload() payload: {
-    userId: string;
-    type: RewardType;
-    medalRank?: MedalRank;
-    cupName?: string;
-    titleName?: string;
-    description?: string;
-    tournamentId?: string;
-    matchId?: string;
-  }) {
+  award(
+    @Payload()
+    payload: {
+      userId: string;
+      type: RewardType;
+      medalRank?: MedalRank;
+      cupName?: string;
+      titleName?: string;
+      description?: string;
+      tournamentId?: string;
+      matchId?: string;
+    },
+  ) {
     return this.rewardsService.award(payload);
   }
 

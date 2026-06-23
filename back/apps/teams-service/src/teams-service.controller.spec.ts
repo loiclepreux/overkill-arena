@@ -31,21 +31,21 @@ describe('TeamsServiceController', () => {
 
   it('forwards getAll to service', () => {
     mockService.getAll.mockResolvedValue([]);
-    controller.getAll();
+    void controller.getAll();
     expect(mockService.getAll).toHaveBeenCalled();
   });
 
   it('forwards requestJoin to service', () => {
     const data = { teamId: 'tid', userId: 'uid' };
     mockService.requestJoin.mockResolvedValue({ id: 'rid' });
-    controller.requestJoin(data);
+    void controller.requestJoin(data);
     expect(mockService.requestJoin).toHaveBeenCalledWith(data);
   });
 
   it('forwards leave to service', () => {
     const data = { teamId: 'tid', userId: 'uid' };
     mockService.leave.mockResolvedValue({ message: 'ok' });
-    controller.leave(data);
+    void controller.leave(data);
     expect(mockService.leave).toHaveBeenCalledWith(data);
   });
 });

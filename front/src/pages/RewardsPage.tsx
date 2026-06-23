@@ -21,12 +21,11 @@ const TITLE_CUPS_REQUIRED: Record<string, number> = {
 
 function computeTitle(cups: number): { current: string; next: string; progress: number; required: number } {
     let current = "Rookie";
-    let next = "Challenger";
     for (const title of TITLES) {
         if (cups >= TITLE_CUPS_REQUIRED[title]) current = title;
     }
     const nextIdx = TITLES.indexOf(current) + 1;
-    next = nextIdx < TITLES.length ? TITLES[nextIdx] : current;
+    const next = nextIdx < TITLES.length ? TITLES[nextIdx] : current;
     const required = TITLE_CUPS_REQUIRED[next] ?? TITLE_CUPS_REQUIRED[current];
     const base = TITLE_CUPS_REQUIRED[current];
     const progress = required > base ? Math.min(((cups - base) / (required - base)) * 100, 100) : 100;

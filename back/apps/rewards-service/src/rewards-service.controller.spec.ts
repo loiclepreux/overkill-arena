@@ -23,20 +23,29 @@ describe('RewardsServiceController', () => {
 
   it('forwards getByUser to service', () => {
     mockService.getByUser.mockResolvedValue([]);
-    controller.getByUser({ userId: 'uid' });
+    void controller.getByUser({ userId: 'uid' });
     expect(mockService.getByUser).toHaveBeenCalledWith('uid');
   });
 
   it('forwards getStats to service', () => {
-    mockService.getStats.mockResolvedValue({ total: 0, medals: { total: 0, gold: 0, silver: 0, bronze: 0 }, cups: 0, titles: 0 });
-    controller.getStats({ userId: 'uid' });
+    mockService.getStats.mockResolvedValue({
+      total: 0,
+      medals: { total: 0, gold: 0, silver: 0, bronze: 0 },
+      cups: 0,
+      titles: 0,
+    });
+    void controller.getStats({ userId: 'uid' });
     expect(mockService.getStats).toHaveBeenCalledWith('uid');
   });
 
   it('forwards award to service', () => {
-    const data = { userId: 'uid', type: 'MEDAL' as const, medalRank: 'GOLD' as const };
+    const data = {
+      userId: 'uid',
+      type: 'MEDAL' as const,
+      medalRank: 'GOLD' as const,
+    };
     mockService.award.mockResolvedValue({ id: 'rid' });
-    controller.award(data);
+    void controller.award(data);
     expect(mockService.award).toHaveBeenCalledWith(data);
   });
 });

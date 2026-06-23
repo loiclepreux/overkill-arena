@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Patch, Query, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiGatewayService } from './api-gateway.service';
 import { JwtGuard } from './auth/jwt.guard';
 

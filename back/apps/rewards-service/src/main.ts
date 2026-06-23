@@ -18,4 +18,4 @@ async function bootstrap() {
 
   console.log('🚀 Rewards Service connected to NATS');
 }
-bootstrap();
+void bootstrap();

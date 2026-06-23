@@ -19,4 +19,4 @@ async function bootstrap() {
   console.log('🚀 Teams Service connected to NATS');
 }
 
-bootstrap();
+void bootstrap();

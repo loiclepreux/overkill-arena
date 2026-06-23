@@ -18,4 +18,4 @@ async function bootstrap() {
 
   console.log('🚀 Tournaments Service connected to NATS');
 }
-bootstrap();
+void bootstrap();

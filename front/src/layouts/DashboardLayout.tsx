@@ -27,7 +27,7 @@ export function DashboardLayout() {
         notificationsApi.getUnreadCount()
             .then(({ count }) => setUnreadNotificationsCount(count))
             .catch(() => {});
-    }, [isAuthenticated]);
+    }, [isAuthenticated, setUnreadNotificationsCount]);
 
     useNotificationSocket();
 

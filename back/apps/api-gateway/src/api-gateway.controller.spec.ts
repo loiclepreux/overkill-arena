@@ -24,20 +24,22 @@ describe('ApiGatewayController', () => {
   it('forwards login to service', () => {
     const body = { email: 'a@b.com', password: 'pass' };
     mockService.login.mockReturnValue({ subscribe: jest.fn() });
-    controller.login(body as any);
+    controller.login(body);
     expect(mockService.login).toHaveBeenCalledWith(body);
   });
 
   it('forwards register to service', () => {
     const body = { pseudo: 'bob', email: 'b@b.com', password: 'pass' };
     mockService.register.mockReturnValue({ subscribe: jest.fn() });
-    controller.register(body as any);
+    controller.register(body);
     expect(mockService.register).toHaveBeenCalledWith(body);
   });
 
   it('me returns user from request', () => {
-    const req = { user: { id: 'uid', pseudo: 'bob', email: 'b@b.com', role: 'PLAYER' } };
-    const result = controller.me(req as any);
+    const req = {
+      user: { id: 'uid', pseudo: 'bob', email: 'b@b.com', role: 'PLAYER' },
+    };
+    const result = controller.me(req);
     expect(result).toEqual({ user: req.user });
   });
 });

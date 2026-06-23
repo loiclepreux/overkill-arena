@@ -10,8 +10,15 @@ export class MatchesServiceService {
     @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
   ) {}
 
-  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
-    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  private notify(
+    userId: string,
+    kind: NotificationKind,
+    title: string,
+    message: string,
+  ) {
+    this.natsClient
+      .emit('notifications.create', { userId, kind, title, message })
+      .subscribe();
   }
 
   private async notifyBothTeams(
@@ -22,8 +29,14 @@ export class MatchesServiceService {
     message: string,
   ) {
     const [teamA, teamB] = await Promise.all([
-      this.prisma.team.findUnique({ where: { id: teamAId }, select: { captainId: true } }),
-      this.prisma.team.findUnique({ where: { id: teamBId }, select: { captainId: true } }),
+      this.prisma.team.findUnique({
+        where: { id: teamAId },
+        select: { captainId: true },
+      }),
+      this.prisma.team.findUnique({
+        where: { id: teamBId },
+        select: { captainId: true },
+      }),
     ]);
     if (teamA) this.notify(teamA.captainId, kind, title, message);
     if (teamB) this.notify(teamB.captainId, kind, title, message);
@@ -37,7 +50,10 @@ export class MatchesServiceService {
     scheduledAt?: string;
   }) {
     if (data.teamAId === data.teamBId) {
-      throw new RpcException({ statusCode: 400, message: 'Les deux équipes doivent être différentes' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Les deux équipes doivent être différentes',
+      });
     }
     const match = await this.prisma.match.create({
       data: {
@@ -62,7 +78,8 @@ export class MatchesServiceService {
 
   async getById(id: string) {
     const match = await this.prisma.match.findUnique({ where: { id } });
-    if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
+    if (!match)
+      throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
     return match;
   }
 
@@ -89,14 +106,25 @@ export class MatchesServiceService {
     return 'Bronze';
   }
 
-  private async updateTeamStats(teamId: string, isWinner: boolean, isDraw: boolean) {
-    const members = await this.prisma.teamMember.findMany({ where: { teamId } });
+  private async updateTeamStats(
+    teamId: string,
+    isWinner: boolean,
+    isDraw: boolean,
+  ) {
+    const members = await this.prisma.teamMember.findMany({
+      where: { teamId },
+    });
     await Promise.all(
       members.map(async (m) => {
-        const stats = await this.prisma.userStats.findUnique({ where: { userId: m.userId } });
+        const stats = await this.prisma.userStats.findUnique({
+          where: { userId: m.userId },
+        });
         const currentElo = stats?.elo ?? 1000;
         const currentXp = stats?.xp ?? 0;
-        const newElo = Math.max(0, currentElo + (isWinner ? 25 : isDraw ? 0 : -15));
+        const newElo = Math.max(
+          0,
+          currentElo + (isWinner ? 25 : isDraw ? 0 : -15),
+        );
         const newXp = currentXp + (isWinner ? 100 : isDraw ? 30 : 15);
         const newLevel = Math.floor(newXp / 1000) + 1;
         return this.prisma.userStats.update({
@@ -114,17 +142,37 @@ export class MatchesServiceService {
     );
   }
 
-  async submitScore(data: { id: string; teamId: string; scoreA: number; scoreB: number }) {
-    const match = await this.prisma.match.findUnique({ where: { id: data.id } });
-    if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
+  async submitScore(data: {
+    id: string;
+    teamId: string;
+    scoreA: number;
+    scoreB: number;
+  }) {
+    const match = await this.prisma.match.findUnique({
+      where: { id: data.id },
+    });
+    if (!match)
+      throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
     if (match.status === 'COMPLETED' || match.status === 'CANCELLED') {
-      throw new RpcException({ statusCode: 400, message: 'Ce match ne peut plus être modifié' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Ce match ne peut plus être modifié',
+      });
     }
-    const isParticipant = match.teamAId === data.teamId || match.teamBId === data.teamId;
+    const isParticipant =
+      match.teamAId === data.teamId || match.teamBId === data.teamId;
     if (!isParticipant) {
-      throw new RpcException({ statusCode: 403, message: 'Votre équipe ne participe pas à ce match' });
+      throw new RpcException({
+        statusCode: 403,
+        message: 'Votre équipe ne participe pas à ce match',
+      });
     }
-    const winnerId = data.scoreA > data.scoreB ? match.teamAId : data.scoreB > data.scoreA ? match.teamBId : null;
+    const winnerId =
+      data.scoreA > data.scoreB
+        ? match.teamAId
+        : data.scoreB > data.scoreA
+          ? match.teamBId
+          : null;
     const isDraw = winnerId === null;
 
     const updated = await this.prisma.match.update({
@@ -155,10 +203,16 @@ export class MatchesServiceService {
   }
 
   async validate(data: { id: string }) {
-    const match = await this.prisma.match.findUnique({ where: { id: data.id } });
-    if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
+    const match = await this.prisma.match.findUnique({
+      where: { id: data.id },
+    });
+    if (!match)
+      throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
     if (match.status !== 'CONTESTED') {
-      throw new RpcException({ statusCode: 400, message: 'Seuls les matchs contestés peuvent être validés' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Seuls les matchs contestés peuvent être validés',
+      });
     }
     const updated = await this.prisma.match.update({
       where: { id: data.id },
@@ -177,14 +231,24 @@ export class MatchesServiceService {
   }
 
   async contest(data: { id: string; teamId: string }) {
-    const match = await this.prisma.match.findUnique({ where: { id: data.id } });
-    if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
+    const match = await this.prisma.match.findUnique({
+      where: { id: data.id },
+    });
+    if (!match)
+      throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
     if (match.status !== 'COMPLETED') {
-      throw new RpcException({ statusCode: 400, message: 'Seuls les matchs terminés peuvent être contestés' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Seuls les matchs terminés peuvent être contestés',
+      });
     }
-    const isParticipant = match.teamAId === data.teamId || match.teamBId === data.teamId;
+    const isParticipant =
+      match.teamAId === data.teamId || match.teamBId === data.teamId;
     if (!isParticipant) {
-      throw new RpcException({ statusCode: 403, message: 'Votre équipe ne participe pas à ce match' });
+      throw new RpcException({
+        statusCode: 403,
+        message: 'Votre équipe ne participe pas à ce match',
+      });
     }
     return this.prisma.match.update({
       where: { id: data.id },
@@ -193,8 +257,11 @@ export class MatchesServiceService {
   }
 
   async updateStatus(data: { id: string; status: MatchStatus }) {
-    const match = await this.prisma.match.findUnique({ where: { id: data.id } });
-    if (!match) throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
+    const match = await this.prisma.match.findUnique({
+      where: { id: data.id },
+    });
+    if (!match)
+      throw new RpcException({ statusCode: 404, message: 'Match introuvable' });
     return this.prisma.match.update({
       where: { id: data.id },
       data: { status: data.status },

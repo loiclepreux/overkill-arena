@@ -19,4 +19,4 @@ async function bootstrap() {
   console.log('🚀 Auth Service connected to NATS');
 }
 
-bootstrap();
+void bootstrap();

@@ -10,8 +10,15 @@ export class RewardsServiceService {
     @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
   ) {}
 
-  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
-    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  private notify(
+    userId: string,
+    kind: NotificationKind,
+    title: string,
+    message: string,
+  ) {
+    this.natsClient
+      .emit('notifications.create', { userId, kind, title, message })
+      .subscribe();
   }
 
   async getByUser(userId: string) {
@@ -32,18 +39,32 @@ export class RewardsServiceService {
     matchId?: string;
   }) {
     if (data.type === 'MEDAL' && !data.medalRank) {
-      throw new RpcException({ statusCode: 400, message: 'Le rang de la médaille est requis' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Le rang de la médaille est requis',
+      });
     }
     if (data.type === 'CUP' && !data.cupName) {
-      throw new RpcException({ statusCode: 400, message: 'Le nom de la coupe est requis' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Le nom de la coupe est requis',
+      });
     }
     if (data.type === 'TITLE' && !data.titleName) {
-      throw new RpcException({ statusCode: 400, message: 'Le nom du titre est requis' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Le nom du titre est requis',
+      });
     }
     const reward = await this.prisma.reward.create({ data });
 
     const rewardLabels: Record<RewardType, string> = {
-      MEDAL: data.medalRank === 'GOLD' ? '🥇 médaille d\'or' : data.medalRank === 'SILVER' ? '🥈 médaille d\'argent' : '🥉 médaille de bronze',
+      MEDAL:
+        data.medalRank === 'GOLD'
+          ? "🥇 médaille d'or"
+          : data.medalRank === 'SILVER'
+            ? "🥈 médaille d'argent"
+            : '🥉 médaille de bronze',
       CUP: `🏆 la coupe "${data.cupName}"`,
       TITLE: `🎖 le titre "${data.titleName}"`,
     };

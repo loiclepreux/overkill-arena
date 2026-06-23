@@ -25,21 +25,25 @@ describe('AuthServiceController', () => {
   it('forwards login to service', () => {
     const payload = { email: 'a@b.com', password: 'pass' };
     mockService.login.mockResolvedValue({ accessToken: 'tok' });
-    controller.login(payload);
+    void controller.login(payload);
     expect(mockService.login).toHaveBeenCalledWith(payload);
   });
 
   it('forwards register to service', () => {
     const payload = { pseudo: 'bob', email: 'b@b.com', password: 'pass' };
     mockService.register.mockResolvedValue({ accessToken: 'tok' });
-    controller.register(payload);
+    void controller.register(payload);
     expect(mockService.register).toHaveBeenCalledWith(payload);
   });
 
   it('forwards changePassword to service', () => {
-    const payload = { userId: 'uid', currentPassword: 'old', newPassword: 'new' };
+    const payload = {
+      userId: 'uid',
+      currentPassword: 'old',
+      newPassword: 'new',
+    };
     mockService.changePassword.mockResolvedValue({ message: 'ok' });
-    controller.changePassword(payload);
+    void controller.changePassword(payload);
     expect(mockService.changePassword).toHaveBeenCalledWith(payload);
   });
 });

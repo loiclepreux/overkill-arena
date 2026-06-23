@@ -5,10 +5,14 @@ import { NotificationKind } from '@prisma/client';
 
 @Controller()
 export class NotificationsServiceController {
-  constructor(private readonly notificationsService: NotificationsServiceService) {}
+  constructor(
+    private readonly notificationsService: NotificationsServiceService,
+  ) {}
 
   @MessagePattern('notifications.get-by-user')
-  getByUser(@Payload() payload: { userId: string; page?: number; limit?: number }) {
+  getByUser(
+    @Payload() payload: { userId: string; page?: number; limit?: number },
+  ) {
     return this.notificationsService.getByUser(payload);
   }
 
@@ -18,7 +22,15 @@ export class NotificationsServiceController {
   }
 
   @MessagePattern('notifications.create')
-  create(@Payload() payload: { userId: string; kind: NotificationKind; title: string; message: string }) {
+  create(
+    @Payload()
+    payload: {
+      userId: string;
+      kind: NotificationKind;
+      title: string;
+      message: string;
+    },
+  ) {
     return this.notificationsService.create(payload);
   }
 

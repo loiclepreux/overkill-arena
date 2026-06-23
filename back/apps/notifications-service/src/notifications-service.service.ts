@@ -42,17 +42,29 @@ export class NotificationsServiceService {
     message: string;
   }) {
     const notification = await this.prisma.notification.create({ data });
-    this.natsClient.emit('notification.pushed', { userId: data.userId, notification });
+    this.natsClient.emit('notification.pushed', {
+      userId: data.userId,
+      notification,
+    });
     return notification;
   }
 
   async markRead(data: { id: string; userId: string }) {
-    const notification = await this.prisma.notification.findUnique({ where: { id: data.id } });
-    if (!notification) throw new RpcException({ statusCode: 404, message: 'Notification introuvable' });
+    const notification = await this.prisma.notification.findUnique({
+      where: { id: data.id },
+    });
+    if (!notification)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Notification introuvable',
+      });
     if (notification.userId !== data.userId) {
       throw new RpcException({ statusCode: 403, message: 'Accès refusé' });
     }
-    return this.prisma.notification.update({ where: { id: data.id }, data: { read: true } });
+    return this.prisma.notification.update({
+      where: { id: data.id },
+      data: { read: true },
+    });
   }
 
   async markAllRead(userId: string) {

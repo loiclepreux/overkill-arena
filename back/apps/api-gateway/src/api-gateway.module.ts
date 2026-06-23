@@ -54,6 +54,11 @@ const natsClient = (name: string) => ({
     SetupController,
     PushController,
   ],
-  providers: [ApiGatewayService, JwtStrategy, RolesGuard, WsNotificationsGateway],
+  providers: [
+    ApiGatewayService,
+    JwtStrategy,
+    RolesGuard,
+    WsNotificationsGateway,
+  ],
 })
 export class ApiGatewayModule {}

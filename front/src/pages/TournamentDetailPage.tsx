@@ -12,8 +12,6 @@ import type { TournamentStatus } from "@/services/tournaments.api";
 import type { Team } from "@/services/teams.api";
 import type { Match } from "@/services/matches.api";
 import { useState } from "react";
-import { useAuthStore } from "@/store/auth.store";
-
 const STATUS_LABELS: Record<TournamentStatus, string> = {
     DRAFT: "Brouillon",
     OPEN: "Ouvert",
@@ -55,7 +53,6 @@ function matchStatusVariant(status: Match["status"]): "danger" | "success" | "wa
 export function TournamentDetailPage() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { user } = useAuthStore();
     const [registerMsg, setRegisterMsg] = useState<string | null>(null);
     const [registering, setRegistering] = useState(false);
     const [unregistering, setUnregistering] = useState(false);

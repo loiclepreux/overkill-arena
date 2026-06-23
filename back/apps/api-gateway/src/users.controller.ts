@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Patch, Query, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 
 import { JwtGuard } from './auth/jwt.guard';
 import { RolesGuard } from './auth/roles.guard';
@@ -46,6 +55,9 @@ export class UsersController {
     @Request() req: AuthenticatedRequest,
     @Body() body: UpdateProfileDto,
   ) {
-    return this.apiGatewayService.updateProfile({ userId: req.user.id, ...body });
+    return this.apiGatewayService.updateProfile({
+      userId: req.user.id,
+      ...body,
+    });
   }
 }

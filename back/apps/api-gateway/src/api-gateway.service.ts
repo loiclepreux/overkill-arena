@@ -1,7 +1,15 @@
 import { HttpException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Observable, catchError, throwError } from 'rxjs';
-import { RewardType, MedalRank, TournamentStatus, TournamentFormat, MatchFormat, MatchStatus, NotificationKind } from '@prisma/client';
+import {
+  RewardType,
+  MedalRank,
+  TournamentStatus,
+  TournamentFormat,
+  MatchFormat,
+  MatchStatus,
+  NotificationKind,
+} from '@prisma/client';
 
 @Injectable()
 export class ApiGatewayService {
@@ -9,19 +17,25 @@ export class ApiGatewayService {
     @Inject('AUTH_SERVICE') private readonly authClient: ClientProxy,
     @Inject('USERS_SERVICE') private readonly usersClient: ClientProxy,
     @Inject('TEAMS_SERVICE') private readonly teamsClient: ClientProxy,
-    @Inject('TOURNAMENTS_SERVICE') private readonly tournamentsClient: ClientProxy,
+    @Inject('TOURNAMENTS_SERVICE')
+    private readonly tournamentsClient: ClientProxy,
     @Inject('MATCHES_SERVICE') private readonly matchesClient: ClientProxy,
     @Inject('REWARDS_SERVICE') private readonly rewardsClient: ClientProxy,
-    @Inject('NOTIFICATIONS_SERVICE') private readonly notificationsClient: ClientProxy,
+    @Inject('NOTIFICATIONS_SERVICE')
+    private readonly notificationsClient: ClientProxy,
   ) {}
 
   private rpc<T>(obs: Observable<T>): Observable<T> {
     return obs.pipe(
-      catchError((err) => {
-        // NestJS NATS spreads RpcException payload props onto the error object
-        // so err.statusCode and err.message are the RpcException payload fields
-        const statusCode = err?.statusCode ?? err?.error?.statusCode ?? 500;
-        const message = err?.message ?? err?.error?.message ?? 'Internal server error';
+      catchError((err: unknown) => {
+        const e = err as {
+          statusCode?: number;
+          message?: string;
+          error?: { statusCode?: number; message?: string };
+        };
+        const statusCode = e?.statusCode ?? e?.error?.statusCode ?? 500;
+        const message =
+          e?.message ?? e?.error?.message ?? 'Internal server error';
         return throwError(() => new HttpException(message, statusCode));
       }),
     );
@@ -43,7 +57,13 @@ export class ApiGatewayService {
     return this.rpc(this.usersClient.send('users.get-me', { userId }));
   }
 
-  updateProfile(data: { userId: string; bio?: string; country?: string; favoriteGame?: string; avatar?: string }) {
+  updateProfile(data: {
+    userId: string;
+    bio?: string;
+    country?: string;
+    favoriteGame?: string;
+    avatar?: string;
+  }) {
     return this.rpc(this.usersClient.send('users.update-profile', data));
   }
 
@@ -72,12 +92,24 @@ export class ApiGatewayService {
   }
 
   changePassword(userId: string, currentPassword: string, newPassword: string) {
-    return this.rpc(this.authClient.send('auth.change-password', { userId, currentPassword, newPassword }));
+    return this.rpc(
+      this.authClient.send('auth.change-password', {
+        userId,
+        currentPassword,
+        newPassword,
+      }),
+    );
   }
 
   // ─── Teams ────────────────────────────────────────────────────────────────
 
-  createTeam(data: { name: string; tag: string; logo?: string; description?: string; captainId: string }) {
+  createTeam(data: {
+    name: string;
+    tag: string;
+    logo?: string;
+    description?: string;
+    captainId: string;
+  }) {
     return this.rpc(this.teamsClient.send('teams.create', data));
   }
 
@@ -93,8 +125,14 @@ export class ApiGatewayService {
     return this.rpc(this.teamsClient.send('teams.get-by-user', { userId }));
   }
 
-  updateTeam(id: string, requesterId: string, data: { name?: string; tag?: string; logo?: string; description?: string }) {
-    return this.rpc(this.teamsClient.send('teams.update', { id, requesterId, ...data }));
+  updateTeam(
+    id: string,
+    requesterId: string,
+    data: { name?: string; tag?: string; logo?: string; description?: string },
+  ) {
+    return this.rpc(
+      this.teamsClient.send('teams.update', { id, requesterId, ...data }),
+    );
   }
 
   deleteTeam(id: string, requesterId: string) {
@@ -102,15 +140,29 @@ export class ApiGatewayService {
   }
 
   requestJoinTeam(teamId: string, userId: string) {
-    return this.rpc(this.teamsClient.send('teams.request-join', { teamId, userId }));
+    return this.rpc(
+      this.teamsClient.send('teams.request-join', { teamId, userId }),
+    );
   }
 
   getJoinRequests(teamId: string, requesterId: string) {
-    return this.rpc(this.teamsClient.send('teams.get-join-requests', { teamId, requesterId }));
+    return this.rpc(
+      this.teamsClient.send('teams.get-join-requests', { teamId, requesterId }),
+    );
   }
 
-  respondJoinRequest(requestId: string, requesterId: string, accepted: boolean) {
-    return this.rpc(this.teamsClient.send('teams.respond-join-request', { requestId, requesterId, accepted }));
+  respondJoinRequest(
+    requestId: string,
+    requesterId: string,
+    accepted: boolean,
+  ) {
+    return this.rpc(
+      this.teamsClient.send('teams.respond-join-request', {
+        requestId,
+        requesterId,
+        accepted,
+      }),
+    );
   }
 
   leaveTeam(teamId: string, userId: string) {
@@ -118,7 +170,13 @@ export class ApiGatewayService {
   }
 
   kickMember(teamId: string, requesterId: string, targetUserId: string) {
-    return this.rpc(this.teamsClient.send('teams.kick-member', { teamId, requesterId, targetUserId }));
+    return this.rpc(
+      this.teamsClient.send('teams.kick-member', {
+        teamId,
+        requesterId,
+        targetUserId,
+      }),
+    );
   }
 
   // ─── Tournaments ──────────────────────────────────────────────────────────
@@ -136,44 +194,75 @@ export class ApiGatewayService {
   }
 
   getAllTournaments(status?: TournamentStatus) {
-    return this.rpc(this.tournamentsClient.send('tournaments.get-all', { status }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.get-all', { status }),
+    );
   }
 
   getTournamentById(id: string) {
-    return this.rpc(this.tournamentsClient.send('tournaments.get-by-id', { id }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.get-by-id', { id }),
+    );
   }
 
-  updateTournament(id: string, data: {
-    name?: string;
-    game?: string;
-    format?: TournamentFormat;
-    maxTeams?: number;
-    description?: string;
-    startDate?: string;
-    endDate?: string;
-  }) {
-    return this.rpc(this.tournamentsClient.send('tournaments.update', { id, ...data }));
+  updateTournament(
+    id: string,
+    data: {
+      name?: string;
+      game?: string;
+      format?: TournamentFormat;
+      maxTeams?: number;
+      description?: string;
+      startDate?: string;
+      endDate?: string;
+    },
+  ) {
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.update', { id, ...data }),
+    );
   }
 
   updateTournamentStatus(id: string, status: TournamentStatus) {
-    return this.rpc(this.tournamentsClient.send('tournaments.update-status', { id, status }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.update-status', { id, status }),
+    );
   }
 
   registerTeam(tournamentId: string, teamId: string) {
-    return this.rpc(this.tournamentsClient.send('tournaments.register-team', { tournamentId, teamId }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.register-team', {
+        tournamentId,
+        teamId,
+      }),
+    );
   }
 
   unregisterTeam(tournamentId: string, teamId: string) {
-    return this.rpc(this.tournamentsClient.send('tournaments.unregister-team', { tournamentId, teamId }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.unregister-team', {
+        tournamentId,
+        teamId,
+      }),
+    );
   }
 
   getTournamentParticipants(tournamentId: string) {
-    return this.rpc(this.tournamentsClient.send('tournaments.get-participants', { tournamentId }));
+    return this.rpc(
+      this.tournamentsClient.send('tournaments.get-participants', {
+        tournamentId,
+      }),
+    );
   }
 
   // ─── Matches ──────────────────────────────────────────────────────────────
 
-  createMatch(data: { tournamentId?: string; teamAId: string; teamBId: string; format?: MatchFormat; scheduledAt?: string }) {
+  createMatch(data: {
+    tournamentId?: string;
+    teamAId: string;
+    teamBId: string;
+    format?: MatchFormat;
+    scheduledAt?: string;
+  }) {
     return this.rpc(this.matchesClient.send('matches.create', data));
   }
 
@@ -186,11 +275,20 @@ export class ApiGatewayService {
   }
 
   getMatchesByTournament(tournamentId: string) {
-    return this.rpc(this.matchesClient.send('matches.get-by-tournament', { tournamentId }));
+    return this.rpc(
+      this.matchesClient.send('matches.get-by-tournament', { tournamentId }),
+    );
   }
 
   submitScore(id: string, teamId: string, scoreA: number, scoreB: number) {
-    return this.rpc(this.matchesClient.send('matches.submit-score', { id, teamId, scoreA, scoreB }));
+    return this.rpc(
+      this.matchesClient.send('matches.submit-score', {
+        id,
+        teamId,
+        scoreA,
+        scoreB,
+      }),
+    );
   }
 
   validateMatch(id: string) {
@@ -202,7 +300,9 @@ export class ApiGatewayService {
   }
 
   updateMatchStatus(id: string, status: MatchStatus) {
-    return this.rpc(this.matchesClient.send('matches.update-status', { id, status }));
+    return this.rpc(
+      this.matchesClient.send('matches.update-status', { id, status }),
+    );
   }
 
   // ─── Rewards ──────────────────────────────────────────────────────────────
@@ -231,22 +331,43 @@ export class ApiGatewayService {
   // ─── Notifications ────────────────────────────────────────────────────────
 
   getNotifications(userId: string, page?: number, limit?: number) {
-    return this.rpc(this.notificationsClient.send('notifications.get-by-user', { userId, page, limit }));
+    return this.rpc(
+      this.notificationsClient.send('notifications.get-by-user', {
+        userId,
+        page,
+        limit,
+      }),
+    );
   }
 
   getUnreadCount(userId: string) {
-    return this.rpc(this.notificationsClient.send('notifications.get-unread-count', { userId }));
+    return this.rpc(
+      this.notificationsClient.send('notifications.get-unread-count', {
+        userId,
+      }),
+    );
   }
 
   markNotificationRead(id: string, userId: string) {
-    return this.rpc(this.notificationsClient.send('notifications.mark-read', { id, userId }));
+    return this.rpc(
+      this.notificationsClient.send('notifications.mark-read', { id, userId }),
+    );
   }
 
   markAllNotificationsRead(userId: string) {
-    return this.rpc(this.notificationsClient.send('notifications.mark-all-read', { userId }));
+    return this.rpc(
+      this.notificationsClient.send('notifications.mark-all-read', { userId }),
+    );
   }
 
-  createNotification(data: { userId: string; kind: NotificationKind; title: string; message: string }) {
-    return this.rpc(this.notificationsClient.send('notifications.create', data));
+  createNotification(data: {
+    userId: string;
+    kind: NotificationKind;
+    title: string;
+    message: string;
+  }) {
+    return this.rpc(
+      this.notificationsClient.send('notifications.create', data),
+    );
   }
 }

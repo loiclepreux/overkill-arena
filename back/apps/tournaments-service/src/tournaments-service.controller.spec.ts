@@ -19,30 +19,37 @@ describe('TournamentsServiceController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TournamentsServiceController],
-      providers: [{ provide: TournamentsServiceService, useValue: mockService }],
+      providers: [
+        { provide: TournamentsServiceService, useValue: mockService },
+      ],
     }).compile();
 
-    controller = module.get<TournamentsServiceController>(TournamentsServiceController);
+    controller = module.get<TournamentsServiceController>(
+      TournamentsServiceController,
+    );
     jest.clearAllMocks();
   });
 
   it('forwards getAll to service', () => {
     mockService.getAll.mockResolvedValue([]);
-    controller.getAll({});
+    void controller.getAll({});
     expect(mockService.getAll).toHaveBeenCalled();
   });
 
   it('forwards updateStatus to service', () => {
     const data = { id: 'tid', status: 'OPEN' as const };
-    mockService.updateStatus.mockResolvedValue({ id: 'tid', status: 'OPEN' as const });
-    controller.updateStatus(data);
+    mockService.updateStatus.mockResolvedValue({
+      id: 'tid',
+      status: 'OPEN' as const,
+    });
+    void controller.updateStatus(data);
     expect(mockService.updateStatus).toHaveBeenCalledWith(data);
   });
 
   it('forwards registerTeam to service', () => {
     const data = { tournamentId: 'tid', teamId: 'tmid' };
     mockService.registerTeam.mockResolvedValue({ id: 'pid' });
-    controller.registerTeam(data);
+    void controller.registerTeam(data);
     expect(mockService.registerTeam).toHaveBeenCalledWith(data);
   });
 });

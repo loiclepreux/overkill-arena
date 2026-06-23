@@ -8,13 +8,16 @@ export class MatchesServiceController {
   constructor(private readonly matchesService: MatchesServiceService) {}
 
   @MessagePattern('matches.create')
-  create(@Payload() payload: {
-    tournamentId?: string;
-    teamAId: string;
-    teamBId: string;
-    format?: MatchFormat;
-    scheduledAt?: string;
-  }) {
+  create(
+    @Payload()
+    payload: {
+      tournamentId?: string;
+      teamAId: string;
+      teamBId: string;
+      format?: MatchFormat;
+      scheduledAt?: string;
+    },
+  ) {
     return this.matchesService.create(payload);
   }
 
@@ -34,7 +37,15 @@ export class MatchesServiceController {
   }
 
   @MessagePattern('matches.submit-score')
-  submitScore(@Payload() payload: { id: string; teamId: string; scoreA: number; scoreB: number }) {
+  submitScore(
+    @Payload()
+    payload: {
+      id: string;
+      teamId: string;
+      scoreA: number;
+      scoreB: number;
+    },
+  ) {
     return this.matchesService.submitScore(payload);
   }
 

@@ -8,15 +8,18 @@ export class TournamentsServiceController {
   constructor(private readonly tournamentsService: TournamentsServiceService) {}
 
   @MessagePattern('tournaments.create')
-  create(@Payload() payload: {
-    name: string;
-    game: string;
-    format?: TournamentFormat;
-    maxTeams: number;
-    description?: string;
-    startDate?: string;
-    endDate?: string;
-  }) {
+  create(
+    @Payload()
+    payload: {
+      name: string;
+      game: string;
+      format?: TournamentFormat;
+      maxTeams: number;
+      description?: string;
+      startDate?: string;
+      endDate?: string;
+    },
+  ) {
     return this.tournamentsService.create(payload);
   }
 
@@ -31,16 +34,19 @@ export class TournamentsServiceController {
   }
 
   @MessagePattern('tournaments.update')
-  update(@Payload() payload: {
-    id: string;
-    name?: string;
-    game?: string;
-    format?: TournamentFormat;
-    maxTeams?: number;
-    description?: string;
-    startDate?: string;
-    endDate?: string;
-  }) {
+  update(
+    @Payload()
+    payload: {
+      id: string;
+      name?: string;
+      game?: string;
+      format?: TournamentFormat;
+      maxTeams?: number;
+      description?: string;
+      startDate?: string;
+      endDate?: string;
+    },
+  ) {
     return this.tournamentsService.update(payload);
   }
 

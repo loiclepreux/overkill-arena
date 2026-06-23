@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiGatewayService } from './api-gateway.service';
 import { JwtGuard } from './auth/jwt.guard';
 import { CreateTeamDto } from './dto/create-team.dto';
@@ -35,7 +45,11 @@ export class TeamsController {
 
   @Patch(':id')
   @UseGuards(JwtGuard)
-  update(@Param('id') id: string, @Body() body: UpdateTeamDto, @Request() req: Req) {
+  update(
+    @Param('id') id: string,
+    @Body() body: UpdateTeamDto,
+    @Request() req: Req,
+  ) {
     return this.gateway.updateTeam(id, req.user.id, body);
   }
 
@@ -64,7 +78,11 @@ export class TeamsController {
     @Body() body: RespondJoinRequestDto,
     @Request() req: Req,
   ) {
-    return this.gateway.respondJoinRequest(requestId, req.user.id, body.accepted);
+    return this.gateway.respondJoinRequest(
+      requestId,
+      req.user.id,
+      body.accepted,
+    );
   }
 
   @Delete(':id/leave')
@@ -75,7 +93,11 @@ export class TeamsController {
 
   @Delete(':id/members/:userId')
   @UseGuards(JwtGuard)
-  kickMember(@Param('id') teamId: string, @Param('userId') userId: string, @Request() req: Req) {
+  kickMember(
+    @Param('id') teamId: string,
+    @Param('userId') userId: string,
+    @Request() req: Req,
+  ) {
     return this.gateway.kickMember(teamId, req.user.id, userId);
   }
 }

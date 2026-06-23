@@ -7,7 +7,16 @@ export class TeamsServiceController {
   constructor(private readonly teamsService: TeamsServiceService) {}
 
   @MessagePattern('teams.create')
-  create(@Payload() payload: { name: string; tag: string; logo?: string; description?: string; captainId: string }) {
+  create(
+    @Payload()
+    payload: {
+      name: string;
+      tag: string;
+      logo?: string;
+      description?: string;
+      captainId: string;
+    },
+  ) {
     return this.teamsService.create(payload);
   }
 
@@ -27,7 +36,17 @@ export class TeamsServiceController {
   }
 
   @MessagePattern('teams.update')
-  update(@Payload() payload: { id: string; requesterId: string; name?: string; tag?: string; logo?: string; description?: string }) {
+  update(
+    @Payload()
+    payload: {
+      id: string;
+      requesterId: string;
+      name?: string;
+      tag?: string;
+      logo?: string;
+      description?: string;
+    },
+  ) {
     return this.teamsService.update(payload);
   }
 
@@ -47,7 +66,14 @@ export class TeamsServiceController {
   }
 
   @MessagePattern('teams.respond-join-request')
-  respondJoinRequest(@Payload() payload: { requestId: string; requesterId: string; accepted: boolean }) {
+  respondJoinRequest(
+    @Payload()
+    payload: {
+      requestId: string;
+      requesterId: string;
+      accepted: boolean;
+    },
+  ) {
     return this.teamsService.respondJoinRequest(payload);
   }
 
@@ -57,7 +83,14 @@ export class TeamsServiceController {
   }
 
   @MessagePattern('teams.kick-member')
-  kickMember(@Payload() payload: { teamId: string; requesterId: string; targetUserId: string }) {
+  kickMember(
+    @Payload()
+    payload: {
+      teamId: string;
+      requesterId: string;
+      targetUserId: string;
+    },
+  ) {
     return this.teamsService.kickMember(payload);
   }
 }

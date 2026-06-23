@@ -12,12 +12,14 @@ export function useApi<T>(fetcher: () => Promise<T>): ApiState<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [rev, setRev] = useState(0);
 
-    const fetch = useCallback(() => {
-        setLoading(true);
-        setError(null);
+    useEffect(() => {
         fetcher()
-            .then(setData)
+            .then((result) => {
+                setData(result);
+                setError(null);
+            })
             .catch((err: unknown) => {
                 if (axios.isAxiosError(err)) {
                     setError(
@@ -29,13 +31,14 @@ export function useApi<T>(fetcher: () => Promise<T>): ApiState<T> {
                 }
             })
             .finally(() => setLoading(false));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [rev]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    useEffect(() => {
-        fetch();
-    }, [fetch]);
+    const refetch = useCallback(() => {
+        setLoading(true);
+        setRev((r) => r + 1);
+    }, []);
 
-    return { data, loading, error, refetch: fetch };
+    return { data, loading, error, refetch };
 }
 
 export function getErrorMessage(err: unknown): string {

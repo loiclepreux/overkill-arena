@@ -35,7 +35,7 @@ export class WsNotificationsGateway
         token,
         { secret: process.env.JWT_SECRET || 'overkill_super_secret_dev' },
       );
-      client.data.userId = payload.sub;
+      (client.data as { userId?: string }).userId = payload.sub;
       this.clients.set(payload.sub, client);
     } catch {
       client.disconnect();
@@ -43,8 +43,9 @@ export class WsNotificationsGateway
   }
 
   handleDisconnect(client: Socket) {
-    if (client.data.userId) {
-      this.clients.delete(client.data.userId as string);
+    const data = client.data as { userId?: string };
+    if (data.userId) {
+      this.clients.delete(data.userId);
     }
   }
 

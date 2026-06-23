@@ -1,7 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { PrismaService } from '@app/prisma';
-import { TournamentStatus, TournamentFormat, NotificationKind } from '@prisma/client';
+import {
+  TournamentStatus,
+  TournamentFormat,
+  NotificationKind,
+} from '@prisma/client';
 
 @Injectable()
 export class TournamentsServiceService {
@@ -10,11 +14,23 @@ export class TournamentsServiceService {
     @Inject('NOTIFICATIONS_SERVICE') private readonly natsClient: ClientProxy,
   ) {}
 
-  private notify(userId: string, kind: NotificationKind, title: string, message: string) {
-    this.natsClient.emit('notifications.create', { userId, kind, title, message }).subscribe();
+  private notify(
+    userId: string,
+    kind: NotificationKind,
+    title: string,
+    message: string,
+  ) {
+    this.natsClient
+      .emit('notifications.create', { userId, kind, title, message })
+      .subscribe();
   }
 
-  private async notifyParticipants(tournamentId: string, kind: NotificationKind, title: string, message: string) {
+  private async notifyParticipants(
+    tournamentId: string,
+    kind: NotificationKind,
+    title: string,
+    message: string,
+  ) {
     const participants = await this.prisma.tournamentParticipant.findMany({
       where: { tournamentId },
     });
@@ -35,8 +51,14 @@ export class TournamentsServiceService {
     startDate?: string;
     endDate?: string;
   }) {
-    const existing = await this.prisma.tournament.findUnique({ where: { name: data.name } });
-    if (existing) throw new RpcException({ statusCode: 409, message: 'Un tournoi avec ce nom existe déjà' });
+    const existing = await this.prisma.tournament.findUnique({
+      where: { name: data.name },
+    });
+    if (existing)
+      throw new RpcException({
+        statusCode: 409,
+        message: 'Un tournoi avec ce nom existe déjà',
+      });
 
     return this.prisma.tournament.create({
       data: {
@@ -63,9 +85,16 @@ export class TournamentsServiceService {
   async getById(id: string) {
     const tournament = await this.prisma.tournament.findUnique({
       where: { id },
-      include: { participants: true, _count: { select: { participants: true } } },
+      include: {
+        participants: true,
+        _count: { select: { participants: true } },
+      },
     });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
     return tournament;
   }
 
@@ -79,10 +108,22 @@ export class TournamentsServiceService {
     startDate?: string;
     endDate?: string;
   }) {
-    const tournament = await this.prisma.tournament.findUnique({ where: { id: data.id } });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
-    if (tournament.status === 'COMPLETED' || tournament.status === 'CANCELLED') {
-      throw new RpcException({ statusCode: 400, message: 'Ce tournoi ne peut plus être modifié' });
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: data.id },
+    });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
+    if (
+      tournament.status === 'COMPLETED' ||
+      tournament.status === 'CANCELLED'
+    ) {
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Ce tournoi ne peut plus être modifié',
+      });
     }
 
     return this.prisma.tournament.update({
@@ -92,7 +133,9 @@ export class TournamentsServiceService {
         ...(data.game && { game: data.game }),
         ...(data.format && { format: data.format }),
         ...(data.maxTeams && { maxTeams: data.maxTeams }),
-        ...(data.description !== undefined && { description: data.description }),
+        ...(data.description !== undefined && {
+          description: data.description,
+        }),
         ...(data.startDate && { startDate: new Date(data.startDate) }),
         ...(data.endDate && { endDate: new Date(data.endDate) }),
       },
@@ -101,8 +144,14 @@ export class TournamentsServiceService {
   }
 
   async updateStatus(data: { id: string; status: TournamentStatus }) {
-    const tournament = await this.prisma.tournament.findUnique({ where: { id: data.id } });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: data.id },
+    });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
 
     const updated = await this.prisma.tournament.update({
       where: { id: data.id },
@@ -132,17 +181,36 @@ export class TournamentsServiceService {
       where: { id: data.tournamentId },
       include: { _count: { select: { participants: true } } },
     });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
     if (tournament.status !== 'OPEN') {
-      throw new RpcException({ statusCode: 400, message: 'Les inscriptions ne sont pas ouvertes' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Les inscriptions ne sont pas ouvertes',
+      });
     }
     if (tournament._count.participants >= tournament.maxTeams) {
-      throw new RpcException({ statusCode: 400, message: 'Le tournoi est complet' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Le tournoi est complet',
+      });
     }
     const existing = await this.prisma.tournamentParticipant.findUnique({
-      where: { tournamentId_teamId: { tournamentId: data.tournamentId, teamId: data.teamId } },
+      where: {
+        tournamentId_teamId: {
+          tournamentId: data.tournamentId,
+          teamId: data.teamId,
+        },
+      },
     });
-    if (existing) throw new RpcException({ statusCode: 409, message: 'Cette équipe est déjà inscrite' });
+    if (existing)
+      throw new RpcException({
+        statusCode: 409,
+        message: 'Cette équipe est déjà inscrite',
+      });
 
     const participant = await this.prisma.tournamentParticipant.create({
       data: { tournamentId: data.tournamentId, teamId: data.teamId },
@@ -165,23 +233,49 @@ export class TournamentsServiceService {
   }
 
   async unregisterTeam(data: { tournamentId: string; teamId: string }) {
-    const tournament = await this.prisma.tournament.findUnique({ where: { id: data.tournamentId } });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: data.tournamentId },
+    });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
     if (tournament.status !== 'OPEN') {
-      throw new RpcException({ statusCode: 400, message: 'Les inscriptions sont fermées' });
+      throw new RpcException({
+        statusCode: 400,
+        message: 'Les inscriptions sont fermées',
+      });
     }
     const participation = await this.prisma.tournamentParticipant.findUnique({
-      where: { tournamentId_teamId: { tournamentId: data.tournamentId, teamId: data.teamId } },
+      where: {
+        tournamentId_teamId: {
+          tournamentId: data.tournamentId,
+          teamId: data.teamId,
+        },
+      },
     });
-    if (!participation) throw new RpcException({ statusCode: 404, message: 'Cette équipe n\'est pas inscrite' });
+    if (!participation)
+      throw new RpcException({
+        statusCode: 404,
+        message: "Cette équipe n'est pas inscrite",
+      });
 
-    await this.prisma.tournamentParticipant.delete({ where: { id: participation.id } });
+    await this.prisma.tournamentParticipant.delete({
+      where: { id: participation.id },
+    });
     return { message: 'Équipe désinscrite du tournoi' };
   }
 
   async getParticipants(tournamentId: string) {
-    const tournament = await this.prisma.tournament.findUnique({ where: { id: tournamentId } });
-    if (!tournament) throw new RpcException({ statusCode: 404, message: 'Tournoi introuvable' });
+    const tournament = await this.prisma.tournament.findUnique({
+      where: { id: tournamentId },
+    });
+    if (!tournament)
+      throw new RpcException({
+        statusCode: 404,
+        message: 'Tournoi introuvable',
+      });
 
     return this.prisma.tournamentParticipant.findMany({
       where: { tournamentId },

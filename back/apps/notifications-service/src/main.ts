@@ -18,4 +18,4 @@ async function bootstrap() {
 
   console.log('🚀 Notifications Service connected to NATS');
 }
-bootstrap();
+void bootstrap();

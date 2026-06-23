@@ -54,30 +54,34 @@ export function NotificationsPage() {
     const { data: unreadData, refetch: refetchCount } = useApi(notificationsApi.getUnreadCount);
     const unread = unreadData?.count ?? 0;
 
-    const fetchPage = useCallback(async (p: number, append: boolean) => {
-        if (p === 1) setLoadingFirst(true);
-        else setLoadingMore(true);
-        setFetchError(null);
+    useEffect(() => {
+        notificationsApi.getAll(1, LIMIT)
+            .then((res) => {
+                setTotal(res.total);
+                setNotifications(res.notifications);
+            })
+            .catch((err: unknown) => { setFetchError(getErrorMessage(err)); })
+            .finally(() => setLoadingFirst(false));
+    }, []);
+
+    const fetchMore = useCallback(async (p: number) => {
         try {
             const res = await notificationsApi.getAll(p, LIMIT);
+            setFetchError(null);
             setTotal(res.total);
-            setNotifications((prev) => append ? [...prev, ...res.notifications] : res.notifications);
+            setNotifications((prev) => [...prev, ...res.notifications]);
         } catch (err) {
             setFetchError(getErrorMessage(err));
         } finally {
-            setLoadingFirst(false);
             setLoadingMore(false);
         }
     }, []);
 
-    useEffect(() => {
-        fetchPage(1, false);
-    }, [fetchPage]);
-
     function handleLoadMore() {
         const nextPage = page + 1;
         setPage(nextPage);
-        fetchPage(nextPage, true);
+        setLoadingMore(true);
+        void fetchMore(nextPage);
     }
 
     async function handleMarkRead(id: string) {

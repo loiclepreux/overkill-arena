@@ -28,20 +28,20 @@ describe('MatchesServiceController', () => {
 
   it('forwards getByTeam to service', () => {
     mockService.getByTeam.mockResolvedValue([]);
-    controller.getByTeam({ teamId: 'tid' });
+    void controller.getByTeam({ teamId: 'tid' });
     expect(mockService.getByTeam).toHaveBeenCalledWith('tid');
   });
 
   it('forwards submitScore to service', () => {
     const data = { id: 'mid', teamId: 'tid', scoreA: 2, scoreB: 1 };
     mockService.submitScore.mockResolvedValue({ id: 'mid' });
-    controller.submitScore(data);
+    void controller.submitScore(data);
     expect(mockService.submitScore).toHaveBeenCalledWith(data);
   });
 
   it('forwards validate to service', () => {
     mockService.validate.mockResolvedValue({ id: 'mid', status: 'COMPLETED' });
-    controller.validate({ id: 'mid' });
+    void controller.validate({ id: 'mid' });
     expect(mockService.validate).toHaveBeenCalledWith({ id: 'mid' });
   });
 });
