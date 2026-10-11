@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiAward, FiSearch, FiShield, FiTarget, FiTrendingUp, FiUsers } from "react-icons/fi";
 import { Badge } from "@/components/ui/Badge";
+import { PageHero } from "@/components/ui/PageHero";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
 import { LoadingSpinner, ErrorMessage } from "@/components/ui/LoadingSpinner";
 import { useApi } from "@/hooks/useApi";
@@ -28,23 +29,17 @@ export function LeaderboardPage() {
 
     return (
         <section className="space-y-10">
-            {/* HERO */}
-            <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-red-950/40 via-black to-zinc-950 p-5 sm:p-8">
-                <div className="relative z-10 max-w-4xl">
-                    <Badge variant="danger">Competitive Rankings</Badge>
-                    <h1 className="mt-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-                        Classement Overkill Arena
-                    </h1>
-                    <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-                        Suivez les meilleures équipes et les performances dominantes de la plateforme.
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-3">
+            <PageHero
+                badge="Competitive Rankings"
+                title="Classement Overkill Arena"
+                description="Suivez les meilleures équipes et les performances dominantes de la plateforme."
+                actions={
+                    <div className="flex flex-wrap gap-3">
                         <Badge variant="danger">Classement victoires</Badge>
                         <Badge variant="success">Récompenses actives</Badge>
                     </div>
-                </div>
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-red-600/20 blur-3xl" />
-            </div>
+                }
+            />
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">

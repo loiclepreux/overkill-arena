@@ -12,6 +12,7 @@ import {
 } from "react-icons/fi";
 
 import { Badge } from "@/components/ui/Badge";
+import { PageHero } from "@/components/ui/PageHero";
 import { Button } from "@/components/ui/Button";
 import { LoadingSpinner, ErrorMessage } from "@/components/ui/LoadingSpinner";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
@@ -251,19 +252,11 @@ export function AdminPage() {
 
     return (
         <section className="space-y-8">
-            {/* HERO */}
-            <div className="relative overflow-hidden rounded-3xl border border-red-900/40 bg-gradient-to-br from-red-950/50 via-black to-zinc-950 p-5 sm:p-8">
-                <div className="relative z-10 max-w-4xl">
-                    <Badge variant="danger">ADMIN CONTROL CENTER</Badge>
-                    <h1 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">
-                        Tableau de bord administrateur
-                    </h1>
-                    <p className="mt-4 max-w-2xl text-zinc-400">
-                        Gérez les tournois, validez les matchs contestés et attribuez des récompenses.
-                    </p>
-                </div>
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-red-600/20 blur-3xl" />
-            </div>
+            <PageHero
+                badge="ADMIN CONTROL CENTER"
+                title="Tableau de bord administrateur"
+                description="Gérez les tournois, validez les matchs contestés et attribuez des récompenses."
+            />
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">

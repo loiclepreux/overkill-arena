@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { FiBell, FiCheckCircle, FiAward, FiUsers } from "react-icons/fi";
 
 import { Badge } from "@/components/ui/Badge";
+import { PageHero } from "@/components/ui/PageHero";
 import { Button } from "@/components/ui/Button";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
 import { LoadingSpinner, ErrorMessage } from "@/components/ui/LoadingSpinner";
@@ -119,22 +120,20 @@ export function NotificationsPage() {
 
     return (
         <section className="space-y-10">
-            {/* HERO */}
-            <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-red-950/40 via-black to-zinc-950 p-5 sm:p-8">
-                <div className="relative z-10 max-w-4xl">
-                    <Badge variant="danger">Notification Center</Badge>
-                    <h1 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">Notifications</h1>
-                    <p className="mt-4 max-w-2xl text-zinc-400">
-                        Suis tes invitations, récompenses, matchs à venir et alertes importantes.
-                    </p>
-                    <div className="mt-6 flex flex-wrap gap-3">
-                        {unread > 0 && <Badge variant="danger">{unread} non lue{unread > 1 ? "s" : ""}</Badge>}
-                        {rewardCount > 0 && <Badge variant="success">{rewardCount} récompense{rewardCount > 1 ? "s" : ""}</Badge>}
-                        {invitationCount > 0 && <Badge variant="warning">{invitationCount} invitation{invitationCount > 1 ? "s" : ""}</Badge>}
-                    </div>
-                </div>
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-red-600/20 blur-3xl" />
-            </div>
+            <PageHero
+                badge="Notification Center"
+                title="Notifications"
+                description="Suis tes invitations, récompenses, matchs à venir et alertes importantes."
+                actions={
+                    (unread > 0 || rewardCount > 0 || invitationCount > 0) ? (
+                        <div className="flex flex-wrap gap-3">
+                            {unread > 0 && <Badge variant="danger">{unread} non lue{unread > 1 ? "s" : ""}</Badge>}
+                            {rewardCount > 0 && <Badge variant="success">{rewardCount} récompense{rewardCount > 1 ? "s" : ""}</Badge>}
+                            {invitationCount > 0 && <Badge variant="warning">{invitationCount} invitation{invitationCount > 1 ? "s" : ""}</Badge>}
+                        </div>
+                    ) : undefined
+                }
+            />
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">

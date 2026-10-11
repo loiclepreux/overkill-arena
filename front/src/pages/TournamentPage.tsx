@@ -3,6 +3,7 @@ import { FiAward, FiRadio, FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
 import { Badge } from "@/components/ui/Badge";
+import { PageHero } from "@/components/ui/PageHero";
 import { Button } from "@/components/ui/Button";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
 import { LoadingSpinner, ErrorMessage } from "@/components/ui/LoadingSpinner";
@@ -70,19 +71,11 @@ export function TournamentPage() {
 
     return (
         <section className="space-y-10">
-            {/* HERO */}
-            <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-red-950/40 via-black to-zinc-950 p-5 sm:p-8">
-                <div className="relative z-10 max-w-4xl">
-                    <Badge variant="danger">Competitive Arena</Badge>
-                    <h1 className="mt-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl">
-                        Tournois compétitifs Overkill Arena
-                    </h1>
-                    <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-                        Rejoins des compétitions esports, affronte les meilleures équipes et gagne des médailles.
-                    </p>
-                </div>
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-red-600/20 blur-3xl" />
-            </div>
+            <PageHero
+                badge="Competitive Arena"
+                title="Tournois compétitifs Overkill Arena"
+                description="Rejoins des compétitions esports, affronte les meilleures équipes et gagne des médailles."
+            />
 
             {actionMsg && (
                 <div className="rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-4 text-sm text-zinc-300">

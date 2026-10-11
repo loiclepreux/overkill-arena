@@ -1,5 +1,6 @@
 import { FiAward, FiTarget, FiShield } from "react-icons/fi";
 import { Badge } from "@/components/ui/Badge";
+import { PageHero } from "@/components/ui/PageHero";
 import { DashboardStatCard } from "@/components/dashboard/DashboardStatCard";
 import { LoadingSpinner, ErrorMessage } from "@/components/ui/LoadingSpinner";
 import { useApi } from "@/hooks/useApi";
@@ -50,17 +51,11 @@ export function RewardsPage() {
 
     return (
         <section className="space-y-10">
-            {/* HERO */}
-            <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-red-950/40 via-black to-zinc-950 p-5 sm:p-8">
-                <div className="relative z-10">
-                    <Badge variant="danger">Progression</Badge>
-                    <h1 className="mt-6 text-4xl font-extrabold text-white sm:text-5xl">Récompenses</h1>
-                    <p className="mt-4 max-w-2xl text-zinc-400">
-                        Gagnez des médailles, débloquez des coupes et atteignez les plus hauts titres de Overkill Arena.
-                    </p>
-                </div>
-                <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-red-600/20 blur-3xl" />
-            </div>
+            <PageHero
+                badge="Progression"
+                title="Récompenses"
+                description="Gagnez des médailles, débloquez des coupes et atteignez les plus hauts titres de Overkill Arena."
+            />
 
             {/* STATS */}
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
