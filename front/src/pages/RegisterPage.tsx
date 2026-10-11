@@ -16,11 +16,28 @@ export function RegisterPage() {
     const [pseudo, setPseudo] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    const validate = (): string | null => {
+        if (!pseudo.trim()) return "Le pseudo est requis.";
+        if (pseudo.trim().length < 3) return "Le pseudo doit contenir au moins 3 caractères.";
+        if (!email.trim()) return "L'email est requis.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "L'email n'est pas valide.";
+        if (!password) return "Le mot de passe est requis.";
+        if (password.length < 6) return "Le mot de passe doit contenir au moins 6 caractères.";
+        if (password !== confirmPassword) return "Les mots de passe ne correspondent pas.";
+        return null;
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const validationError = validate();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
         setError(null);
         setLoading(true);
 
@@ -105,6 +122,15 @@ export function RegisterPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                <Input
+                    label="Confirmer le mot de passe"
+                    type="password"
+                    placeholder="••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     required
                 />
 

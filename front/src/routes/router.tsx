@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import { ProtectedRoute } from "@/features/auth/ProtectedRoute";
+import { GuestRoute } from "@/features/auth/GuestRoute";
 import { RoleGuard } from "@/features/auth/RoleGuard";
 
 import { MainLayout } from "@/layouts/MainLayout";
@@ -37,8 +38,22 @@ export const router = createBrowserRouter([
     {
         element: <AuthLayout />,
         children: [
-            { path: "login", element: <LoginPage /> },
-            { path: "register", element: <RegisterPage /> },
+            {
+                path: "login",
+                element: (
+                    <GuestRoute>
+                        <LoginPage />
+                    </GuestRoute>
+                ),
+            },
+            {
+                path: "register",
+                element: (
+                    <GuestRoute>
+                        <RegisterPage />
+                    </GuestRoute>
+                ),
+            },
         ],
     },
 

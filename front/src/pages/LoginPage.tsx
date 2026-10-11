@@ -18,8 +18,21 @@ export function LoginPage() {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    const validate = (): string | null => {
+        if (!email.trim()) return "L'email est requis.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "L'email n'est pas valide.";
+        if (!password) return "Le mot de passe est requis.";
+        if (password.length < 6) return "Le mot de passe doit contenir au moins 6 caractères.";
+        return null;
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        const validationError = validate();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
         setError(null);
         setLoading(true);
 

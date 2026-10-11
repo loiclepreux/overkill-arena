@@ -12,7 +12,14 @@ import { Badge } from "@/components/ui/Badge";
 import { useApi } from "@/hooks/useApi";
 import { publicApi } from "@/services/public.api";
 
-import Video from "@/assets/video-callof.mp4";
+// La vidéo est optionnelle — si le fichier n'existe pas, le hero s'affiche sans fond vidéo
+const Video: string | undefined = (() => {
+    try {
+        return new URL("../assets/video-callof.mp4", import.meta.url).href;
+    } catch {
+        return undefined;
+    }
+})();
 
 export function HomePage() {
     const { data: stats } = useApi(publicApi.getStats);
@@ -29,19 +36,21 @@ export function HomePage() {
                     px-5 py-16 sm:px-8 sm:py-20 lg:px-14 lg:py-32
                 "
             >
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="
-                        absolute inset-0
-                        h-full w-full object-cover
-                        opacity-30
-                    "
-                >
-                    <source src={Video} type="video/mp4" />
-                </video>
+                {Video && (
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="
+                            absolute inset-0
+                            h-full w-full object-cover
+                            opacity-30
+                        "
+                    >
+                        <source src={Video} type="video/mp4" />
+                    </video>
+                )}
 
                 <div
                     className="
