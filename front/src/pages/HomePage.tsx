@@ -61,7 +61,7 @@ export function HomePage() {
                 />
 
                 <div className="relative z-10 max-w-6xl">
-                    <Badge variant="danger">Competitive Esports Platform</Badge>
+                    <Badge variant="danger">Plateforme Esports Compétitive</Badge>
 
                     <h1
                         className="

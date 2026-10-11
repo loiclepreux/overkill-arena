@@ -121,7 +121,7 @@ export function NotificationsPage() {
     return (
         <section className="space-y-10">
             <PageHero
-                badge="Notification Center"
+                badge="Centre de notifications"
                 title="Notifications"
                 description="Suis tes invitations, récompenses, matchs à venir et alertes importantes."
                 actions={

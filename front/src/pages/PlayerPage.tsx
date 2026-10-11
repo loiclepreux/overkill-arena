@@ -130,7 +130,7 @@ export function PlayerPage() {
                             <div className="mt-4 flex items-center gap-3">
                                 <Badge variant="danger">{team.members.length} membres</Badge>
                                 <Badge variant="neutral">
-                                    {team.members.find((m) => m.userId === id)?.role ?? "MEMBER"}
+                                    {({ CAPTAIN: "Capitaine", CO_CAPTAIN: "Co-Capitaine", MEMBER: "Membre" } as Record<string, string>)[team.members.find((m) => m.userId === id)?.role ?? "MEMBER"] ?? "Membre"}
                                 </Badge>
                             </div>
                         </div>

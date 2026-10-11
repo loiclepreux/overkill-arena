@@ -30,7 +30,7 @@ export function LeaderboardPage() {
     return (
         <section className="space-y-10">
             <PageHero
-                badge="Competitive Rankings"
+                badge="Classement Compétitif"
                 title="Classement Overkill Arena"
                 description="Suivez les meilleures équipes et les performances dominantes de la plateforme."
                 actions={

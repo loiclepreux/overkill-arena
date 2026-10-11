@@ -253,7 +253,7 @@ export function AdminPage() {
     return (
         <section className="space-y-8">
             <PageHero
-                badge="ADMIN CONTROL CENTER"
+                badge="Panneau d'administration"
                 title="Tableau de bord administrateur"
                 description="Gérez les tournois, validez les matchs contestés et attribuez des récompenses."
             />

@@ -50,7 +50,7 @@ export function DashboardPage() {
             <div className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-br from-red-950/40 via-black to-zinc-950 p-5 sm:p-8">
                 <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                     <div>
-                        <Badge variant="danger">Command Center</Badge>
+                        <Badge variant="danger">Tableau de bord</Badge>
                         <h1 className="mt-5 text-4xl font-extrabold text-white sm:text-5xl">
                             Bienvenue, {user?.pseudo}
                         </h1>

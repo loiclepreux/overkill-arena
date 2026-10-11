@@ -50,7 +50,7 @@ export function AuthLayout() {
                     </Link>
 
                     <p className="mt-3 text-xs uppercase tracking-[0.3em] text-zinc-500">
-                        Competitive Esports Platform
+                        Plateforme Esports Compétitive
                     </p>
                 </div>
 

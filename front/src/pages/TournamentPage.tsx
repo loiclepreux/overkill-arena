@@ -72,7 +72,7 @@ export function TournamentPage() {
     return (
         <section className="space-y-10">
             <PageHero
-                badge="Competitive Arena"
+                badge="Arène Compétitive"
                 title="Tournois compétitifs Overkill Arena"
                 description="Rejoins des compétitions esports, affronte les meilleures équipes et gagne des médailles."
             />
